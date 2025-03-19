@@ -2,7 +2,10 @@ from flask import Flask
 from config import Config
 from extensions import db, migrate
 from routes.__init__ import routes
-from models.users import Users
+from models.modules import Modules
+from models.exam_mode import Exam
+from models.schedule_model import Schedule
+from models.assessments_model import Assessment
 
 # import tables cia kad jos veiktu!!!!
 

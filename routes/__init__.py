@@ -1,5 +1,4 @@
-from routes.home_route import home_route
-
+from routes.module_route import module_bp
 
 def routes(app):
-    home_route(app)
+    app.register_blueprint(module_bp)
