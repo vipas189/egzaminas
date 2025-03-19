@@ -1,5 +1,5 @@
-from routes.home_route import home_route
+from routes.student_register_route import student_register_route
 
 
 def routes(app):
-    home_route(app)
+    student_register_route(app)
