@@ -45,7 +45,7 @@ def view_module(id):
     
     # This would typically be pulled from a many-to-many relationship
     # For simplicity, we're just getting all users as an example
-    
+
     # students = Users.query.all()
     
     return render_template('modules/view.html', 
@@ -58,7 +58,7 @@ def view_module(id):
 # Edit module
 @module_bp.route('/modules/<int:id>/edit', methods=['GET', 'POST'])
 def edit_module(id):
-    module = Module.query.get_or_404(id)
+    module = Modules.query.get_or_404(id)
     form = ModuleForm(obj=module)
     
     if form.validate_on_submit():
