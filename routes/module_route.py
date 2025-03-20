@@ -14,7 +14,7 @@ module_bp = Blueprint('modules', __name__)
 # List all modules
 @module_bp.route('/modules')
 def list_modules():
-    modules = Module.query.all()
+    modules = Modules.query.all()
     return render_template('modules/index.html', modules=modules)
 
 # Create new module
@@ -22,7 +22,7 @@ def list_modules():
 def create_module():
     form = ModuleForm()
     if form.validate_on_submit():
-        module = Module(
+        module = Modules(
             name=form.name.data,
             description=form.description.data,
             credits=form.credits.data,
@@ -38,21 +38,22 @@ def create_module():
 # View module details
 @module_bp.route('/modules/<int:id>')
 def view_module(id):
-    module = Module.query.get_or_404(id)
+    module = Modules.query.get_or_404(id)
     schedules = Schedule.query.filter_by(module_id=id).all()
     assessments = Assessment.query.filter_by(module_id=id).all()
     exams = Exam.query.filter_by(module_id=id).all()
     
     # This would typically be pulled from a many-to-many relationship
     # For simplicity, we're just getting all users as an example
-    students = Users.query.all()
+    
+    # students = Users.query.all()
     
     return render_template('modules/view.html', 
                           module=module, 
                           schedules=schedules,
                           assessments=assessments,
-                          exams=exams,
-                          students=students)
+                          exams=exams)
+                        #   students=students)
 
 # Edit module
 @module_bp.route('/modules/<int:id>/edit', methods=['GET', 'POST'])

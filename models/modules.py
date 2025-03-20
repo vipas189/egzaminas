@@ -13,9 +13,9 @@ class Modules(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     
     # Relationships
-    schedules = db.relationship('Schedule', backref='Modules')
+    schedules = db.relationship('Schedule', backref='Modules')#backref yra atgalinis ryšis dabar modulis gali turėtu daug schedule ir su backref gali buti ir atvriškčiai.
     assessments = db.relationship('Assessment', backref='Modules')
-    exams = db.relationship('Exam', backref='Modules', lazy=True) # pasigilinti !!!!!
+    exams = db.relationship('Exam', backref='Modules') 
     
     def __repr__(self):
         return f'<Modules {self.name}>'
