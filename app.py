@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from flask import Flask
 from config import Config
 from extensions import db, migrate
 from routes.__init__ import routes
 from models.users import Users
+
 
 # import tables cia kad jos veiktu!!!!
 
