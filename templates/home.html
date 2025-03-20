@@ -1,0 +1,125 @@
+{% extends "base_home.html" %}
+{% block title %}
+{% endblock title %}
+{% block body %}
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-video-background">
+      <video autoplay muted loop playsinline>
+        <source src="{{ url_for('static', filename='videos/haha.mp4') }}">
+      </video>
+    </div>
+    <div class="hero-content">
+      <h2>Discover Your Future at Kingsford University</h2>
+      <p>
+        Join a community of thinkers, innovators, and leaders shaping
+        tomorrow's world through education and research excellence.
+      </p>
+      <div class="btn-group">
+        <a href="{{ url_for('register') }}" class="btn-secondary">Apply Now</a>
+        <a href="#" class="btn-secondary">Explore Programs</a>
+      </div>
+    </div>
+  </div>
+  <!-- Features Section -->
+  <section class="section features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why Choose Kingsford</h2>
+        <p class="section-subtitle">
+          Discover what sets our university apart and makes it the perfect
+          choice for your academic journey
+        </p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎓</div>
+          <h3 class="feature-title">Academic Excellence</h3>
+          <p class="feature-desc">
+            Our university ranks among the top institutions globally, with
+            renowned faculty and innovative programs designed to challenge and
+            inspire.
+          </p>
+          <a href="#" class="link-arrow">Learn More</a>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔬</div>
+          <h3 class="feature-title">Research Opportunities</h3>
+          <p class="feature-desc">
+            Engage in groundbreaking research alongside faculty mentors in
+            state-of-the-art facilities across numerous disciplines.
+          </p>
+          <a href="#" class="link-arrow">Explore Research</a>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌎</div>
+          <h3 class="feature-title">Global Community</h3>
+          <p class="feature-desc">
+            Join a diverse community of students and faculty from over 100
+            countries, bringing unique perspectives to your educational
+            experience.
+          </p>
+          <a href="#" class="link-arrow">Discover Community</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- News Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Latest News</h2>
+        <p class="section-subtitle">Stay updated with the latest happenings at Kingsford University</p>
+      </div>
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-img news-image1"></div>
+          <div class="news-content">
+            <div class="news-date">March 15, 2025</div>
+            <h3 class="news-title">New Research Center Opens</h3>
+            <p class="news-excerpt">
+              The $50 million facility will focus on interdisciplinary
+              research tackling global challenges.
+            </p>
+            <a href="#" class="link-arrow">Read More</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-img news-image2"></div>
+          <div class="news-content">
+            <div class="news-date">March 10, 2025</div>
+            <h3 class="news-title">University Awarded Major Grant</h3>
+            <p class="news-excerpt">
+              The $10 million grant will fund new climate research initiatives
+              over the next five years.
+            </p>
+            <a href="#" class="link-arrow">Read More</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-img news-image3"></div>
+          <div class="news-content">
+            <div class="news-date">March 5, 2025</div>
+            <h3 class="news-title">Student Innovation Showcase</h3>
+            <p class="news-excerpt">
+              Our annual event highlighted over 100 student projects from
+              various disciplines.
+            </p>
+            <a href="#" class="link-arrow">Read More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Call to Action Section -->
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Begin Your Journey?</h2>
+      <p>
+        Take the first step toward a transformative educational experience at
+        Kingsford University.
+      </p>
+      <a href="{{ url_for('login') }}" class="cta-btn">Student Portal Login</a>
+    </div>
+  </section>
+{% endblock body %}
