@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login Form | Codeacademy</title>
+  <link rel="stylesheet" href="aa11.css">
+</head>
+<body>
+  <!-- Title Section -->
+  <div class="title-section">
+    <h1>Code Academy University</h1>
+  </div>
+
+  <!-- Button Row Wrapper -->
+  <div class="button-wrapper">
+    <div class="button-row">
+      <a href="ab.html" class="menu-button">Studentai</a>
+      <a href="ac.html" class="menu-button">Destytojai</a>
+      <a href="ad.html" class="menu-button">Programos</a>
+      <a href="af.html" class="menu-button">Fakultetai</a>
+      <a href="ag.html" class="menu-button">Uzdaviniai</a>
+    </div>
+  </div>
+
+  <!-- Wrapper for Login Form -->
+  <div class="wrapper">
+    <!-- Login Form -->
+    <form action="#">
+      <h2>Login</h2>
+      <div class="input-field">
+        <input type="text" required>
+        <label>Enter your email</label>
+      </div>
+      <div class="input-field">
+        <input type="password" required>
+        <label>Enter your password</label>
+      </div>
+      <div class="forget">
+        <label for="remember">
+          <input type="checkbox" id="remember">
+          <p>Remember me</p>
+        </label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit">Log In</button>
+      <div class="register">
+        <p>Don't have an account? <a href="#">Register</a></p>
+      </div>
+    </form>
+    
+    <!-- Customizable Input Area -->
+    <div id="custom-input-area" style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed #ccc; padding: 20px; margin: 10px; background-color: #f9f9f9;">
+      <p>Drop a .jpg image here, paste or type text...</p>
+      <img id="image-preview" alt="" style="max-width: 100%; margin-top: 10px;" />
+      <textarea id="text-area" placeholder="Or enter text manually..." rows="5" style="width: 100%; max-width: 400px; margin-top: 10px;"></textarea>
+    </div>
+  </div>
+
+  <div class="corner-wrapper">
+    <a href="#">Home</a>
+  </div>
+
+  <script>
+    const inputArea = document.getElementById('custom-input-area');
+    const textArea = document.getElementById('text-area');
+    const imagePreview = document.getElementById('image-preview');
+
+    // Drag-and-Drop for Images
+    inputArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        inputArea.style.borderColor = '#0078d7';
+    });
+
+    inputArea.addEventListener('dragleave', () => {
+        inputArea.style.borderColor = '#ccc';
+    });
+
+    inputArea.addEventListener('drop', (event) => {
+        event.preventDefault();
+        inputArea.style.borderColor = '#ccc';
+        const file = event.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                imagePreview.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Handle pasting or typing
+    inputArea.addEventListener('paste', (event) => {
+        const pasteText = event.clipboardData.getData('text');
+        inputArea.textContent = pasteText;
+        textArea.value = pasteText;
+    });
+  </script>
+</body>
+</html>
