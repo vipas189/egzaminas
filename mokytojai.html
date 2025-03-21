@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login Form | Codeacademy</title>
+  <link rel="stylesheet" href="mokytojai.css">
+  
+</head>
+<body>
+  <!-- Title Section -->
+  <div class="title-section">
+    <h1>Mokytoju Login puslapis</h1>
+  </div>
+
+  <!-- Button Row Wrapper -->
+  <div class="button-wrapper">
+    <div class="button-row">
+      <a href="home.html" class="menu-button">Titulinis</a>
+      <a href="info.html" class="menu-button">Info.about</a>
+      <a href="studentai.html" class="menu-button">Studentai</a>
+      <a href="mokytojai.html" class="menu-button">Mokytojai</a>
+      <a href="vadovai.html" class="menu-button">Vadovai.L</a>
+    </div>
+  </div>
+
+  <!-- Wrapper for Login Form -->
+  <div class="wrapper">
+    <!-- Login Form -->
+    <form action="#">
+      <h2>Login</h2>
+      <div class="input-field">
+        <input type="text" required>
+        <label>Enter your email</label>
+      </div>
+      <div class="input-field">
+        <input type="password" required>
+        <label>Enter your password</label>
+      </div>
+      <div class="forget">
+        <label for="remember">
+          <input type="checkbox" id="remember">
+          <p>Remember me</p>
+        </label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit">Log In</button>
+      <div class="register">
+        <p>Don't have an account? <a href="#">Register</a></p>
+      </div>
+    </form>
+  </div>
+
+  <div class="corner-wrapper">
+    <a href="home.html">Home</a>
+  </div>
+
+  <!-- New Wrapper-Text Container -->
+  <div class="wrapper-text">
+    <h2>Custom Input</h2>
+    <div id="custom-input-area" class="form-style">
+      <p>Drop a .jpg image here, paste or type text...</p>
+      <div class="scrollable-area" id="scrollable-area">
+        <img id="image-preview" alt="" style="display: none;" /> <!-- Initially hidden -->
+        <textarea id="text-area" placeholder="Or enter text manually..." rows="1"></textarea>
+      </div>
+      <button type="button" id="submit-button">Submit</button>
+      <button type="button" id="embed-button">Embed</button>
+     
+    </div>
+  </div>
+
+  <!-- Embedded JavaScript -->
+  <script>
+    const inputArea = document.getElementById('custom-input-area');
+    const imagePreview = document.getElementById('image-preview');
+    const textArea = document.getElementById('text-area');
+    const submitButton = document.getElementById('submit-button');
+    const embedButton = document.getElementById('embed-button');
+    const scrollFilesButton = document.getElementById('scroll-files-button');
+    const scrollableArea = document.getElementById('scrollable-area');
+
+    // Prevent default behavior for drag-and-drop
+    inputArea.addEventListener('dragover', (event) => {
+      event.preventDefault(); // Prevent default behavior (e.g., opening the file in a new tab)
+      inputArea.style.borderColor = '#0078d7'; // Optional: highlight the area during drag
+    });
+
+    inputArea.addEventListener('dragleave', () => {
+      inputArea.style.borderColor = '#ccc'; // Optional: reset the border color
+    });
+
+    inputArea.addEventListener('drop', (event) => {
+      event.preventDefault(); // Prevent default behavior
+
+      const file = event.dataTransfer.files[0]; // Get the first dropped file
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          imagePreview.src = reader.result; // Set the image source to the file data
+          imagePreview.style.display = 'block'; // Ensure the image is visible
+        };
+        reader.readAsDataURL(file); // Read the file as a Data URL
+      } else {
+        alert('Please drop a valid image file (e.g., .jpg or .png).'); // Show an error for non-image files
+      }
+
+      inputArea.style.borderColor = '#ccc'; // Optional: reset the border color
+    });
+
+    // Auto-expand textarea as you type
+    textArea.addEventListener('input', () => {
+      textArea.style.height = "auto"; // Reset height to calculate new height
+      textArea.style.height = `${textArea.scrollHeight}px`; // Adjust height to fit content
+    });
+
+    submitButton.addEventListener('click', () => {
+      const enteredData = textArea.value;
+      alert(`Data Submitted: ${enteredData}`);
+      // Replace the alert with backend submission logic when backend is ready
+    });
+
+    embedButton.addEventListener('click', () => {
+      const enteredData = textArea.value;
+      const imageSrc = imagePreview.src;
+
+      if (enteredData || imageSrc) {
+        const formData = new FormData();
+        formData.append('text', enteredData);
+        if (imageSrc) {
+          fetch(imageSrc)
+            .then(res => res.blob())
+            .then(blob => {
+              formData.append('image', blob, 'image.jpg');
+              // Send formData to the backend
+              alert('Data and image embedded successfully!');
+              // Replace the alert with backend submission logic when backend is ready
+            });
+        } else {
+          // Send formData to the backend
+          alert('Data embedded successfully!');
+          // Replace the alert with backend submission logic when backend is ready
+        }
+      } else {
+        alert('Please enter text or drop an image to embed.');
+      }
+    });
+
+    scrollFilesButton.addEventListener('click', () => {
+      alert('Scroll through available files and texts.');
+      // Implement the logic to scroll through available files and texts
+    });
+  </script>
+</body>
+</html>
