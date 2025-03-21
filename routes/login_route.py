@@ -2,7 +2,6 @@ from flask import render_template, redirect, url_for, request, session
 from models.form.admin_login_form import AdminLoginForm
 from werkzeug.security import check_password_hash
 from config import Config
-from database import Session, engine
 
 
 def login_route(app):
@@ -16,10 +15,17 @@ def login_route(app):
                 if email == Config.ADMIN_EMAIL and check_password_hash(Config.ADMIN_PASSWORD_HASH, password):
                     session['logged_in'] = True
                     session['admin'] = True
-                    return redirect(url_for("panel_admin"))
-                
-                # with Session() as session:
-                #     result = session.execute(select(Admin).filter_by)
+                    return redirect(url_for("panel"))
+        return render_template('login.html', form = form)
+    
+
+
+
+
+    
+     # return redirect(url_for("login")) #esant jau panel_admin ir norint grįžt atgal į /login, meta ne klaidą, o atgal grįžta į /login
+    
+    
                 #     result = session.execute(text("SELECT * FROM admin WHERE email = :email"),{"email": email})
                 #     admin_from_db = result.fetchone()
                     
@@ -30,8 +36,6 @@ def login_route(app):
                 #         session['admin_id'] = admin_from_db.id
                 #         session['admin_type'] = 'db'
                 #         return redirect(url_for("panel_admin"))
-            return redirect(url_for("login")) #esant jau panel_admin ir norint grįžt atgal į /login, meta ne klaidą, o atgal grįžta į /login
-        return render_template('login.html',form = form)
     
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # kodas apibrėžia Flask aplikacijos prisijungimo funkcionalumą. Funkcija login_route užregistruoja "/login" URL maršrutą,
