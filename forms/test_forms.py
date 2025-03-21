@@ -1,3 +1,7 @@
+from flask_wtf import FlaskForm
+from wtforms import FieldList, StringField, SubmitField
+from wtforms.validators import DataRequired
+
 class SolveTestForm(FlaskForm):
-    answers = FieldList(SelectField('Answer', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')], validators=[DataRequired()]))
-    submit = SubmitField('Submit Answers')
+    answers = FieldList(StringField('Atsakymas', validators=[DataRequired()]))
+    submit = SubmitField('Pateikti atsakymus')
