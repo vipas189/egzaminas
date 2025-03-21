@@ -72,7 +72,7 @@
           <a href="#">Pamiršai slaptažodį?</a>
         </div> #}
       </div>
-      <!-- Admin form -->
+      <!-- ADMIN form -->
       <div class="form-content" id="admin">
         <div class="form-label">El. paštas</div>
         <div class="form-box">
@@ -82,7 +82,7 @@
         <div class="form-box">
           <input type="password" class="form-input" placeholder="Slaptažodis" />
         </div>
-        <form action="{{ url_for('panel_admin') }}">
+        <form action="{{ url_for('panel') }}">
           <button class="login-btn">Prisijungti</button>
         </form>
         {# <div class="forgot-link">
@@ -90,8 +90,9 @@
         </div> #}
       </div>
     </div>
-    <div class="background-wave"></div>
   </div>
-  <div class="accessibility">♿</div>
-  <div class="language">LT ▼</div>
+  <div class="background-wave"></div>
+</div>
+<div class="accessibility">♿</div>
+<div class="language">LT ▼</div>
 {% endblock body %}
