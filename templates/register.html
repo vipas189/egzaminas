@@ -24,32 +24,35 @@
         Naudodamiesi Jums suteikta asmenine paskyra pasiekite daugumą
         Universiteto teikiamų elektroninių paslaugų.
       </div>
-      <div class="note">
-        Jei pamiršote savo asmeninės paskyros prisijungimo duomenis ar turite
-        kitų su sistemomis susijusių klausimų prašome kreiptis el. paštu
-        <a href="mailto:pagalba@ku.lt" class="email">pagalba@ku.lt</a>.
-      </div>
       <!-- Courses list -->
-      <div id="coursesList" class="displayNone"></div>
+      <div id="coursesList" class="displayNone">
+        <div class="form-label">Pasirinkite kursą:</div>
+        <div class="courses-list">
+          <div class="course-item">Informatika (P000F001)</div>
+          <div class="course-item">Ekonomika (P000F002)</div>
+          <div class="course-item">Teisė (P000F003)</div>
+          <div class="course-item">Verslo vadyba (P000F004)</div>
+        </div>
+        <input type="hidden" id="selected-course-input" name="selected_course">
+      </div>
     </div>
     <div class="right-content">
       <div class="tabs">
-        <div class="tab active" data-form="student">Studentas</div>
-        <div class="tab inactive" data-form="lecturer">Darbuotojas</div>
-        <div class="tab inactive" data-form="admin">Administratorius</div>
+        <div class="tab-register active" data-form="student">Studentas</div>
+        <div class="tab-register inactive" data-form="lecturer">Darbuotojas</div>
       </div>
       <!-- Student form -->
       <div class="form-content active" id="student">
         <div class="form-label">El. paštas</div>
         <div class="form-box" id="text-input">
-          <input type="email" class="form-input" placeholder="studentas.pavarde@ku.lt" />
+          <input type="email" class="form-input" placeholder="vardas.pavarde@ku.lt" />
         </div>
         <div class="form-label">Slaptažodis</div>
         <div class="form-box">
           <input type="password" class="form-input" placeholder="Slaptažodis" />
         </div>
         <form action="{{ url_for('panel_student') }}">
-          <button class="login-btn">Prisijungti</button>
+          <button class="login-btn">Registruotis</button>
         </form>
         {# <div class="forgot-link">
           <a href="#">Pamiršai slaptažodį?</a>
@@ -66,33 +69,15 @@
           <input type="password" class="form-input" placeholder="Slaptažodis" />
         </div>
         <form action="{{ url_for('panel_lecturer') }}">
-          <button class="login-btn">Prisijungti</button>
-        </form>
-        {# <div class="forgot-link">
-          <a href="#">Pamiršai slaptažodį?</a>
-        </div> #}
-      </div>
-      <!-- ADMIN form -->
-      <div class="form-content" id="admin">
-        <div class="form-label">El. paštas</div>
-        <div class="form-box">
-          <input type="text" class="form-input" placeholder="admin.pavarde@ku.lt" />
-        </div>
-        <div class="form-label">Slaptažodis</div>
-        <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
-        </div>
-        <form action="{{ url_for('panel') }}">
-          <button class="login-btn">Prisijungti</button>
+          <button class="login-btn">Registruotis</button>
         </form>
         {# <div class="forgot-link">
           <a href="#">Pamiršai slaptažodį?</a>
         </div> #}
       </div>
     </div>
+    <div class="background-wave"></div>
   </div>
-  <div class="background-wave"></div>
-</div>
-<div class="accessibility">♿</div>
-<div class="language">LT ▼</div>
+  <div class="accessibility">♿</div>
+  <div class="language">LT ▼</div>
 {% endblock body %}
