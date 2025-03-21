@@ -2,7 +2,7 @@
 (function () {
   // Get active tab from URL or session storage
   let activeTabType = "student"; // Default
- 
+
   // Check URL first
   const urlSearch = window.location.search;
   const tabMatch = urlSearch.match(/[?&]tab=([^&]*)/);
@@ -13,12 +13,12 @@
   else if (sessionStorage && sessionStorage.getItem("activeTab")) {
     activeTabType = sessionStorage.getItem("activeTab");
   }
- 
+
   // Store for later use
   if (sessionStorage) {
     sessionStorage.setItem("activeTab", activeTabType);
   }
- 
+
   // Add style to immediately set correct tab state
   const style = document.createElement("style");
   style.textContent = `
@@ -27,19 +27,19 @@
   `;
   document.head.appendChild(style);
 })();
- 
+
 // Wait for the DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", function () {
   // Get the active tab from session storage
   const activeTabType = sessionStorage.getItem("activeTab") || "student";
- 
+
   // Show courses list appropriately
   const coursesList = document.getElementById("coursesList");
   if (coursesList) {
     coursesList.classList.remove("displayNone");
     coursesList.style.display = activeTabType === "student" ? "block" : "none";
   }
- 
+
   // Update tab states to match active tab
   document.querySelectorAll(".tab, .tab-register").forEach((tab) => {
     const tabType = tab.getAttribute("data-form");
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
       tab.classList.add("inactive");
     }
   });
- 
+
   // Function to activate a specific tab
   function activateTab(tabType) {
     // Update tab-register tabs
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         t.classList.add("inactive");
       }
     });
- 
+
     // Update regular tabs
     document.querySelectorAll(".tab").forEach((t) => {
       if (t.getAttribute("data-form") === tabType) {
@@ -75,27 +75,27 @@ document.addEventListener("DOMContentLoaded", function () {
         t.classList.add("inactive");
       }
     });
- 
+
     // Update form visibility
     document.querySelectorAll(".form-content").forEach((form) => {
       form.classList.remove("active");
     });
     document.getElementById(tabType).classList.add("active");
- 
+
     // Show course list only for student
     if (coursesList) {
       coursesList.style.display = tabType === "student" ? "block" : "none";
     }
- 
+
     // Store active tab in sessionStorage
     sessionStorage.setItem("activeTab", tabType);
- 
+
     // Update URL without page reload
     const newUrl = new URL(window.location);
     newUrl.searchParams.set("tab", tabType);
     history.pushState({}, "", newUrl);
   }
- 
+
   // Tab switching for student/lecturer register tabs
   document.querySelectorAll(".tab-register").forEach((tab) => {
     tab.addEventListener("click", function (e) {
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
       activateTab(tabType);
     });
   });
- 
+
   // Tab switching for login tabs
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", function (e) {
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
       activateTab(tabType);
     });
   });
- 
+
   // Course selection with highlighting
   document.querySelectorAll(".course-item").forEach((course) => {
     course.addEventListener("click", function () {
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Selected course:", selectedCourse);
     });
   });
- 
+
   // Handle form submissions to include the current tab
   document.querySelectorAll("form").forEach((form) => {
     form.addEventListener("submit", function () {
