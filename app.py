@@ -2,12 +2,7 @@ from flask import Flask
 from config import Config
 from extensions import db, migrate, admin
 from routes.__init__ import routes
-<<<<<<< HEAD
 
-
-=======
-from models.students import Students
->>>>>>> origin/html-design-init
 
 app = Flask(__name__)
 app.config.from_object(Config)

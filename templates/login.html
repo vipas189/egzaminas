@@ -72,22 +72,30 @@
           <a href="#">Pamiršai slaptažodį?</a>
         </div> #}
       </div>
-      <!-- Admin form -->
+      <!-- ADMIN form -->
       <div class="form-content" id="admin">
-        <div class="form-label">El. paštas</div>
-        <div class="form-box">
-          <input type="text" class="form-input" placeholder="admin.pavarde@ku.lt" />
-        </div>
-        <div class="form-label">Slaptažodis</div>
-        <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
-        </div>
-        <form action="{{ url_for('panel') }}">
-          <button class="login-btn">Prisijungti</button>
+        <form method="POST">
+          {{form.hidden_tag() }}
+          
+          <div class="form-label">El. paštas</div>
+          <div class="form-box">
+            {{ form.email(class="form-input", placeholder="admin.pavarde@ku.lt") }}
+            {%for email_error in form.email.errors%}{{email_error}}{%endfor%}
+          </div>
+          
+          <div class="form-label">Slaptažodis</div>
+          <div class="form-box">
+            {{ form.password(class="form-input", placeholder="Slaptažodis") }}
+            {%for password_error in form.password.errors%}{{password_error}}{%endfor%}
+          </div>
+          
+          {{form.submit(class="login-btn")}}
         </form>
+        
         {# <div class="forgot-link">
           <a href="#">Pamiršai slaptažodį?</a>
         </div> #}
+      </div>
       </div>
     </div>
     <div class="background-wave"></div>

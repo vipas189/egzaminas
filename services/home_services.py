@@ -1,4 +1,4 @@
-from models.users import Users
+from models.admin import Admin
 from extensions import db
 
 

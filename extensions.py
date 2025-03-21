@@ -8,11 +8,3 @@ migrate = Migrate()
 admin = Admin()
 login_manager = LoginManager()
 
-login_manager.login_view = 'login'
-login_manager.login_message = 'Prašome prisijungti norint pasiekti šį puslapį.'
-login_manager.login_message_category = 'info'
-
-@login_manager.user_loader
-def load_user(user_id):
-    from models.users import User
-    return db.session.get(User, int(user_id))
