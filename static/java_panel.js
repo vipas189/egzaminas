@@ -1,95 +1,94 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Toggle sidebar on mobile
-  const menuToggle = document.getElementById("menu-toggle");
-  const sidebarClose = document.getElementById("sidebar-close");
+  // Get sidebar and main content elements
   const sidebar = document.getElementById("sidebar");
+  const mainContent = document.getElementById("main-content");
 
-  if (menuToggle) {
-    menuToggle.addEventListener("click", function () {
-      sidebar.classList.add("active");
-    });
+  // Create toggle button for mobile
+  const toggleBtn = document.createElement("button");
+  toggleBtn.className = "sidebar-toggle";
+  toggleBtn.innerHTML =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+  document.body.appendChild(toggleBtn);
+
+  // Get close button
+  const sidebarClose = document.getElementById("sidebar-close");
+
+  // Toggle sidebar expansion
+  function toggleSidebar() {
+    sidebar.classList.toggle("expanded");
+    sidebar.classList.toggle("active");
+    mainContent.classList.toggle("shifted");
   }
 
+  // Add expanded toggle
+  toggleBtn.addEventListener("click", toggleSidebar);
+
+  // Close button functionality
   if (sidebarClose) {
     sidebarClose.addEventListener("click", function () {
       sidebar.classList.remove("active");
+      sidebar.classList.remove("expanded");
+      mainContent.classList.remove("shifted");
     });
   }
 
-  // Navigation section switching
-  const navLinks = document.querySelectorAll(".nav-link");
-  const dashboardSection = document.getElementById("dashboard-section");
-  const profileSection = document.getElementById("profile-section");
-  const topBarTitle = document.querySelector(".top-bar-title");
+  // Hover functionality for desktop with debounce
+  let expandTimeout;
+  let collapseTimeout;
 
+  sidebar.addEventListener("mouseenter", function () {
+    if (window.innerWidth > 768) {
+      clearTimeout(collapseTimeout);
+
+      // Small delay before expanding to prevent accidental triggers
+      expandTimeout = setTimeout(function () {
+        sidebar.classList.add("expanded");
+        mainContent.classList.add("shifted");
+      }, 100);
+    }
+  });
+
+  sidebar.addEventListener("mouseleave", function () {
+    if (window.innerWidth > 768) {
+      clearTimeout(expandTimeout);
+
+      // Delay before collapsing
+      collapseTimeout = setTimeout(function () {
+        sidebar.classList.remove("expanded");
+        mainContent.classList.remove("shifted");
+      }, 300);
+    }
+  });
+
+  // Navigation Links
+  const navLinks = document.querySelectorAll(".nav-link[data-section]");
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
-      const targetSection = this.getAttribute("data-section");
-
+      e.preventDefault();
       // Remove active class from all links
-      navLinks.forEach((navLink) => {
-        navLink.classList.remove("active");
-      });
-
-      // Add active class to current link
+      navLinks.forEach((link) => link.classList.remove("active"));
+      // Add active class to clicked link
       this.classList.add("active");
+      // Hide all sections
+      const sections = document.querySelectorAll('[id$="-section"]');
+      sections.forEach((section) => (section.style.display = "none"));
+      // Show target section
+      const targetSectionId = this.getAttribute("data-section");
+      document.getElementById(targetSectionId).style.display = "block";
 
-      if (targetSection === "dashboard-section") {
-        dashboardSection.style.display = "block";
-        profileSection.style.display = "none";
-        topBarTitle.textContent = "Student Dashboard";
-      } else if (targetSection === "profile-section") {
-        dashboardSection.style.display = "none";
-        profileSection.style.display = "block";
-        topBarTitle.textContent = "My Profile";
-      } else if (this.getAttribute("href") === "#") {
-        e.preventDefault();
-        alert("This feature is coming soon!");
+      // On mobile, close the sidebar after selection
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove("expanded");
+        sidebar.classList.remove("active");
+        mainContent.classList.remove("shifted");
       }
     });
   });
 
-  // Schedule tabs
-  const scheduleTabs = document.querySelectorAll(".schedule-tab");
-
-  scheduleTabs.forEach((tab) => {
-    tab.addEventListener("click", function () {
-      // Remove active class from all tabs
-      scheduleTabs.forEach((scheduleTab) => {
-        scheduleTab.classList.remove("active");
-      });
-
-      // Add active class to current tab
-      this.classList.add("active");
-    });
-  });
-
-  // Settings tabs
-  const settingsTabs = document.querySelectorAll(".settings-tab");
-
-  settingsTabs.forEach((tab) => {
-    tab.addEventListener("click", function () {
-      // Remove active class from all tabs
-      settingsTabs.forEach((settingsTab) => {
-        settingsTab.classList.remove("active");
-      });
-
-      // Add active class to current tab
-      this.classList.add("active");
-    });
-  });
-
-  // Profile image upload
-  const avatarTrigger = document.getElementById("avatar-trigger");
+  // Avatar and profile picture handling
   const profilePicture = document.getElementById("profile-picture");
   const previewProfileImg = document.getElementById("preview-profile-img");
   const sidebarAvatar = document.querySelector(".user-avatar img");
-
-  if (avatarTrigger) {
-    avatarTrigger.addEventListener("click", function () {
-      profilePicture.click();
-    });
-  }
 
   if (profilePicture) {
     profilePicture.addEventListener("change", function () {
@@ -103,16 +102,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         reader.readAsDataURL(file);
       }
-    });
-  }
-
-  // Form submission
-  const profileForm = document.getElementById("profile-form");
-
-  if (profileForm) {
-    profileForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      alert("Profile updated successfully!");
     });
   }
 });
