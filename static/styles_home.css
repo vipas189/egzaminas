@@ -20,6 +20,11 @@
 body {
   color: var(--text);
   line-height: 1.6;
+  font-family: calibri;
+}
+
+header {
+  font-family: calibri;
 }
 
 a {
@@ -65,7 +70,7 @@ header {
   justify-content: center;
   font-weight: bold;
   font-size: 24px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .logo-text h1 {
@@ -503,7 +508,7 @@ footer {
 .hero-content h2,
 .hero-content p {
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 /* Modern University Header Styling */
 
@@ -515,7 +520,7 @@ footer {
 }
 
 body {
-  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+  font-family: calibri, sans-serif;
   line-height: 1.6;
 }
 
@@ -540,41 +545,6 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 7px 0;
-}
-
-/* Logo styling */
-.logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-}
-
-.logo-icon {
-  background-color: #3a2c60; /* University purple */
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 18px;
-  margin-right: 15px;
-}
-
-.logo-text h1 {
-  font-size: 20px;
-  color: #3a2c60;
-  margin-bottom: 2px;
-}
-
-.logo-text p {
-  font-size: 12px;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 /* Menu styling */
@@ -717,3 +687,42 @@ document.querySelector('.mobile-toggle').addEventListener('click', function() {
   document.querySelector('.menu').classList.toggle('active');
 });
 */
+.ku-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ku-logo-icon {
+  background-color: #3a2c60; /* University purple from your CSS */
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 8px; /* Similar to your existing styles */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.ku-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ku-logo-text h1 {
+  font-size: 17px;
+  color: #3a2c60;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.ku-logo-text p {
+  font-size: 10px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

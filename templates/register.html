@@ -1,20 +1,18 @@
 {% extends "base_login_register.html" %}
 {% block body %}
   <div class="header">
-    <a href="{{ url_for('home') }}">
-      <img src="{{ url_for('static', filename='images/logo.png') }}"
-           height="45"
-           width=""
-           alt="" />
+    <a href="{{ url_for('home') }}" class="ku-logo">
+      <div class="ku-logo-icon">KU</div>
     </a>
   </div>
   <div class="container">
     <div class="left-content">
-      <a href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='images/logo2.png') }}"
-             height="50"
-             width=""
-             alt="" />
+      <a href="{{ url_for('home') }}" class="ku-logo">
+        <div class="ku-logo-icon2">KU</div>
+        <div class="ku-logo-text">
+          <h1>Kingsford University</h1>
+          <p>Excellence in Education</p>
+        </div>
       </a>
       <div class="description padding">
         Klaipėdos universiteto elektroninėje informacinėje erdvėje galioja
@@ -23,6 +21,11 @@
       <div class="note">
         Naudodamiesi Jums suteikta asmenine paskyra pasiekite daugumą
         Universiteto teikiamų elektroninių paslaugų.
+      </div>
+      <div class="note">
+        Jei pamiršote savo asmeninės paskyros prisijungimo duomenis ar turite
+        kitų su sistemomis susijusių klausimų prašome kreiptis el. paštu
+        <a href="mailto:pagalba@ku.lt" class="email">pagalba@ku.lt</a>.
       </div>
       <!-- Courses list -->
       <div id="coursesList" class="displayNone">
@@ -33,6 +36,7 @@
           <div class="course-item">Teisė (P000F003)</div>
           <div class="course-item">Verslo vadyba (P000F004)</div>
         </div>
+        {% for message in get_flashed_messages(category_filter=['student-study_program']) %}{{ message }}{% endfor %}
       </div>
     </div>
     <div class="right-content">
@@ -44,16 +48,34 @@
       <div class="form-content active" id="student">
         <form method="post" action="{{ url_for('student') }}">
           {{ student_form.hidden_tag() }}
-          <input type="hidden" id="selected-course-input" name="selected_course">
+          {{ student_form.study_program(id="selected-course-input") }}
+          <div style="display: flex; gap: 10px">
+            <!-- First name column -->
+            <div style="flex: 1;">
+              <div class="form-label">Vardas</div>
+              <div class="form-box" id="text-input">
+                {{ student_form.name(class="form-input shorter-input", placeholder="Vardas") }}
+                {% for message in get_flashed_messages(category_filter=['student-name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+            <!-- Last name column -->
+            <div style="flex: 1;">
+              <div class="form-label">Pavardė</div>
+              <div class="form-box" id="text-input">
+                {{ student_form.last_name(class="form-input shorter-input", placeholder="Pavardė") }}
+                {% for message in get_flashed_messages(category_filter=['student-last_name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+          </div>
           <div class="form-label">El. paštas</div>
           <div class="form-box" id="text-input">
             {{ student_form.email(class="form-input", placeholder="studentas.pavarde@ku.lt") }}
-            {% for email_error in student_form.email.errors %}{{ email_error }}{% endfor %}
+            {% for message in get_flashed_messages(category_filter=['student-email']) %}{{ message }}{% endfor %}
           </div>
           <div class="form-label">Slaptažodis</div>
           <div class="form-box">
             {{ student_form.password(class="form-input", placeholder="Slaptažodis") }}
-            {% for password_error in student_form.password.errors %}{{ password_error }}{% endfor %}
+            {% for message in get_flashed_messages(category_filter=['student-password']) %}{{ message }}{% endfor %}
           </div>
           {{ student_form.submit(class="login-btn") }}
         </form>
@@ -65,15 +87,33 @@
       <div class="form-content" id="lecturer">
         <form method="post" action="{{ url_for('lecturer') }}">
           {{ lecturer_form.hidden_tag() }}
+          <div style="display: flex; gap: 10px">
+            <!-- First name column -->
+            <div style="flex: 1;">
+              <div class="form-label">Vardas</div>
+              <div class="form-box" id="text-input">
+                {{ lecturer_form.name(class="form-input shorter-input", placeholder="Vardas") }}
+                {% for message in get_flashed_messages(category_filter=['lecturer-name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+            <!-- Last name column -->
+            <div style="flex: 1;">
+              <div class="form-label">Pavardė</div>
+              <div class="form-box" id="text-input">
+                {{ lecturer_form.last_name(class="form-input shorter-input", placeholder="Pavardė") }}
+                {% for message in get_flashed_messages(category_filter=['lecturer-last_name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+          </div>
           <div class="form-label">El. paštas</div>
           <div class="form-box">
             {{ lecturer_form.email(class="form-input", placeholder="destytojas.pavarde@ku.lt") }}
-            {% for email_error in lecturer_form.email.errors %}{{ email_error }}{% endfor %}
+            {% for message in get_flashed_messages(category_filter=['lecturer-email']) %}{{ message }}{% endfor %}
           </div>
           <div class="form-label">Slaptažodis</div>
           <div class="form-box">
             {{ lecturer_form.password(class="form-input", placeholder="Slaptažodis") }}
-            {% for password_error in lecturer_form.password.errors %}{{ password_error }}{% endfor %}
+            {% for message in get_flashed_messages(category_filter=['lecturer-password']) %}{{ message }}{% endfor %}
           </div>
           {{ lecturer_form.submit(class="login-btn") }}
         </form>

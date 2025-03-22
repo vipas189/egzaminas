@@ -7,7 +7,14 @@ def student_exists(email):
     return student
 
 
-def student_add(email, password):
-    student = Students(email, password)
+def student_add(name, last_name, email, password, study_program):
+    # check_password_hash(hashed_password, password)
+    student = Students(
+        name=name,
+        last_name=last_name,
+        email=email,
+        password=password,
+        study_program=study_program,
+    )
     db.session.add(student)
     db.session.commit()

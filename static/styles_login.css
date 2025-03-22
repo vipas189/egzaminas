@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: calibri, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f5f5f5;
@@ -13,11 +13,13 @@ body {
 
 .container {
   display: flex;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
-  background-color: #f5f5f5;
+  background-color: #f1f1f1;
   position: relative;
   overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Content areas */
@@ -35,13 +37,13 @@ body {
 }
 
 .description {
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.5;
   margin-bottom: 30px;
 }
 
 .note {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   margin-bottom: 20px;
 }
@@ -59,12 +61,13 @@ body {
 
 .tab,
 .tab-register {
-  padding: 12px 24px;
+  padding: 12px 47px;
   border-radius: 8px;
   cursor: pointer;
   margin-right: 10px;
   font-weight: bold;
   transition: background-color 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .tab-register {
@@ -75,19 +78,21 @@ body {
 .tab-register.active {
   background-color: #3a2c60;
   color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .tab.inactive,
 .tab-register.inactive {
   background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Form elements */
 .form-box {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
@@ -98,10 +103,10 @@ body {
 }
 
 .form-input {
-  width: 100%;
+  width: 95%;
   padding: 12px;
   border: 1px solid #e0e0e0;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-bottom: 20px;
   background-color: #f9f9f9;
 }
@@ -113,15 +118,17 @@ body {
   padding: 15px 20px;
   border-radius: 8px;
   font-weight: bold;
+  font-size: 14px;
   cursor: pointer;
   width: 100%;
   margin-top: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .forgot-link {
   text-align: right;
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .forgot-link a {
@@ -168,7 +175,7 @@ body {
   border: none;
   color: #5542e5;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   text-align: right;
   margin: -10px 0 15px 0;
   float: right;
@@ -177,9 +184,9 @@ body {
 /* Course list */
 .courses-list {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   max-height: 150px;
   overflow-y: auto;
@@ -206,37 +213,6 @@ body {
 }
 
 /* Logo styling */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.logo-icon {
-  width: 50px;
-  height: 50px;
-  background-color: #3a2c60;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 24px;
-  border-radius: 50px;
-}
-
-.logo-text h1 {
-  font-size: 24px;
-  color: #2d3748;
-}
-
-.logo-text p {
-  font-size: 14px;
-  color: #2d3748;
-  opacity: 0.8;
-}
 
 .padding {
   padding-top: 20px;
@@ -244,4 +220,87 @@ body {
 
 .displayNone {
   display: none;
+}
+
+.ku-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ku-logo-icon {
+  background-color: #3a2c60; /* University purple from your CSS */
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 8px; /* Similar to your existing styles */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.ku-logo-icon2 {
+  background-color: #3a2c60; /* University purple from your CSS */
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 8px; /* Similar to your existing styles */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.ku-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ku-logo-text h1 {
+  font-size: 15px;
+  color: #3a2c60;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.ku-logo-text p {
+  font-size: 10px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.split-inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-half {
+  flex: 1;
+  position: relative;
+}
+
+.input-half.right {
+  display: flex;
+  align-items: center;
+}
+
+.email-separator {
+  margin: 0 8px;
+  font-weight: bold;
+}
+
+.input-half .form-input {
+  width: 100%;
+}
+
+.shorter-input {
+  width: 89%;
 }

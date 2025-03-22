@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: calibri;
   line-height: 1.6;
   color: #333;
   background-color: #f5f7fb;
@@ -142,7 +142,7 @@ a {
 
 .login-card {
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
@@ -199,7 +199,7 @@ a {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #e1e5eb;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
 }
 
@@ -219,7 +219,7 @@ a {
   background-color: #3a2c60;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -240,7 +240,7 @@ a {
 .login-option {
   background-color: #f9fafc;
   border: 1px solid #eaedf1;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 1rem;
   cursor: pointer;
   transition: all 0.2s;
@@ -266,7 +266,7 @@ a {
   margin-bottom: 1.5rem;
   background-color: #3a2c60;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 2rem;
 }
 
@@ -286,7 +286,7 @@ a {
   display: flex;
   align-items: center;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
@@ -297,7 +297,7 @@ a {
   justify-content: center;
   width: 50px;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 8px;
   margin-right: 1rem;
   font-size: 1.5rem;
 }
@@ -342,7 +342,7 @@ a {
 
 .card {
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
@@ -481,7 +481,7 @@ a {
   background-color: #3c2a701a;
   color: #3a2c60;
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .assignment-due {
@@ -500,7 +500,7 @@ a {
   margin-left: auto;
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: 500;
 }
 
@@ -522,7 +522,7 @@ a {
 .assignment-progress {
   height: 8px;
   background-color: #eaedf1;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 0.5rem;
 }
@@ -530,7 +530,7 @@ a {
 .assignment-progress-bar {
   height: 100%;
   background-color: #3a2c60;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .assignment-meta {
@@ -772,7 +772,7 @@ a {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #e1e5eb;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 0.875rem;
 }
 
@@ -801,7 +801,7 @@ a {
 
 .btn {
   padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -939,7 +939,7 @@ a {
   background-color: #3a2c60;
   color: #fff;
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 0.75rem;
   cursor: pointer;
 }
@@ -998,7 +998,7 @@ a {
   color: #fff;
   font-size: 0.75rem;
   padding: 0.1rem 0.5rem;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .sidebar-footer {
@@ -1085,7 +1085,7 @@ a {
 
 .sidebar::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
+  border-radius: 8px;
 }
 
 /* Adjust main content */
@@ -1160,7 +1160,7 @@ a {
   padding: 10px 15px;
   color: #444;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 8px;
   margin: 0 5px;
   transition: all 0.2s ease;
 }
@@ -1228,7 +1228,7 @@ a {
   z-index: 1001;
   background: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 6px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -1991,4 +1991,45 @@ select[multiple] option:checked {
   border-radius: 0.25rem;
   opacity: 0.5;
   cursor: pointer;
+}
+
+.ku-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ku-logo-icon {
+  background-color: #3a2c60; /* University purple from your CSS */
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px; /* Similar to your existing styles */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.ku-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ku-logo-text h1 {
+  font-size: 14px;
+  color: #3a2c60;
+  margin-bottom: 2px;
+  line-height: 1;
+  min-width: 200px; /* Adjust this value based on your content */
+}
+
+.ku-logo-text p {
+  font-size: 8px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }

@@ -1,20 +1,18 @@
 {% extends "base_login_register.html" %}
 {% block body %}
   <div class="header">
-    <a href="{{ url_for('home') }}">
-      <img src="{{ url_for('static', filename='images/logo.png') }}"
-           height="45"
-           width=""
-           alt="" />
+    <a href="{{ url_for('home') }}" class="ku-logo">
+      <div class="ku-logo-icon">KU</div>
     </a>
   </div>
   <div class="container">
     <div class="left-content">
-      <a href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='images/logo2.png') }}"
-             height="50"
-             width=""
-             alt="" />
+      <a href="{{ url_for('home') }}" class="ku-logo">
+        <div class="ku-logo-icon2">KU</div>
+        <div class="ku-logo-text">
+          <h1>Kingsford University</h1>
+          <p>Excellence in Education</p>
+        </div>
       </a>
       <div class="description padding">
         Klaipėdos universiteto elektroninėje informacinėje erdvėje galioja

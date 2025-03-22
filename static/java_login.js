@@ -75,21 +75,48 @@ document.addEventListener("DOMContentLoaded", function () {
       switchTab(tabType);
     });
   });
+});
+document.addEventListener("DOMContentLoaded", function () {
+  // Ensure course list is visible for student form
+  const studentTab = document.querySelector(
+    '.tab-register[data-form="student"]'
+  );
+  if (studentTab && studentTab.classList.contains("active")) {
+    const coursesList = document.getElementById("coursesList");
+    if (coursesList) {
+      coursesList.classList.remove("displayNone");
+    }
+  }
 
-  // Course selection functionality
-  document.querySelectorAll(".course-item").forEach((course) => {
-    course.addEventListener("click", function () {
-      document.querySelectorAll(".course-item").forEach((c) => {
-        c.classList.remove("selected");
-      });
+  // Course selection handling
+  const courseItems = document.querySelectorAll(".course-item");
+  courseItems.forEach(function (item) {
+    item.addEventListener("click", function () {
+      // Visually mark the selection
+      courseItems.forEach((i) => i.classList.remove("selected"));
       this.classList.add("selected");
 
-      // Store selected course in hidden input if it exists
-      const selectedCourseInput = document.getElementById(
-        "selected-course-input"
-      );
-      if (selectedCourseInput) {
-        selectedCourseInput.value = this.textContent;
+      // CRITICAL: Set the hidden input value
+      // Look for the input with BOTH id and name attributes matching
+      const hiddenInput = document.querySelector('input[name="study_program"]');
+      if (hiddenInput) {
+        hiddenInput.value = this.textContent.trim();
+        console.log("Set course value to:", hiddenInput.value);
+      } else {
+        console.error(
+          'Could not find hidden input field by name="study_program"'
+        );
+
+        // Fallback to ID-based lookup
+        const hiddenInputById = document.getElementById(
+          "selected-course-input"
+        );
+        if (hiddenInputById) {
+          hiddenInputById.value = this.textContent.trim();
+          console.log("Set course value by ID to:", hiddenInputById.value);
+        } else {
+          console.error("Could not find hidden input by ID either");
+        }
       }
     });
   });

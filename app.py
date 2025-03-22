@@ -4,7 +4,6 @@ from extensions import db, migrate
 from routes.__init__ import routes
 from liveserver import LiveServer
 from livereload import Server
-from models.students import Students
 
 app = Flask(__name__)
 _ = LiveServer(app)

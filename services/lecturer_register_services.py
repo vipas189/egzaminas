@@ -7,7 +7,7 @@ def lecturer_exists(email):
     return lecturer
 
 
-def lecturer_add(email, password):
-    lecturer = Lecturers(email, password)
+def lecturer_add(name, last_name, email, password):
+    lecturer = Lecturers(name=name, last_name=last_name, email=email, password=password)
     db.session.add(lecturer)
     db.session.commit()
