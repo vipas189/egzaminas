@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login & Registration | Codeacademy</title>
+  <link rel="stylesheet" href="vadovai.css">
+  <style>
+    /* General Page Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 20px;
+    }
+
+    /* Title Section */
+    .title-section {
+      text-align: center;
+      margin: 20px auto;
+    }
+
+    .title-section h1 {
+      color: #000;
+    }
+
+    /* Button Wrapper */
+    .button-wrapper {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto 20vh;
+      padding: 20px;
+      border-radius: 10px;
+      backdrop-filter: blur(9px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button-row a.menu-button {
+      color: #000;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px 20px;
+      text-decoration: none;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+      transition: 0.3s ease;
+    }
+
+    .button-row a.menu-button:hover {
+      color: #fff;
+      background: rgba(0, 0, 0, 0.8);
+      border-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* User Info Section */
+    .user-info {
+      background: #f3f3f3;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    /* Registration Form Styling */
+    .register-form {
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 600px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .register-form label, .register-form input, .register-form button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .register-form input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .register-form button {
+      background-color: #0078d7;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .register-form button:hover {
+      background-color: #005bb5;
+    }
+
+    .cancel-button {
+      background-color: #f44336;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .cancel-button:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Password Setup Section */
+    .password-setup form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #strength-meter {
+      margin: 10px 0;
+      height: 5px;
+      background-color: #eee;
+    }
+
+    /* Dropdown Styling */
+    select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+    }
+
+    /* Table Container Styling */
+    .flex-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .table-container {
+      max-width: 900px;
+      width: 90%;
+      border-radius: 8px;
+      backdrop-filter: blur(9px);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .mano-lentele th {
+      background-color: #0078d7;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .mano-lentele td {
+      text-align: center;
+      padding: 8px;
+      color: #000;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Title Section -->
+  <div class="title-section">
+    <h1>Administracijos Registracijos Patvirtinimo Puslapis</h1>
+  </div>
+
+  <!-- Button Row Wrapper -->
+  <div class="button-wrapper">
+    <div class="button-row">
+      <a href="home.html" class="menu-button">Titulinis</a>
+      <a href="info.html" class="menu-button">Info.about</a>
+      <a href="studentai.html" class="menu-button">Studentai</a>
+      <a href="mokytojai.html" class="menu-button">Mokytojai</a>
+      <a href="vadovai.html" class="menu-button">Vadovai.L</a>
+    </div>
+  </div>
+
+  <!-- User Info -->
+  <div class="user-info">
+    <h2>Review Your Details</h2>
+    <p><strong>Vardas (Name):</strong> John Doe</p>
+    <p><strong>El. Paštas (Email):</strong> johndoe@example.com</p>
+  </div>
+
+  <!-- Password Setup -->
+  <div class="password-setup">
+    <h2>Set Your Password</h2>
+    <form id="password-form">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter a secure password" required>
+      <div id="strength-meter"></div>
+      <small>Password must include at least 8 characters, 1 uppercase letter, 1 number, and 1 special character.</small>
+
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+
+      <button type="submit">Save Password</button>
+    </form>
+  </div>
+
+  <!-- Program and Module Selection -->
+  <div class="program-selection">
+    <h2>Select Your Study Program</h2>
+    <form id="program-form">
+      <label for="program">Studijų Programa:</label>
+      <select id="program" name="program" required>
+        <option value="" disabled selected>Choose a program</option>
+        <option value="program1">Program 1</option>
+        <option value="program2">Program 2</option>
+        <option value="program3">Program 3</option>
+      </select>
+
+      <label for="module">Module:</label>
+      <select id="module" name="module" required>
+        <option value="" disabled selected>Choose a module</option>
+      </select>
+
+      <button type="submit">Finalize Registration</button>
+    </form>
+  </div>
+
+  <!-- Flexbox Table -->
+  <div class="flex-container">
+    <div class="table-container">
+      <table class="table table-striped mano-lentele">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Vardas</th>
+            <th>Pavardė</th>
+            <th>El. Paštas</th>
+          </tr>
+        </thead>
+        <tbody id="user-table-body">
+          <!-- Dynamically populated data -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Embedded JavaScript -->
+  <script>
+    const users = []; // Temporary user storage
+
+    // Registration form submission
+    document.getElementById("registration-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent page reload
+
+      const vardas = document.getElementById("vardas").value;
+      const pavarde = document.getElementById("pavarde").value;
+      const email = document.getElementById("email").value;
+
+      const newUser = { id: users.length + 1, vardas, pavarde, email };
