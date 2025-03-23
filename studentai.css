@@ -283,3 +283,25 @@
     border: 1px solid #ccc; /* Optional: adds a border around the image */
     border-radius: 5px; /* Optional: rounded edges */
   }
+
+  .next-page-button {
+    position: fixed; /* Keeps the button in a fixed position */
+    bottom: 20px;    /* Places it near the bottom of the viewport */
+    right: 20px;     /* Aligns it to the right */
+  }
+  
+  .next-page-button button {
+    background-color: #f44336; /* Red background */
+    color: white;              /* White text */
+    border: none;              /* No border */
+    border-radius: 4px;        /* Rounded corners */
+    padding: 10px 20px;        /* Button size */
+    font-size: 16px;           /* Text size */
+    cursor: pointer;           /* Pointer cursor on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow */
+  }
+  
+  .next-page-button button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+  }
+  

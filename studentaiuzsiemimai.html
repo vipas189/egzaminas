@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login Form | Codeacademy</title>
+  <link rel="stylesheet" href="studentaidash.css">
+</head>
+<body>
+  <!-- Title Section -->
+  <div class="title-section">
+    <h1>Studentų Asmeninis Info Puslapis</h1>
+  </div>
+
+  <!-- Button Row Wrapper -->
+  <div class="button-wrapper">
+    <div class="button-row">
+      <a href="home.html" class="menu-button">Titulinis</a>
+      <a href="info.html" class="menu-button">Info.about</a>
+      <a href="studentai.html" class="menu-button">Studentai</a>
+      <a href="mokytojai.html" class="menu-button">Mokytojai</a>
+      <a href="vadovai.html" class="menu-button">Vadovai.L</a>
+    </div>
+  </div>
+
+  <!-- Corner Wrapper -->
+  <div class="corner-wrapper">
+    <a href="home.html">Home</a>
+  </div>
+
+  <!-- Main Container with Flexbox -->
+  <div class="flex-container">
+    <!-- Custom Input Section -->
+    <div class="wrapper-text">
+      <h2>Custom Input</h2>
+      <div id="custom-input-area" class="form-style">
+        <p>Drop a .jpg image here, paste or type text...</p>
+        <div class="scrollable-area" id="scrollable-area">
+          <img id="image-preview" alt="" style="display: none;" />
+          <textarea id="text-area" placeholder="Or enter text manually..." rows="1"></textarea>
+        </div>
+        <button type="button" id="submit-button">Submit</button>
+        <button type="button" id="embed-button">Embed</button>
+      </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div class="dashboard-container">
+      <!-- Student Information Section -->
+      <div id="student-info" class="info-box overlay">
+        <h2>Student Information</h2>
+        <ul>
+          <li>Study Program: {{ student.study_program }}</li>
+          <li>Group: {{ student.group }}</li>
+          <li>Personal Schedule: {{ student.personal_schedule }}</li>
+          <li>Class Schedule: {{ student.class_schedule }}</li>
+          <li>Exam Dates: {{ student.exam_dates }}</li>
+          <li>Personal Assignments: {{ student.personal_assignments }}</li>
+          <li>Submission Dates: {{ student.submission_dates }}</li>
+        </ul>
+      </div>
+    
+
+      <!-- Module Information Section -->
+      <div id="module-info" class="info-box overlay">
+        <h2>Module Information</h2>
+        <ul>
+          <li>ID: {{ module.id }}</li>
+          <li>Module Name: {{ module.name }}</li>
+          <li>Module Description: {{ module.description }}</li>
+          <li>Credits: {{ module.credits }}</li>
+          <li>Semester: {{ module.semester }}</li>
+          <li>Lessons Schedule: {{ module.lessons_schedule }}</li>
+          <li>Assignments: {{ module.assignments }}</li>
+          <li>Exam Date: {{ module.exam_date }}</li>
+          <li>Prior Requirements: {{ module.prior_requirements }}</li>
+        </ul>
+      </div>
+    </div>
+    
+
+  <!-- Embedded JavaScript -->
+  <script>
+    // The JavaScript you already provided remains unchanged
+    const inputArea = document.getElementById('custom-input-area');
+    const imagePreview = document.getElementById('image-preview');
+    const textArea = document.getElementById('text-area');
+    const submitButton = document.getElementById('submit-button');
+    const embedButton = document.getElementById('embed-button');
+    const scrollFilesButton = document.getElementById('scroll-files-button');
+    const scrollableArea = document.getElementById('scrollable-area');
+
+    // Prevent default behavior for drag-and-drop
+    inputArea.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      inputArea.style.borderColor = '#0078d7';
+    });
+
+    inputArea.addEventListener('dragleave', () => {
+      inputArea.style.borderColor = '#ccc';
+    });
+
+    inputArea.addEventListener('drop', (event) => {
+      event.preventDefault();
+      const file = event.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          imagePreview.src = reader.result;
+          imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('Please drop a valid image file (e.g., .jpg or .png).');
+      }
+      inputArea.style.borderColor = '#ccc';
+    });
+
+    textArea.addEventListener('input', () => {
+      textArea.style.height = "auto";
+      textArea.style.height = `${textArea.scrollHeight}px`;
+    });
+
+    submitButton.addEventListener('click', () => {
+      const enteredData = textArea.value;
+      alert(`Data Submitted: ${enteredData}`);
+    });
+
+    embedButton.addEventListener('click', () => {
+      const enteredData = textArea.value;
+      const imageSrc = imagePreview.src;
+      if (enteredData || imageSrc) {
+        const formData = new FormData();
+        formData.append('text', enteredData);
+        if (imageSrc) {
+          fetch(imageSrc)
+            .then(res => res.blob())
+            .then(blob => {
+              formData.append('image', blob, 'image.jpg');
+              alert('Data and image embedded successfully!');
+            });
+        } else {
+          alert('Data embedded successfully!');
+        }
+      } else {
+        alert('Please enter text or drop an image to embed.');
+      }
+    });
+  </script>
+</body>
+</html>

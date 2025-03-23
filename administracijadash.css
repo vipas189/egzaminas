@@ -14,7 +14,7 @@
     min-height: 100vh;
     width: 100%;
     padding: 0 10px;
-    background: url("mokytojai.jpg") no-repeat center center fixed;
+    background: url("vadovai.jpg") no-repeat center center fixed;
     background-size: cover;
   }
   
@@ -26,7 +26,7 @@
   }
   
   .title-section h1 {
-    color: #000 !important; /* Black color for the title */
+    color: #fff !important; /* Black color for the title */
   }
   
   /* Button Wrapper */
@@ -93,7 +93,7 @@
   
   .input-field {
     position: relative;
-    border-bottom: 2px solid #ff000f;
+    border-bottom: 2px solid #ccc;
     margin: 15px 0;
   }
   
@@ -102,7 +102,7 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    color: #;
+    color: #fff;
     font-size: 16px;
     pointer-events: none;
     transition: 0.15s ease;
@@ -115,7 +115,7 @@
     border: none;
     outline: none;
     font-size: 16px;
-    color: #000;
+    color: #fff;
   }
   
   .input-field input:focus~label,
@@ -283,25 +283,34 @@
     border: 1px solid #ccc; /* Optional: adds a border around the image */
     border-radius: 5px; /* Optional: rounded edges */
   }
+  /* General Styles for Dashboard */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  margin: 1em;
+}
 
-  .next-page-button {
-    position: fixed; /* Keeps the button in a fixed position */
-    bottom: 20px;    /* Places it near the bottom of the viewport */
-    right: 20px;     /* Aligns it to the right */
-  }
-  
-  .next-page-button button {
-    background-color: #f44336; /* Red background */
-    color: white;              /* White text */
-    border: none;              /* No border */
-    border-radius: 4px;        /* Rounded corners */
-    padding: 10px 20px;        /* Button size */
-    font-size: 16px;           /* Text size */
-    cursor: pointer;           /* Pointer cursor on hover */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow */
-  }
-  
-  .next-page-button button:hover {
-    background-color: #d32f2f; /* Darker red on hover */
-  }
-  
+/* Overlay Style for Improved Text Visibility */
+.info-box.overlay {
+  position: relative;
+  padding: 1em;
+  background-color: rgba(255, 255, 255, 0.8); /* White background with 80% opacity */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.info-box h2 {
+  margin-bottom: 0.5em;
+  color: #0078d7; /* Keeps your color scheme */
+}
+
+.info-box ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-box ul li {
+  margin: 0.5em 0;
+  color: #333; /* Dark text for visibil
