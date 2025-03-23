@@ -2,8 +2,6 @@
 {% block title %}
   KU.LT - Student Portal
 {% endblock title %}
-{% block head %}
-{% endblock head %}
 {% block body %}
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -81,7 +79,9 @@
       </li>
       <li class="nav-title">Valdymas</li>
       <li class="nav-item">
-        <a href="student#" class="nav-link" data-section="student-section">
+        <a href='{{ url_for("panel_admin") }}#student'
+           class="nav-link"
+           data-section="student-section">
           <span class="nav-link-icon">
             <svg xmlns="http://www.w3.org/2000/svg"
                  width="20"
@@ -102,7 +102,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a href="modules#" class="nav-link" data-section="modules-section">
+        <a href='{{ url_for("panel_admin") }}#modules'
+           class="nav-link"
+           data-section="modules-section">
           <span class="nav-link-icon">
             <svg xmlns="http://www.w3.org/2000/svg"
                  width="20"
@@ -148,7 +150,7 @@
     {#  #}
     {# TABLE TABLE STUD ADMIN DEST!!!!!!!!!!!!!! #}
     {#  #}
-    <div class="student-section" id="student-section" style="display: none;">
+    <div class="student-section none" id="student-section">
       <div class="dashboard-content">
         <h1 class="page-title">Studentų valdymas</h1>
         <div class="table-controls">
@@ -417,7 +419,7 @@
     {#  #}
     {# TABLE TABLE MODULES!!!!!!!!!!!!!! #}
     {#  #}
-    <div class="student-section" id="modules-section" style="display: none;">
+    <div class="student-section none" id="modules-section">
       <div class="dashboard-content">
         <h1 class="page-title">Studentų valdymas</h1>
         <div class="table-controls">
@@ -691,7 +693,7 @@
       </div>
     </div>
     <!-- Profile Section -->
-    <div class="profile-section" id="profile-section" style="display: none">
+    <div class="profile-section none" id="profile-section">
       <div class="dashboard-content">
         <div class="settings-tabs">
           <div class="settings-tab active">Personal Information</div>

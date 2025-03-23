@@ -12,99 +12,53 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='styles_panel.css') }}" />
   </head>
-  {% block head %}
-  {% endblock head %}
   <body>
-    <div style="position: fixed;
-                z-index: -1;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                overflow: hidden">
+    <div class="background-animation">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
-        <!-- Balanced gradient background -->
+        <!-- Base gradient background -->
         <defs>
-        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f0edf7" />
-        <stop offset="100%" stop-color="#e6e1f2" />
+        <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="100%" stop-color="#ebe9f5" />
         </linearGradient>
-        <!-- Pattern for the lined areas -->
-        <pattern id="diagonalLines" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
-        <line x1="0" y1="0" x2="0" y2="10" stroke="#cfc7e7" stroke-width="1" />
+        <!-- Texture pattern -->
+        <pattern id="texturePattern" patternUnits="userSpaceOnUse" width="50" height="50" patternTransform="rotate(45)">
+        <rect width="50" height="50" fill="url(#backgroundGradient)" />
+        <path d="M0,0 L50,0" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,10 L50,10" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,20 L50,20" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,30 L50,30" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,40 L50,40" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,0 L0,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M10,0 L10,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M20,0 L20,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M30,0 L30,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M40,0 L40,50" stroke="#f0eef8" stroke-width="0.5" />
         </pattern>
         </defs>
-        <!-- Base background -->
-        <rect width="1200" height="800" fill="url(#bgGradient)" />
-        <!-- Abstract shapes with moderate opacity -->
-        <circle cx="900" cy="200" r="180" fill="#c5bcdf" opacity="0.4" />
-        <circle cx="1050" cy="650" r="100" fill="#c5bcdf" opacity="0.3" />
-        <circle cx="300" cy="700" r="220" fill="#c5bcdf" opacity="0.4" />
-        <!-- Flowing shape -->
-        <path d="M-100,300 C100,250 300,350 500,300 C700,250 900,350 1100,300 C1300,250 1500,300 1700,350 L1700,800 L-100,800 Z" fill="#dad5eb" opacity="0.5" />
-        <!-- Patterned areas -->
-        <path d="M0,150 L200,100 L250,300 L0,350 Z" fill="url(#diagonalLines)" />
-        <path d="M1000,400 L1200,350 L1200,600 L1050,650 Z" fill="url(#diagonalLines)" />
-        <!-- Subtle geometric elements -->
-        <rect x="100" y="100" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="120" y="100" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="140" y="100" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="160" y="100" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="180" y="100" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="100" y="120" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="120" y="120" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="140" y="120" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="160" y="120" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="180" y="120" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1000" y="200" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1020" y="200" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1040" y="200" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1060" y="200" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1080" y="200" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1000" y="220" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1020" y="220" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1040" y="220" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1060" y="220" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <rect x="1080" y="220" width="4" height="4" fill="#9c8eca" opacity="0.4" />
-        <!-- Scattered dots -->
-        <circle cx="500" cy="100" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="520" cy="110" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="540" cy="100" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="560" cy="110" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="580" cy="100" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="600" cy="110" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="500" cy="120" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="520" cy="130" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="540" cy="120" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="560" cy="130" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="580" cy="120" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="600" cy="130" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="500" cy="600" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="520" cy="610" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="540" cy="600" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="560" cy="610" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="580" cy="600" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="600" cy="610" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="500" cy="620" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="520" cy="630" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="540" cy="620" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="560" cy="630" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="580" cy="620" r="1" fill="#8878bc" opacity="0.5" />
-        <circle cx="600" cy="630" r="1" fill="#8878bc" opacity="0.5" />
-        <!-- Geometric accents -->
-        <circle cx="150" cy="450" r="5" fill="#b1a5d6" opacity="0.3" />
-        <circle cx="950" cy="150" r="8" fill="#b1a5d6" opacity="0.3" />
-        <circle cx="700" cy="650" r="6" fill="#b1a5d6" opacity="0.3" />
-        <rect x="800" y="400" width="10" height="10" rx="2" fill="#b1a5d6" opacity="0.3" />
-        <rect x="300" y="200" width="8" height="8" rx="2" fill="#b1a5d6" opacity="0.3" />
-        <polygon points="600,300 610,320 590,320" fill="#b1a5d6" opacity="0.3" />
-        <polygon points="400,600 415,625 385,625" fill="#b1a5d6" opacity="0.3" />
-        <!-- A few more vibrant accent elements -->
-        <circle cx="200" cy="250" r="3" fill="#6f5aad" opacity="0.4" />
-        <circle cx="880" cy="480" r="4" fill="#6f5aad" opacity="0.4" />
-        <circle cx="450" cy="650" r="3" fill="#6f5aad" opacity="0.4" />
-        <rect x="750" y="220" width="6" height="6" rx="1" fill="#6f5aad" opacity="0.4" />
-        <rect x="350" cy="550" width="6" height="6" rx="1" fill="#6f5aad" opacity="0.4" />
+        <!-- Background with gradient and texture -->
+        <rect width="1200" height="800" fill="url(#backgroundGradient)" />
+        <rect width="1200" height="800" fill="url(#texturePattern)" opacity="0.3" />
+        <!-- Animated curved elements -->
+        <path d="M-100,300 C100,200 300,600 600,500 C900,400 1000,600 1300,400" stroke="#e6e3f2" stroke-width="100" fill="none" opacity="0.5">
+        <animate attributeName="d" dur="5s" repeatCount="indefinite" values="M-100,300 C100,200 300,600 600,500 C900,400 1000,600 1300,400; M-100,320 C100,220 300,580 600,520 C900,420 1000,580 1300,420; M-100,300 C100,200 300,600 600,500 C900,400 1000,600 1300,400" keyTimes="0; 0.5; 1" />
+        </path>
+        <path d="M-100,700 C200,650 400,730 700,680 C1000,630 1100,750 1300,700" stroke="#e6e3f2" stroke-width="60" fill="none" opacity="0.4">
+        <animate attributeName="d" dur="8s" repeatCount="indefinite" values="M-100,700 C200,650 400,730 700,680 C1000,630 1100,750 1300,700; M-100,680 C200,670 400,710 700,660 C1000,650 1100,730 1300,680; M-100,700 C200,650 400,730 700,680 C1000,630 1100,750 1300,700" keyTimes="0; 0.5; 1" />
+        </path>
+        <path d="M-100,100 C200,50 400,150 700,100 C1000,50 1200,150 1300,100" stroke="#e6e3f2" stroke-width="80" fill="none" opacity="0.3">
+        <animate attributeName="d" dur="9s" repeatCount="indefinite" values="M-100,100 C200,50 400,150 700,100 C1000,50 1200,150 1300,100; M-100,120 C200,70 400,130 700,120 C1000,70 1200,130 1300,120; M-100,100 C200,50 400,150 700,100 C1000,50 1200,150 1300,100" keyTimes="0; 0.5; 1" />
+        </path>
+        <!-- Animated subtle purple accents -->
+        <circle cx="100" cy="150" r="80" fill="#46307c" opacity="0.03">
+        <animate attributeName="cy" dur="7s" repeatCount="indefinite" values="150; 170; 150" keyTimes="0; 0.5; 1" />
+        </circle>
+        <circle cx="1100" cy="650" r="120" fill="#46307c" opacity="0.03">
+        <animate attributeName="cy" dur="5s" repeatCount="indefinite" values="650; 630; 650" keyTimes="0; 0.5; 1" />
+        </circle>
+        <circle cx="600" cy="400" r="150" fill="#46307c" opacity="0.02">
+        <animate attributeName="cy" dur="7s" repeatCount="indefinite" values="400; 420; 400" keyTimes="0; 0.5; 1" />
+        </circle>
       </svg>
     </div>
     {% block body %}
