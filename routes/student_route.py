@@ -9,7 +9,7 @@ from models.student_calendar import StudentCalendar
 from models.forms.student_form import StudentForm, ModuleSelectionForm
 from models.forms.program_form import ProgramForm
 from extensions import db
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def student_routes(app):
@@ -110,6 +110,11 @@ def student_routes(app):
         schedules = [item for item in calendar_items if item["type"] == "schedule"]
         assessments = [item for item in calendar_items if item["type"] == "assessment"]
         exams = [item for item in calendar_items if item["type"] == "exam"]
+        
+        # Pridėti datos palyginimui dabartinę datą, rytojų ir savaitės įvykius
+        today = datetime.now().date()
+        tomorrow = today + timedelta(days=1)
+        week_from_now = today + timedelta(days=7)
 
         return render_template(
             "students/calendar.html",
@@ -117,6 +122,9 @@ def student_routes(app):
             schedules=schedules,
             assessments=assessments,
             exams=exams,
+            today=today,
+            tomorrow=tomorrow,
+            week_from_now=week_from_now
         )
 
     # Funkcija tikrinti ar studentas gali registruotis į modulius

@@ -1,10 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, DateTimeField, FloatField, SubmitField
+from wtforms import StringField, TextAreaField, DateTimeField, FloatField, SubmitField, SelectField
 from wtforms.validators import DataRequired, NumberRange
 
 class AssessmentForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description')
-    due_date = DateTimeField('Due Date', format='%Y-%m-%d %H:%M', validators=[DataRequired()])
-    weight = FloatField('Weight (%)', validators=[NumberRange(min=0, max=100)])
-    submit = SubmitField('Save Assessment')
+    title = StringField('Pavadinimas', validators=[DataRequired()])
+    description = TextAreaField('Aprašymas')
+    due_date = DateTimeField('Termino data', format='%Y-%m-%d %H:%M', validators=[DataRequired()])
+    weight = FloatField('Svoris (%)', validators=[NumberRange(min=0, max=100)])
+    module_id = SelectField('Modulis', coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Išsaugoti atsiskaitymą')
