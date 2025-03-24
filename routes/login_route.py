@@ -55,7 +55,7 @@ def login_route(app):
                 role=Config.ADMIN_ROLE,
             )
             login_user(admin_user)
-            return redirect(url_for("panel_admin"))
+            return redirect(url_for("panel_superadmin"))
         admin = user_exists(form.email.data, form.password.data, "admin")
         if admin:
             login_user(admin)

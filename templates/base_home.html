@@ -46,8 +46,19 @@
             </li>
           </ul>
           {% if current_user.is_authenticated %}
-            <a href="{{ url_for('panel_admin') }}" class="login-btn">Admin panel</a>
-            <button class="mobile-toggle">☰</button>
+            {% if current_user.role == "superadmin" %}
+              <a href="{{ url_for('panel_superadmin') }}" class="login-btn">Panelė</a>
+              <button class="mobile-toggle">☰</button>
+            {% elif current_user.role == "admin" %}
+              <a href="{{ url_for('panel_admin') }}" class="login-btn">Panelė</a>
+              <button class="mobile-toggle">☰</button>
+            {% elif current_user.role == "lecturer" %}
+              <a href="{{ url_for('panel_lecturer') }}" class="login-btn">Panelė</a>
+              <button class="mobile-toggle">☰</button>
+            {% elif current_user.role == "student" %}
+              <a href="{{ url_for('panel_student') }}" class="login-btn">Panelė</a>
+              <button class="mobile-toggle">☰</button>
+            {% endif %}
           {% else %}
             <a href="{{ url_for('login') }}" class="login-btn">Login</a>
             <button class="mobile-toggle">☰</button>

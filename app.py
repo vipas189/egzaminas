@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from config import Config
 from extensions import db, migrate, login_manager
 from routes.__init__ import routes
@@ -22,6 +22,11 @@ db.init_app(app)
 migrate.init_app(app, db)
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return redirect(url_for("home"))
 
 
 @login_manager.user_loader
