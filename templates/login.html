@@ -37,12 +37,10 @@
          id="student">
       <form action="{{ url_for('login_student') }}" method="post">
         <div class="form-label">El. paštas</div>
-        <div class="form-box" id="text-input">
-          {{ form.email(class="form-input shorter-input", placeholder="studentas.pavarde@ku.lt") }}
-        </div>
+        <div class="form-box" id="text-input">{{ form.email(class="form-input", placeholder="studentas.pavarde@ku.lt") }}</div>
         <div class="form-label">Slaptažodis</div>
         <div class="form-box">
-          {{ form.password(class="form-input shorter-input", placeholder="Slaptažodis") }}
+          {{ form.password(class="form-input", placeholder="Slaptažodis") }}
           {% for message in get_flashed_messages(category_filter=['student_login_error']) %}{{ message }}{% endfor %}
         </div>
         <button class="login-btn">Prisijungti</button>
@@ -56,10 +54,10 @@
          id="lecturer">
       <form action="{{ url_for('login_lecturer') }}" method="post">
         <div class="form-label">El. paštas</div>
-        <div class="form-box">{{ form.email(class="form-input shorter-input", placeholder="destytojas.pavarde@ku.lt") }}</div>
+        <div class="form-box">{{ form.email(class="form-input", placeholder="destytojas.pavarde@ku.lt") }}</div>
         <div class="form-label">Slaptažodis</div>
         <div class="form-box">
-          {{ form.password(class="form-input shorter-input", placeholder="Slaptažodis") }}
+          {{ form.password(class="form-input", placeholder="Slaptažodis") }}
           {% for message in get_flashed_messages(category_filter=['lecturer_login_error']) %}{{ message }}{% endfor %}
         </div>
         <button class="login-btn">Prisijungti</button>
@@ -73,10 +71,10 @@
          id="admin">
       <form action="{{ url_for('login_admin') }}" method="post">
         <div class="form-label">El. paštas</div>
-        <div class="form-box">{{ form.email(class="form-input shorter-input", placeholder="admin.pavarde@ku.lt") }}</div>
+        <div class="form-box">{{ form.email(class="form-input", placeholder="admin.pavarde@ku.lt") }}</div>
         <div class="form-label">Slaptažodis</div>
         <div class="form-box">
-          {{ form.password(class="form-input shorter-input", placeholder="Slaptažodis") }}
+          {{ form.password(class="form-input", placeholder="Slaptažodis") }}
           {% for message in get_flashed_messages(category_filter=['admin_login_error']) %}{{ message }}{% endfor %}
         </div>
         <button class="login-btn">Prisijungti</button>
