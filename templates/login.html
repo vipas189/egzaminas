@@ -48,7 +48,7 @@
         <div class="form-box">
           <input type="password" class="form-input" placeholder="Slaptažodis" />
         </div>
-        <form action="{{ url_for('panel_student') }}">
+        <form action="">
           <button class="login-btn">Prisijungti</button>
         </form>
         {# <div class="forgot-link">
@@ -65,7 +65,7 @@
         <div class="form-box">
           <input type="password" class="form-input" placeholder="Slaptažodis" />
         </div>
-        <form action="{{ url_for('panel_lecturer') }}">
+        <form action="">
           <button class="login-btn">Prisijungti</button>
         </form>
         {# <div class="forgot-link">
@@ -74,16 +74,18 @@
       </div>
       <!-- ADMIN form -->
       <div class="form-content" id="admin">
+        <form method="post" action = "{{url_for('login_admin')}}">
+        {{admin_form.hidden_tag()}}
         <div class="form-label">El. paštas</div>
         <div class="form-box">
-          <input type="text" class="form-input" placeholder="admin.pavarde@ku.lt" />
+          {{admin_form.email(class="form-input", placeholder="admin.pavarde@ku.lt")}}
         </div>
         <div class="form-label">Slaptažodis</div>
         <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
+          {{admin_form.password(class="form-input", placeholder="Slaptažodis")}}
+          {%for message in get_flashed_messages(category_filter = ['admin_login']) %}{{message}} {%endfor%}
         </div>
-        <form action="{{ url_for('panel') }}">
-          <button class="login-btn">Prisijungti</button>
+          {{admin_form.submit(class="login-btn")}}
         </form>
         {# <div class="forgot-link">
           <a href="#">Pamiršai slaptažodį?</a>

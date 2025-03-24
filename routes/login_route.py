@@ -1,41 +1,57 @@
-from flask import render_template, redirect, url_for, request, session
+from flask import render_template, redirect, url_for, request, session, flash
+from flask_login import login_user
 from models.form.admin_login_form import AdminLoginForm
 from werkzeug.security import check_password_hash
 from config import Config
+from services.admin_login_services import admin_exists
+from models.users import Users
+
 
 
 def login_route(app):
-    @app.route("/login", methods=["GET", "POST"])
+    @app.route("/login")
     def login():
+        return render_template("login.html", admin_form=AdminLoginForm())
+    
+    @app.route("/login/admin", methods=["POST"])
+    def login_admin():
         form = AdminLoginForm()
-        if request.method == 'POST':
-            if form.validate_on_submit():
-                email = form.email.data
-                password = form.password.data
-                if email == Config.ADMIN_EMAIL and check_password_hash(Config.ADMIN_PASSWORD_HASH, password):
-                    session['logged_in'] = True
-                    session['admin'] = True
-                    return redirect(url_for("panel"))
-        return render_template('login.html', form = form)
+
+        print(f"Login attempt with email: {form.email.data}")  # Debugging
+        print(f"Expected admin email: {Config.ADMIN_EMAIL}")   # Debugging
+
+        if form.email.data == Config.ADMIN_EMAIL and check_password_hash(Config.ADMIN_PASSWORD_HASH, form.password.data):
+            
+            print("Main admin credentials matched!")
+
+            admin_user = Users(
+            id = 0,
+            name = Config.ADMIN_NAME,
+            last_name = Config.ADMIN_LAST_NAME,
+            email = Config.ADMIN_EMAIL,
+            password = Config.ADMIN_PASSWORD_HASH,
+            role = Config.ADMIN_ROLE
+            )
+            login_user(admin_user)
+
+            login_result = login_user(admin_user)
+            print(f"Login result: {login_result}")
+
+            return redirect(url_for("panel_superadmin"))
+        admin = admin_exists(form.email.data, form.password.data)
+        if admin:
+            login_user(admin)
+            return redirect(url_for("panel_admin"))
+        flash("Neteisingas el. paštas arba slaptažodis", category="admin_login")
+        return redirect(url_for("login"))
     
+
+   
+
+        
 
 
 
-
-    
-     # return redirect(url_for("login")) #esant jau panel_admin ir norint grįžt atgal į /login, meta ne klaidą, o atgal grįžta į /login
-    
-    
-                #     result = session.execute(text("SELECT * FROM admin WHERE email = :email"),{"email": email})
-                #     admin_from_db = result.fetchone()
-                    
-                #     # Jei admin rastas ir slaptažodis atitinka
-                #     if admin_from_db and check_password_hash(admin_from_db.password, password):
-                #         session['logged_in'] = True
-                #         session['admin'] = True
-                #         session['admin_id'] = admin_from_db.id
-                #         session['admin_type'] = 'db'
-                #         return redirect(url_for("panel_admin"))
     
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # kodas apibrėžia Flask aplikacijos prisijungimo funkcionalumą. Funkcija login_route užregistruoja "/login" URL maršrutą,
