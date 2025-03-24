@@ -2125,3 +2125,22 @@ select[multiple] option:checked {
   border-radius: 0.375rem;
   border: 1px dashed #e2e8f0;
 }
+
+.card-header {
+  cursor: pointer;
+}
+
+.toggle-icon {
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.card.collapsed .card-body {
+  display: none;
+}
+
+/* Optional animation for the toggle icon */
+.card.collapsed .toggle-icon {
+  transform: rotate(-90deg);
+}

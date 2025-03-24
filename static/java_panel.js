@@ -105,3 +105,30 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Get all card headers
+  const cardHeaders = document.querySelectorAll(".card-header");
+
+  // Add click event to each header
+  cardHeaders.forEach((header) => {
+    header.addEventListener("click", function (e) {
+      // Don't toggle if clicking on buttons inside the header
+      if (e.target.closest(".card-actions") || e.target.closest("button")) {
+        return;
+      }
+
+      // Toggle the collapsed class on the parent card
+      const card = this.closest(".card");
+      card.classList.toggle("collapsed");
+
+      // Optional: animate the toggle icon
+      const icon = this.querySelector(".toggle-icon");
+      if (icon) {
+        icon.style.transform = card.classList.contains("collapsed")
+          ? "rotate(-90deg)"
+          : "rotate(0)";
+      }
+    });
+  });
+});
