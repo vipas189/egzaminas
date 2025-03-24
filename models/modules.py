@@ -7,15 +7,28 @@ class Modules(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     credits = db.Column(db.Integer, nullable=False)
-    semester = db.Column(db.String(20), nullable=False)  
+    semester = db.Column(db.String(20), nullable=False)
     prerequisites = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    
+
     # Relationships
-    schedules = db.relationship('Schedule', backref='Modules')#backref yra atgalinis ryšis dabar modulis gali turėtu daug schedule ir su backref gali buti ir atvriškčiai.
-    assessments = db.relationship('Assessment', backref='Modules')
-    exams = db.relationship('Exam', backref='Modules') 
-    
+    schedules = db.relationship("Schedule", backref="module")
+    assessments = db.relationship("Assessment", backref="module")
+    exams = db.relationship("Exam", backref="module")
+    instructors = db.relationship(
+        "Instructor", secondary="module_instructor", backref="modules"
+    )
+
     def __repr__(self):
-        return f'<Modules {self.name}>'
+        return f"<Modules {self.name}>"
+
+
+# Tarpinė lentelė modulių ir dėstytojų ryšiui
+module_instructor = db.Table(
+    "module_instructor",
+    db.Column("module_id", db.Integer, db.ForeignKey("modules.id"), primary_key=True),
+    db.Column(
+        "instructor_id", db.Integer, db.ForeignKey("instructor.id"), primary_key=True
+    ),
+)

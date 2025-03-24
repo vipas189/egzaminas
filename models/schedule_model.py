@@ -9,8 +9,14 @@ class Schedule(db.Model):
     end_time = db.Column(db.Time, nullable=False)
     location = db.Column(db.String(100))
     lecture_type = db.Column(db.String(50), nullable=False)  # Lecture, Lab, Seminar, etc.
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'))
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     
+    # Ryšys su dėstytoju
+    instructor = db.relationship('Instructor', backref='schedules')
+    
     def __repr__(self):
         return f'<Schedule {self.day_of_week} {self.start_time}-{self.end_time}>'
+    
+    

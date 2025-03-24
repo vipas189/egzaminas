@@ -3,10 +3,12 @@ from models.modules import Modules
 from models.schedule_model import Schedule
 from models.assessments_model import Assessment
 from models.exam_mode import Exam
+from models.instructor_model import Instructor
 from models.forms.module_form import ModuleForm
 from models.forms.schedule_form import ScheduleForm
 from models.forms.assessment_form import AssessmentForm
 from models.forms.exam_form import ExamForm
+from models.forms.instructor_form import InstructorAssignmentForm
 from extensions import db
 
 def home_route(app):
@@ -41,12 +43,16 @@ def home_route(app):
         schedules = Schedule.query.filter_by(module_id=id).all()
         assessments = Assessment.query.filter_by(module_id=id).all()
         exams = Exam.query.filter_by(module_id=id).all()
+        instructors = module.instructors
+        students = module.enrolled_students
         
         return render_template('modules/view.html', 
-                            module=module, 
-                            schedules=schedules,
-                            assessments=assessments,
-                            exams=exams)
+                              module=module, 
+                              schedules=schedules,
+                              assessments=assessments,
+                              exams=exams,
+                              instructors=instructors,
+                              students=students)
 
     # Edit module
     @app.route('/modules/<int:id>/edit', methods=['GET', 'POST'])
@@ -77,6 +83,9 @@ def home_route(app):
         module = Modules.query.get_or_404(id)
         form = ScheduleForm()
         
+        # Pridėti dėstytojų pasirinkimą
+        form.instructor_id.choices = [(0, 'None')] + [(i.id, f"{i.name} {i.last_name}") for i in Instructor.query.all()]
+        
         if form.validate_on_submit():
             schedule = Schedule(
                 module_id=id,
@@ -86,6 +95,11 @@ def home_route(app):
                 location=form.location.data,
                 lecture_type=form.lecture_type.data
             )
+            
+            # Pridėti dėstytoją, jei pasirinktas
+            if form.instructor_id.data > 0:
+                schedule.instructor_id = form.instructor_id.data
+                
             db.session.add(schedule)
             db.session.commit()
             flash('Schedule added successfully!', 'success')
@@ -103,12 +117,21 @@ def home_route(app):
             return redirect(url_for('view_module', id=module_id))
         
         form = ScheduleForm(obj=schedule)
+        form.instructor_id.choices = [(0, 'None')] + [(i.id, f"{i.name} {i.last_name}") for i in Instructor.query.all()]
         
         if form.validate_on_submit():
             form.populate_obj(schedule)
+            if form.instructor_id.data == 0:
+                schedule.instructor_id = None
             db.session.commit()
             flash('Schedule updated successfully!', 'success')
             return redirect(url_for('view_module', id=module_id))
+        
+        # Nustatyti pradinę dėstytojo reikšmę
+        if schedule.instructor_id:
+            form.instructor_id.data = schedule.instructor_id
+        else:
+            form.instructor_id.data = 0
         
         return render_template('modules/edit_schedule.html', form=form, module=module, schedule=schedule)
 
@@ -232,6 +255,30 @@ def home_route(app):
         db.session.commit()
         flash('Exam deleted successfully!', 'success')
         return redirect(url_for('view_module', id=module_id))
+        
+    # Instructors management
+    @app.route('/modules/<int:id>/instructors', methods=['GET', 'POST'])
+    def module_instructors(id):
+        module = Modules.query.get_or_404(id)
+        form = InstructorAssignmentForm()
+        
+        # Gauti visus dėstytojus
+        all_instructors = Instructor.query.all()
+        form.instructor_ids.choices = [(i.id, f"{i.name} {i.last_name}") for i in all_instructors]
+        
+        if form.validate_on_submit():
+            instructor_ids = form.instructor_ids.data
+            instructors = Instructor.query.filter(Instructor.id.in_(instructor_ids)).all()
+            module.instructors = instructors
+            db.session.commit()
+            flash('Instructors assigned successfully!', 'success')
+            return redirect(url_for('view_module', id=module.id))
+        
+        # Nustatyti pradines pasirinkimo reikšmes
+        if not form.instructor_ids.data and module.instructors:
+            form.instructor_ids.data = [i.id for i in module.instructors]
+        
+        return render_template('modules/instructors.html', form=form, module=module, instructors=all_instructors)
         
     # Basic home page
     @app.route('/')

@@ -16,4 +16,5 @@ class ScheduleForm(FlaskForm):
                              choices=[('Lecture', 'Lecture'), ('Lab', 'Laboratory'), 
                                      ('Seminar', 'Seminar'), ('Tutorial', 'Tutorial')],
                              validators=[DataRequired()])
+    instructor_id = SelectField('Instructor', coerce=int)
     submit = SubmitField('Save Schedule')

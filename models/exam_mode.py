@@ -7,9 +7,9 @@ class Exam(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     date = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.Integer)  # Duration in minutes
+    duration = db.Column(db.Integer)  
     location = db.Column(db.String(100))
-    weight = db.Column(db.Float)  # Percentage weight in the final grade
+    weight = db.Column(db.Float)  
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     

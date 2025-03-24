@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Modulio dėstytojai{% endblock %}
+
+{% block content %}
+<h2>Modulio dėstytojų priskyrimas</h2>
+<h4>Modulis: {{ module.name }}</h4>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div class="card mb-3">
+        <div class="card-header">
+            Pasirinkite dėstytojus
+        </div>
+        <div class="card-body">
+            {% if instructors %}
+                <div class="mb-3">
+                    {% for choice in form.instructor_ids %}
+                        <div class="form-check">
+                            {{ choice(class="form-check-input") }}
+                            {{ choice.label(class="form-check-label") }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">Sistemoje nėra užregistruotų dėstytojų.</p>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('view_module', id=module.id) }}" class="btn btn-secondary">Atšaukti</a>
+        </div>
+    </div>
+</form>
+{% endblock %}

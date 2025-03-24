@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Naujas modulis{% endblock %}
+{% block title %}Nauja studijų programa{% endblock %}
 
 {% block content %}
-<h2>Sukurti naują modulį</h2>
+<h2>Sukurti naują studijų programą</h2>
 <form method="POST">
     {{ form.hidden_tag() }}
     
@@ -24,23 +24,7 @@
         {{ form.description(class="form-control", rows=4) }}
     </div>
     
-    <div class="mb-3">
-        {{ form.credits.label(class="form-label") }}
-        {{ form.credits(class="form-control") }}
-    </div>
-    
-    <div class="mb-3">
-        {{ form.semester.label(class="form-label") }}
-        {{ form.semester(class="form-select") }}
-    </div>
-    
-    <div class="mb-3">
-        {{ form.prerequisites.label(class="form-label") }}
-        {{ form.prerequisites(class="form-control") }}
-        <small class="text-muted">Įveskite modulių pavadinimus, atskirtus kableliais.</small>
-    </div>
-    
     {{ form.submit(class="btn btn-primary") }}
-    <a href="{{ url_for('list_modules') }}" class="btn btn-secondary">Atšaukti</a>
+    <a href="{{ url_for('list_programs') }}" class="btn btn-secondary">Atšaukti</a>
 </form>
 {% endblock %}

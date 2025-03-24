@@ -7,7 +7,7 @@ class Assessment(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     due_date = db.Column(db.DateTime, nullable=False)
-    weight = db.Column(db.Float)  # Percentage weight in the final grade
+    weight = db.Column(db.Float) 
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     

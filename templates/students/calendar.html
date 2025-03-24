@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Asmeninis kalendorius{% endblock %}
+
+{% block content %}
+<h2>Asmeninis kalendorius - {{ student.name }} {{ student.last_name }}</h2>
+<a href="{{ url_for('view_student', id=student.id) }}" class="btn btn-secondary mb-3">Grįžti</a>
+<a href="{{ url_for('select_modules', id=student.id) }}" class="btn btn-primary mb-3">Keisti modulius</a>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-white">Užsiėmimai</div>
+            <div class="card-body">
+                {% if schedules %}
+                    <ul class="list-group">
+                        {% for schedule in schedules %}
+                            <li class="list-group-item">
+                                <strong>{{ schedule.title }}</strong><br>
+                                {{ schedule.module }}<br>
+                                {{ schedule.day }} {{ schedule.start_time.strftime('%H:%M') }}-{{ schedule.end_time.strftime('%H:%M') }}
+                                {% if schedule.location %}
+                                    <br>{{ schedule.location }}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nėra užsiėmimų.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header bg-warning">Atsiskaitymai</div>
+            <div class="card-body">
+                {% if assessments %}
+                    <ul class="list-group">
+                        {% for assessment in assessments %}
+                            <li class="list-group-item">
+                                <strong>{{ assessment.title }}</strong><br>
+                                {{ assessment.module }}<br>
+                                {% if assessment.date %}
+                                    {{ assessment.date.strftime('%Y-%m-%d') }}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nėra atsiskaitymų.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header bg-danger text-white">Egzaminai</div>
+            <div class="card-body">
+                {% if exams %}
+                    <ul class="list-group">
+                        {% for exam in exams %}
+                            <li class="list-group-item">
+                                <strong>{{ exam.title }}</strong><br>
+                                {{ exam.module }}<br>
+                                {% if exam.date %}
+                                    {{ exam.date.strftime('%Y-%m-%d') }}
+                                {% endif %}
+                                {% if exam.location %}
+                                    <br>{{ exam.location }}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nėra egzaminų.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
