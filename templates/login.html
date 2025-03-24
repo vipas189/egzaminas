@@ -1,95 +1,89 @@
 {% extends "base_login_register.html" %}
 {% block body %}
-  <div class="header">
+  <div class="left-content">
     <a href="{{ url_for('home') }}" class="ku-logo">
-      <div class="ku-logo-icon">KU</div>
+      <div class="ku-logo-icon2">KU</div>
+      <div class="ku-logo-text">
+        <h1>Kingsford University</h1>
+        <p>Excellence in Education</p>
+      </div>
     </a>
-  </div>
-  <div class="container">
-    <div class="left-content">
-      <a href="{{ url_for('home') }}" class="ku-logo">
-        <div class="ku-logo-icon2">KU</div>
-        <div class="ku-logo-text">
-          <h1>Kingsford University</h1>
-          <p>Excellence in Education</p>
-        </div>
-      </a>
-      <div class="description padding">
-        Klaipėdos universiteto elektroninėje informacinėje erdvėje galioja
-        vieningos prieigos sistema.
-      </div>
-      <div class="note">
-        Naudodamiesi Jums suteikta asmenine paskyra pasiekite daugumą
-        Universiteto teikiamų elektroninių paslaugų.
-      </div>
-      <div class="note">
-        Jei pamiršote savo asmeninės paskyros prisijungimo duomenis ar turite
-        kitų su sistemomis susijusių klausimų prašome kreiptis el. paštu
-        <a href="mailto:pagalba@ku.lt" class="email">pagalba@ku.lt</a>.
-      </div>
-      <!-- Courses list -->
-      <div id="coursesList" class="displayNone"></div>
+    <div class="description padding">
+      Klaipėdos universiteto elektroninėje informacinėje erdvėje galioja
+      vieningos prieigos sistema.
     </div>
-    <div class="right-content">
-      <div class="tabs">
-        <div class="tab active" data-form="student">Studentas</div>
-        <div class="tab inactive" data-form="lecturer">Darbuotojas</div>
-        <div class="tab inactive" data-form="admin">Administratorius</div>
-      </div>
-      <!-- Student form -->
-      <div class="form-content active" id="student">
+    <div class="note">
+      Naudodamiesi Jums suteikta asmenine paskyra pasiekite daugumą
+      Universiteto teikiamų elektroninių paslaugų.
+    </div>
+    <div class="note">
+      Jei pamiršote savo asmeninės paskyros prisijungimo duomenis ar turite
+      kitų su sistemomis susijusių klausimų prašome kreiptis el. paštu
+      <a href="mailto:pagalba@ku.lt" class="email">pagalba@ku.lt</a>.
+    </div>
+    <!-- Courses list -->
+  </div>
+  <div class="right-content">
+    <div class="tabs">
+      <div class="tab {% if active_tab == 'student' %}active{% else %}inactive{% endif %}"
+           data-form="student">Studentas</div>
+      <div class="tab {% if active_tab == 'lecturer' %}active{% else %}inactive{% endif %}"
+           data-form="lecturer">Darbuotojas</div>
+      <div class="tab {% if active_tab == 'admin' %}active{% else %}inactive{% endif %}"
+           data-form="admin">Administratorius</div>
+    </div>
+    <!-- Student form -->
+    <div class="form-content {% if active_tab == 'student' %}active{% endif %}"
+         id="student">
+      <form action="{{ url_for('login_student') }}" method="post">
         <div class="form-label">El. paštas</div>
         <div class="form-box" id="text-input">
-          <input type="email" class="form-input" placeholder="studentas.pavarde@ku.lt" />
+          {{ form.email(class="form-input shorter-input", placeholder="studentas.pavarde@ku.lt") }}
         </div>
         <div class="form-label">Slaptažodis</div>
         <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
+          {{ form.password(class="form-input shorter-input", placeholder="Slaptažodis") }}
+          {% for message in get_flashed_messages(category_filter=['student_login_error']) %}{{ message }}{% endfor %}
         </div>
-        <form action="{{ url_for('panel_student') }}">
-          <button class="login-btn">Prisijungti</button>
-        </form>
-        {# <div class="forgot-link">
-          <a href="#">Pamiršai slaptažodį?</a>
-        </div> #}
-      </div>
-      <!-- Lecturer form -->
-      <div class="form-content" id="lecturer">
-        <div class="form-label">El. paštas</div>
-        <div class="form-box">
-          <input type="text" class="form-input" placeholder="destytojas.pavarde@ku.lt" />
-        </div>
-        <div class="form-label">Slaptažodis</div>
-        <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
-        </div>
-        <form action="{{ url_for('panel_lecturer') }}">
-          <button class="login-btn">Prisijungti</button>
-        </form>
-        {# <div class="forgot-link">
-          <a href="#">Pamiršai slaptažodį?</a>
-        </div> #}
-      </div>
-      <!-- Admin form -->
-      <div class="form-content" id="admin">
-        <div class="form-label">El. paštas</div>
-        <div class="form-box">
-          <input type="text" class="form-input" placeholder="admin.pavarde@ku.lt" />
-        </div>
-        <div class="form-label">Slaptažodis</div>
-        <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
-        </div>
-        <form action="{{ url_for('panel_admin') }}">
-          <button class="login-btn">Prisijungti</button>
-        </form>
-        {# <div class="forgot-link">
-          <a href="#">Pamiršai slaptažodį?</a>
-        </div> #}
+        <button class="login-btn">Prisijungti</button>
+      </form>
+      <div class="forgot-link">
+        <a href="{{ url_for('register') }}">Neturite paskyros?</a>
       </div>
     </div>
-    <div class="background-wave"></div>
+    <!-- Lecturer form -->
+    <div class="form-content {% if active_tab == 'lecturer' %}active{% endif %}"
+         id="lecturer">
+      <form action="{{ url_for('login_lecturer') }}" method="post">
+        <div class="form-label">El. paštas</div>
+        <div class="form-box">{{ form.email(class="form-input shorter-input", placeholder="destytojas.pavarde@ku.lt") }}</div>
+        <div class="form-label">Slaptažodis</div>
+        <div class="form-box">
+          {{ form.password(class="form-input shorter-input", placeholder="Slaptažodis") }}
+          {% for message in get_flashed_messages(category_filter=['lecturer_login_error']) %}{{ message }}{% endfor %}
+        </div>
+        <button class="login-btn">Prisijungti</button>
+      </form>
+      <div class="forgot-link">
+        <a href="{{ url_for('register') }}">Neturite paskyros?</a>
+      </div>
+    </div>
+    <!-- Admin form -->
+    <div class="form-content {% if active_tab == 'admin' %}active{% endif %}"
+         id="admin">
+      <form action="{{ url_for('login_admin') }}" method="post">
+        <div class="form-label">El. paštas</div>
+        <div class="form-box">{{ form.email(class="form-input shorter-input", placeholder="admin.pavarde@ku.lt") }}</div>
+        <div class="form-label">Slaptažodis</div>
+        <div class="form-box">
+          {{ form.password(class="form-input shorter-input", placeholder="Slaptažodis") }}
+          {% for message in get_flashed_messages(category_filter=['admin_login_error']) %}{{ message }}{% endfor %}
+        </div>
+        <button class="login-btn">Prisijungti</button>
+      </form>
+      <div class="forgot-link">
+        <a href="{{ url_for('register') }}">Neturite paskyros?</a>
+      </div>
+    </div>
   </div>
-  <div class="accessibility">♿</div>
-  <div class="language">LT ▼</div>
 {% endblock body %}

@@ -1,8 +1,10 @@
-from flask import render_template, url_for, redirect, flash, get_flashed_messages
 from models.form.student_register_form import StudentRegisterForm
 from models.form.lecturer_register_form import LecturerRegisterForm
+from flask import render_template, url_for, redirect, flash, get_flashed_messages
 from services.user_register_services import user_exists, lecturer_add, student_add
 from werkzeug.security import generate_password_hash
+from services.study_programs_services import study_programs, study_program_name_to_id
+from flask_login import login_user
 
 
 def register_route(app):
@@ -17,6 +19,7 @@ def register_route(app):
             student_form=StudentRegisterForm(),
             lecturer_form=LecturerRegisterForm(),
             active_tab=active_tab,
+            study_programs=study_programs(),
         )
 
     @app.route("/register/student", methods=["POST"])
@@ -45,13 +48,14 @@ def register_route(app):
         if error:
             flash("student", category="active_tab")
             return redirect(url_for("register"))
-        student_add(
+        new_user = student_add(
             form.name.data,
             form.last_name.data,
             form.email.data,
             generate_password_hash(form.password.data),
-            form.study_program.data,
+            study_program_name_to_id(form.study_program.data),
         )
+        login_user(new_user)
         return redirect(url_for("panel_admin"))
 
     @app.route("/register/lecturer", methods=["POST"])
@@ -77,10 +81,11 @@ def register_route(app):
         if error:
             flash("lecturer", category="active_tab")
             return redirect(url_for("register"))
-        lecturer_add(
+        new_user = lecturer_add(
             form.name.data,
             form.last_name.data,
             form.email.data,
             generate_password_hash(form.password.data),
         )
+        login_user(new_user)
         return redirect(url_for("panel_admin"))

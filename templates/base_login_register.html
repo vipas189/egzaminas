@@ -61,8 +61,18 @@
         </circle>
       </svg>
     </div>
-    {% block body %}
-    {% endblock body %}
+    <div class="header">
+      <a href="{{ url_for('home') }}" class="ku-logo">
+        <div class="ku-logo-icon">KU</div>
+      </a>
+    </div>
+    <div class="container">
+      {% block body %}
+      {% endblock body %}
+      <div class="background-wave"></div>
+    </div>
+    <div class="accessibility">♿</div>
+    <div class="language">LT ▼</div>
     <script src="{{url_for('static', filename='java_login.js')}}"></script>
   </body>
 </html>
