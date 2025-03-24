@@ -146,9 +146,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a href='{{ url_for("panel_lecturer") }}#modules'
+        <a href='{{ url_for("panel_lecturer") }}#assessments'
            class="nav-link"
-           data-section="modules-section">
+           data-section="assessments-section">
           <span class="nav-link-icon">
             <svg xmlns="http://www.w3.org/2000/svg"
                  width="20"
@@ -254,6 +254,187 @@
   </div>
   <!-- Main Content -->
   <div class="main-content" id="main-content">
+    <div class="assessments-section none" id="assessments-section">
+      <div class="dashboard-content">
+        <h1 class="page-title">Atsiskaitymai</h1>
+        <!-- Module Card similar to the Matematika card in your image -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Matematika</h2>
+            <div class="card-actions">
+              <button class="btn btn-primary">Redaguoti</button>
+              <button class="btn btn-outline">Grįžti į sąrašą</button>
+            </div>
+          </div>
+          <!-- Module Information -->
+          <div class="card-body">
+            <div class="module-info">
+              <div class="info-section">
+                <h3>Informacija</h3>
+                <div class="info-grid">
+                  <div class="info-row">
+                    <div class="info-label">Aprašymas:</div>
+                    <div class="info-value">matematikos moklas</div>
+                  </div>
+                  <div class="info-row">
+                    <div class="info-label">Kreditai:</div>
+                    <div class="info-value">6</div>
+                  </div>
+                  <div class="info-row">
+                    <div class="info-label">Semestras:</div>
+                    <div class="info-value">Fall</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Timetable Section -->
+              <div class="info-section">
+                <div class="section-header">
+                  <h3>Tvarkaraštis</h3>
+                  <button class="btn btn-sm btn-primary">Pridėti</button>
+                </div>
+                <div class="schedule-table">
+                  <table class="info-table">
+                    <thead>
+                      <tr>
+                        <th>Diena</th>
+                        <th>Laikas</th>
+                        <th>Tipas</th>
+                        <th>Veiksmai</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Tuesday</td>
+                        <td>08:00 - 12:20</td>
+                        <td>Lecture</td>
+                        <td>
+                          <button class="btn btn-sm btn-outline">Redaguoti</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Assessments Section -->
+              <div class="info-section">
+                <div class="section-header">
+                  <h3>Atsiskaitymai</h3>
+                  <button class="btn btn-sm btn-primary">Pridėti</button>
+                </div>
+                <div class="assessments-table">
+                  <table class="info-table">
+                    <thead>
+                      <tr>
+                        <th>Pavadinimas</th>
+                        <th>Tipas</th>
+                        <th>Data</th>
+                        <th>Taškai</th>
+                        <th>Veiksmai</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Tarpinis egzaminas</td>
+                        <td>Egzaminas</td>
+                        <td>2025-04-15</td>
+                        <td>30</td>
+                        <td>
+                          <button class="btn btn-sm btn-outline">Redaguoti</button>
+                          <button class="btn btn-sm btn-danger">Ištrinti</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Galutinis egzaminas</td>
+                        <td>Egzaminas</td>
+                        <td>2025-06-01</td>
+                        <td>50</td>
+                        <td>
+                          <button class="btn btn-sm btn-outline">Redaguoti</button>
+                          <button class="btn btn-sm btn-danger">Ištrinti</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Namų darbai</td>
+                        <td>Užduotis</td>
+                        <td>2025-05-10</td>
+                        <td>20</td>
+                        <td>
+                          <button class="btn btn-sm btn-outline">Redaguoti</button>
+                          <button class="btn btn-sm btn-danger">Ištrinti</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Empty Assessments State (like your "Atsiskaitymų nėra" message) -->
+              <div class="info-section empty-state" style="display: none;">
+                <div class="section-header">
+                  <h3>Atsiskaitymai</h3>
+                  <button class="btn btn-sm btn-primary">Pridėti</button>
+                </div>
+                <div class="empty-message">Atsiskaitymų nėra.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Add Assessment Modal -->
+        <div class="modal fade"
+             id="addAssessmentModal"
+             tabindex="-1"
+             aria-labelledby="addAssessmentModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addAssessmentModalLabel">Pridėti atsiskaitymą</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="addAssessmentForm">
+                  <div class="form-group">
+                    <label for="assessment-name">Pavadinimas</label>
+                    <input type="text" id="assessment-name" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="assessment-type">Tipas</label>
+                    <select id="assessment-type" class="form-control">
+                      <option value="exam">Egzaminas</option>
+                      <option value="test">Testas</option>
+                      <option value="assignment">Užduotis</option>
+                      <option value="project">Projektas</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="assessment-date">Data</label>
+                    <input type="date" id="assessment-date" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="assessment-points">Taškai</label>
+                    <input type="number"
+                           id="assessment-points"
+                           class="form-control"
+                           min="0"
+                           max="100">
+                  </div>
+                  <div class="form-group">
+                    <label for="assessment-description">Aprašymas</label>
+                    <textarea id="assessment-description" class="form-control" rows="4"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Atšaukti</button>
+                <button type="button" class="btn btn-primary">Išsaugoti</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     {#  #}
     {# TABLE TABLE STUD ADMIN DEST!!!!!!!!!!!!!! #}
     {#  #}
