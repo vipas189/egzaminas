@@ -35,4 +35,4 @@ class AddUserForm(FlaskForm):
     )
     # group = StringField("Group", validators=[Length(max=50), DataRequired()])
 
-    submit = SubmitField("Pridėti vartotoją")
+    submit = SubmitField("Patvirtinti")

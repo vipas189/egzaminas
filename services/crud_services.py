@@ -35,12 +35,21 @@ def read_users():
 
 def update_user(id, name, last_name, email, password, role, program):
     user = db.session.execute(db.select(Users).filter_by(id=id)).scalar()
+    if program == None:
+        user.name = name
+        user.last_name = last_name
+        user.email = email
+        user.password = generate_password_hash(password)
+        user.role = role
+        user.program = None
+        db.session.commit()
+        return
     user.name = name
     user.last_name = last_name
     user.email = email
-    user.password = password
+    user.password = generate_password_hash(password)
     user.role = role
-    user.program = program_to_id(program)
+    user.program_id = program_to_id(program)
     db.session.commit()
 
 

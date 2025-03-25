@@ -1,9 +1,9 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import logout_user
 from services.login_requirements import login_role_required
 from models.form.create_user_form import AddUserForm
 from models.form.student_register_form import StudentRegisterForm
-from services.crud_services import create_user, read_users
+from services.crud_services import create_user, read_users, update_user, remove_user
 from services.user_register_services import user_exists
 
 
@@ -63,4 +63,65 @@ def panel_superadmin_route(app):
             form.role.data,
             form.program.data.name if form.program.data else form.program.data,
         )
+        return redirect(url_for("panel_superadmin"))
+
+    @app.route("/panel/superadmin/update/user", methods=["POST"])
+    @login_role_required("superadmin")
+    def panel_superadmin_update_user():
+        form = AddUserForm()
+        user_id = request.form.get("user_id")
+        error = False
+        form.validate_on_submit()
+        if form.name.errors:
+            flash(form.name.errors[0], category=f"user_update_name_error{user_id}")
+            error = True
+        if form.last_name.errors:
+            flash(
+                form.last_name.errors[0],
+                category=f"user_update_last_name_error{user_id}",
+            )
+            error = True
+        if form.email.errors:
+            flash(form.email.errors[0], category=f"user_update_email_error{user_id}")
+            error = True
+        if form.password.errors:
+            flash(
+                form.password.errors[0], category=f"user_update_password_error{user_id}"
+            )
+            error = True
+        if form.program.errors and form.role.data == "student":
+            flash(
+                form.program.errors[0], category=f"user_update_program_error{user_id}"
+            )
+            error = True
+        if not form.email.errors and user_exists(form.email.data):
+            flash(
+                "Toks el. pašto adresas jau egzistuoja. ",
+                category=f"user_update_exists_error{user_id}",
+            )
+            error = True
+        if not form.program.errors and form.role.data in ["lecturer", "admin"]:
+            flash(
+                "Destytojai ir admin negali tureti studiju programos",
+                category=f"user_update_program_error{user_id}",
+            )
+            error = True
+        if error:
+            return redirect(url_for("panel_superadmin"))
+
+        update_user(
+            user_id,
+            form.name.data,
+            form.last_name.data,
+            form.email.data,
+            form.password.data,
+            form.role.data,
+            form.program.data.name if form.program.data else form.program.data,
+        )
+        return redirect(url_for("panel_superadmin"))
+
+    @app.route("/panel/superadmin/delete/user", methods=["POST"])
+    @login_role_required("superadmin")
+    def panel_superadmin_delete_user():
+        remove_user(request.form.get("user_id"))
         return redirect(url_for("panel_superadmin"))
