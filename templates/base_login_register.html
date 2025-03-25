@@ -11,10 +11,58 @@
     </title>
     <link rel="stylesheet"
           href="{{ url_for('static', filename='styles_login.css') }}" />
-    <script src="{{url_for('static', filename='java_login.js')}}"></script>
   </head>
   <body>
+    <div class="background-animation"">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+        <!-- Base gradient background -->
+        <defs>
+        <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="100%" stop-color="#ebe9f5" />
+        </linearGradient>
+        <!-- Texture pattern -->
+        <pattern id="texturePattern" patternUnits="userSpaceOnUse" width="50" height="50" patternTransform="rotate(45)">
+        <rect width="50" height="50" fill="url(#backgroundGradient)" />
+        <path d="M0,0 L50,0" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,10 L50,10" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,20 L50,20" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,30 L50,30" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,40 L50,40" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M0,0 L0,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M10,0 L10,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M20,0 L20,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M30,0 L30,50" stroke="#f0eef8" stroke-width="0.5" />
+        <path d="M40,0 L40,50" stroke="#f0eef8" stroke-width="0.5" />
+        </pattern>
+        </defs>
+        <!-- Background with gradient and texture -->
+        <rect width="1200" height="800" fill="url(#backgroundGradient)" />
+        <rect width="1200" height="800" fill="url(#texturePattern)" opacity="0.3" />
+        <!-- Animated curved elements -->
+        <path d="M-100,300 C100,200 300,600 600,500 C900,400 1000,600 1300,400" stroke="#e6e3f2" stroke-width="100" fill="none" opacity="0.5">
+        <animate attributeName="d" dur="5s" repeatCount="indefinite" values="M-100,300 C100,200 300,600 600,500 C900,400 1000,600 1300,400; M-100,320 C100,220 300,580 600,520 C900,420 1000,580 1300,420; M-100,300 C100,200 300,600 600,500 C900,400 1000,600 1300,400" keyTimes="0; 0.5; 1" />
+        </path>
+        <path d="M-100,700 C200,650 400,730 700,680 C1000,630 1100,750 1300,700" stroke="#e6e3f2" stroke-width="60" fill="none" opacity="0.4">
+        <animate attributeName="d" dur="8s" repeatCount="indefinite" values="M-100,700 C200,650 400,730 700,680 C1000,630 1100,750 1300,700; M-100,680 C200,670 400,710 700,660 C1000,650 1100,730 1300,680; M-100,700 C200,650 400,730 700,680 C1000,630 1100,750 1300,700" keyTimes="0; 0.5; 1" />
+        </path>
+        <path d="M-100,100 C200,50 400,150 700,100 C1000,50 1200,150 1300,100" stroke="#e6e3f2" stroke-width="80" fill="none" opacity="0.3">
+        <animate attributeName="d" dur="9s" repeatCount="indefinite" values="M-100,100 C200,50 400,150 700,100 C1000,50 1200,150 1300,100; M-100,120 C200,70 400,130 700,120 C1000,70 1200,130 1300,120; M-100,100 C200,50 400,150 700,100 C1000,50 1200,150 1300,100" keyTimes="0; 0.5; 1" />
+        </path>
+        <!-- Animated subtle purple accents -->
+        <circle cx="100" cy="150" r="80" fill="#46307c" opacity="0.03">
+        <animate attributeName="cy" dur="7s" repeatCount="indefinite" values="150; 170; 150" keyTimes="0; 0.5; 1" />
+        </circle>
+        <circle cx="1100" cy="650" r="120" fill="#46307c" opacity="0.03">
+        <animate attributeName="cy" dur="5s" repeatCount="indefinite" values="650; 630; 650" keyTimes="0; 0.5; 1" />
+        </circle>
+        <circle cx="600" cy="400" r="150" fill="#46307c" opacity="0.02">
+        <animate attributeName="cy" dur="7s" repeatCount="indefinite" values="400; 420; 400" keyTimes="0; 0.5; 1" />
+        </circle>
+      </svg>
+    </div>
     {% block body %}
     {% endblock body %}
+    <script src="{{url_for('static', filename='java_login.js')}}"></script>
   </body>
 </html>

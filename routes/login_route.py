@@ -17,12 +17,7 @@ def login_route(app):
     def login_admin():
         form = AdminLoginForm()
 
-        print(f"Login attempt with email: {form.email.data}")  # Debugging
-        print(f"Expected admin email: {Config.ADMIN_EMAIL}")   # Debugging
-
         if form.email.data == Config.ADMIN_EMAIL and check_password_hash(Config.ADMIN_PASSWORD_HASH, form.password.data):
-            
-            print("Main admin credentials matched!")
 
             admin_user = Users(
             id = 0,
@@ -33,9 +28,6 @@ def login_route(app):
             role = Config.ADMIN_ROLE
             )
             login_user(admin_user)
-
-            login_result = login_user(admin_user)
-            print(f"Login result: {login_result}")
 
             return redirect(url_for("panel_superadmin"))
         admin = admin_exists(form.email.data, form.password.data)

@@ -9,7 +9,7 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), nullable=False)
-    profile_picture = db.Column(db.String(255))
+    profile_picture = db.Column(db.String(255), default='uploads/profile_stock.jpg')
  
     # Security
     login_attempts = db.Column(db.Integer, default=0)
@@ -17,9 +17,9 @@ class Users(db.Model, UserMixin):
     suspended_until = db.Column(db.DateTime)
  
     # ForeignKeys
-    # study_program_id = db.Column(db.Integer, db.ForeignKey("study_programs.id"))
+    program_id = db.Column(db.Integer, db.ForeignKey("program.id"))
     # group_id = db.Column(db.Integer, db.ForeignKey("groups.id"))
  
-    # # Relationships
-    # study_program = db.relationship("StudyPrograms", backref="users")
+    # Relationships
+    program = db.relationship("Program", backref="users")
     # group = db.relationship("Groups", backref="users")

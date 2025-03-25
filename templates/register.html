@@ -1,20 +1,18 @@
 {% extends "base_login_register.html" %}
 {% block body %}
   <div class="header">
-    <a href="{{ url_for('home') }}">
-      <img src="{{ url_for('static', filename='images/logo.png') }}"
-           height="45"
-           width=""
-           alt="" />
+    <a href="{{ url_for('home') }}" class="ku-logo">
+      <div class="ku-logo-icon">KU</div>
     </a>
   </div>
   <div class="container">
     <div class="left-content">
-      <a href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='images/logo2.png') }}"
-             height="50"
-             width=""
-             alt="" />
+      <a href="{{ url_for('home') }}" class="ku-logo">
+        <div class="ku-logo-icon2">KU</div>
+        <div class="ku-logo-text">
+          <h1>Kingsford University</h1>
+          <p>Excellence in Education</p>
+        </div>
       </a>
       <div class="description padding">
         Klaipėdos universiteto elektroninėje informacinėje erdvėje galioja
@@ -23,6 +21,11 @@
       <div class="note">
         Naudodamiesi Jums suteikta asmenine paskyra pasiekite daugumą
         Universiteto teikiamų elektroninių paslaugų.
+      </div>
+      <div class="note">
+        Jei pamiršote savo asmeninės paskyros prisijungimo duomenis ar turite
+        kitų su sistemomis susijusių klausimų prašome kreiptis el. paštu
+        <a href="mailto:pagalba@ku.lt" class="email">pagalba@ku.lt</a>.
       </div>
       <!-- Courses list -->
       <div id="coursesList" class="displayNone">
@@ -33,43 +36,90 @@
           <div class="course-item">Teisė (P000F003)</div>
           <div class="course-item">Verslo vadyba (P000F004)</div>
         </div>
-        <input type="hidden" id="selected-course-input" name="selected_course">
+        {% for message in get_flashed_messages(category_filter=['student_program']) %}{{ message }}{% endfor %}
       </div>
     </div>
     <div class="right-content">
       <div class="tabs">
-        <div class="tab-register active" data-form="student">Studentas</div>
-        <div class="tab-register inactive" data-form="lecturer">Darbuotojas</div>
+        <div class="tab-register {% if active_tab == 'student' %}active{% else %}inactive{% endif %}"
+             data-form="student">Studentas</div>
+        <div class="tab-register {% if active_tab == 'lecturer' %}active{% else %}inactive{% endif %}"
+             data-form="lecturer">Darbuotojas</div>
       </div>
       <!-- Student form -->
-      <div class="form-content active" id="student">
-        <div class="form-label">El. paštas</div>
-        <div class="form-box" id="text-input">
-          <input type="email" class="form-input" placeholder="vardas.pavarde@ku.lt" />
-        </div>
-        <div class="form-label">Slaptažodis</div>
-        <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
-        </div>
-        <form action="{{ url_for('panel_student') }}">
-          <button class="login-btn">Registruotis</button>
+      <div class="form-content {% if active_tab == 'student' %}active{% endif %}"
+           id="student">
+        <form method="post" action="{{ url_for('register_student') }}">
+          {{ student_form.hidden_tag() }}
+          {{ student_form.program(id="selected-course-input") }}
+          <div class="split-inputs2">
+            <!-- First name column -->
+            <div class="split-input">
+              <div class="form-label">Vardas</div>
+              <div class="form-box" id="text-input">
+                {{ student_form.name(class="form-input shorter-input", placeholder="Vardas") }}
+                {% for message in get_flashed_messages(category_filter=['student_name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+            <!-- Last name column -->
+            <div class="split-input">
+              <div class="form-label">Pavardė</div>
+              <div class="form-box" id="text-input">
+                {{ student_form.last_name(class="form-input shorter-input", placeholder="Pavardė") }}
+                {% for message in get_flashed_messages(category_filter=['student_last_name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="form-label">El. paštas</div>
+          <div class="form-box" id="text-input">
+            {{ student_form.email(class="form-input", placeholder="studentas.pavarde@ku.lt") }}
+            {% for message in get_flashed_messages(category_filter=['student_email']) %}{{ message }}{% endfor %}
+          </div>
+          <div class="form-label">Slaptažodis</div>
+          <div class="form-box">
+            {{ student_form.password(class="form-input", placeholder="Slaptažodis") }}
+            {% for message in get_flashed_messages(category_filter=['student_password']) %}{{ message }}{% endfor %}
+          </div>
+          {{ student_form.submit(class="login-btn") }}
         </form>
         {# <div class="forgot-link">
           <a href="#">Pamiršai slaptažodį?</a>
         </div> #}
       </div>
       <!-- Lecturer form -->
-      <div class="form-content" id="lecturer">
-        <div class="form-label">El. paštas</div>
-        <div class="form-box">
-          <input type="text" class="form-input" placeholder="destytojas.pavarde@ku.lt" />
-        </div>
-        <div class="form-label">Slaptažodis</div>
-        <div class="form-box">
-          <input type="password" class="form-input" placeholder="Slaptažodis" />
-        </div>
-        <form action="{{ url_for('panel_lecturer') }}">
-          <button class="login-btn">Registruotis</button>
+      <div class="form-content {% if active_tab == 'lecturer' %}active{% endif %}"
+           id="lecturer">
+        <form method="post" action="{{ url_for('register_lecturer') }}">
+          {{ lecturer_form.hidden_tag() }}
+          <div class="split-inputs2">
+            <!-- First name column -->
+            <div class="split-input">
+              <div class="form-label">Vardas</div>
+              <div class="form-box" id="text-input">
+                {{ lecturer_form.name(class="form-input shorter-input", placeholder="Vardas") }}
+                {% for message in get_flashed_messages(category_filter=['lecturer_name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+            <!-- Last name column -->
+            <div class="split-input">
+              <div class="form-label">Pavardė</div>
+              <div class="form-box" id="text-input">
+                {{ lecturer_form.last_name(class="form-input shorter-input", placeholder="Pavardė") }}
+                {% for message in get_flashed_messages(category_filter=['lecturer_last_name']) %}{{ message }}{% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="form-label">El. paštas</div>
+          <div class="form-box">
+            {{ lecturer_form.email(class="form-input", placeholder="destytojas.pavarde@ku.lt") }}
+            {% for message in get_flashed_messages(category_filter=['lecturer_email']) %}{{ message }}{% endfor %}
+          </div>
+          <div class="form-label">Slaptažodis</div>
+          <div class="form-box">
+            {{ lecturer_form.password(class="form-input", placeholder="Slaptažodis") }}
+            {% for message in get_flashed_messages(category_filter=['lecturer_password']) %}{{ message }}{% endfor %}
+          </div>
+          {{ lecturer_form.submit(class="login-btn") }}
         </form>
         {# <div class="forgot-link">
           <a href="#">Pamiršai slaptažodį?</a>

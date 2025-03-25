@@ -5,6 +5,10 @@ from routes.__init__ import routes
 from liveserver import LiveServer
 from livereload import Server
 from models.users import Users
+from models.modules import Modules
+from models.program import Program
+
+
 
 
 app = Flask(__name__)
@@ -13,10 +17,11 @@ server = Server(app)
 app.config.from_object(Config)
 db.init_app(app)
 migrate.init_app(app, db)
-# admin.init_app(app)
 routes(app)
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+
 
 
 @login_manager.user_loader
@@ -28,7 +33,8 @@ def load_user(user_id):
             last_name = Config.ADMIN_LAST_NAME,
             email = Config.ADMIN_EMAIL,
             password = Config.ADMIN_PASSWORD_HASH,
-            role = Config.ADMIN_ROLE
+            role = Config.ADMIN_ROLE,
+            profile_picture = Config.ADMIN_PROFILE_PICTURE
             )
     return db.session.get(Users, int(user_id))
 
