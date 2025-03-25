@@ -18,4 +18,4 @@ class StudentRegisterForm(FlaskForm):
         "Study Program",
         validators=[DataRequired(message="Pasirinkite studijų programą.")],
     )
-    submit = SubmitField("Register")
+    submit = SubmitField("Registruotis")

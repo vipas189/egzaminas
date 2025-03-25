@@ -49,14 +49,22 @@
             {% if current_user.role == "superadmin" %}
               <a href="{{ url_for('panel_superadmin') }}" class="login-btn">Panelė</a>
               <button class="mobile-toggle">☰</button>
+              <a href="{{ url_for('panel_superadmin_logout') }}" class="login-btn">Atsijungti</a>
+              <button class="mobile-toggle">☰</button>
             {% elif current_user.role == "admin" %}
               <a href="{{ url_for('panel_admin') }}" class="login-btn">Panelė</a>
+              <button class="mobile-toggle">☰</button>
+              <a href="{{ url_for('panel_admin_logout') }}" class="login-btn">Atsijungti</a>
               <button class="mobile-toggle">☰</button>
             {% elif current_user.role == "lecturer" %}
               <a href="{{ url_for('panel_lecturer') }}" class="login-btn">Panelė</a>
               <button class="mobile-toggle">☰</button>
+              <a href="{{ url_for('panel_lecturer_logout') }}" class="login-btn">Atsijungti</a>
+              <button class="mobile-toggle">☰</button>
             {% elif current_user.role == "student" %}
               <a href="{{ url_for('panel_student') }}" class="login-btn">Panelė</a>
+              <button class="mobile-toggle">☰</button>
+              <a href="{{ url_for('panel_student_logout') }}" class="login-btn">Atsijungti</a>
               <button class="mobile-toggle">☰</button>
             {% endif %}
           {% else %}

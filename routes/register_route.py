@@ -56,7 +56,7 @@ def register_route(app):
             study_program_name_to_id(form.study_program.data),
         )
         login_user(new_user)
-        return redirect(url_for("panel_admin"))
+        return redirect(url_for("panel_student"))
 
     @app.route("/register/lecturer", methods=["POST"])
     def register_lecturer():
@@ -88,4 +88,4 @@ def register_route(app):
             generate_password_hash(form.password.data),
         )
         login_user(new_user)
-        return redirect(url_for("panel_admin"))
+        return redirect(url_for("panel_lecturer"))
