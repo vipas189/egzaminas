@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Grupės studentų valdymas{% endblock %}
+
+{% block content %}
+<h2>Studentų valdymas - {{ group.name }}</h2>
+<p><strong>Programa:</strong> {{ group.program.name if group.program else '-' }}</p>
+
+<form method="POST">
+    <div class="card mb-3">
+        <div class="card-header">Pasirinkite studentus</div>
+        <div class="card-body">
+            {% if program_students %}
+                <div class="alert alert-info mb-3">
+                    Pažymėkite studentus, kuriuos norite priskirti šiai grupei.
+                </div>
+                
+                <div class="mb-3">
+                    <button type="button" id="select-all" class="btn btn-sm btn-outline-primary">Pažymėti visus</button>
+                    <button type="button" id="unselect-all" class="btn btn-sm btn-outline-secondary">Nuimti žymėjimą</button>
+                </div>
+                
+                <div class="list-group">
+                    {% for student in program_students %}
+                        <div class="list-group-item">
+                            <div class="form-check">
+                                <input class="form-check-input student-checkbox" type="checkbox" 
+                                       id="student_{{ student.id }}" name="students" value="{{ student.id }}"
+                                       {% if student in group.students %}checked{% endif %}>
+                                <label class="form-check-label" for="student_{{ student.id }}">
+                                    {{ student.name }} {{ student.last_name }} ({{ student.email }})
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">Programoje nėra studentų, kuriuos būtų galima priskirti grupei.</p>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            {% if program_students %}
+                <button type="submit" class="btn btn-primary">Išsaugoti pakeitimus</button>
+            {% endif %}
+            <a href="{{ url_for('view_group', id=group.id) }}" class="btn btn-secondary">Atšaukti</a>
+        </div>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllBtn = document.getElementById('select-all');
+    const unselectAllBtn = document.getElementById('unselect-all');
+    const checkboxes = document.querySelectorAll('.student-checkbox');
+    
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener('click', function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = true;
+            });
+        });
+    }
+    
+    if (unselectAllBtn) {
+        unselectAllBtn.addEventListener('click', function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

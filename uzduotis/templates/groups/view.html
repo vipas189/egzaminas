@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Grupė {{ group.name }}{% endblock %}
+
+{% block content %}
+<h2>{{ group.name }}</h2>
+<div class="mb-3">
+    <a href="{{ url_for('edit_group', id=group.id) }}" class="btn btn-warning">Redaguoti</a>
+    <a href="{{ url_for('manage_group_students', id=group.id) }}" class="btn btn-primary">Tvarkyti studentus</a>
+    <a href="{{ url_for('list_groups') }}" class="btn btn-secondary">Grįžti į sąrašą</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Grupės informacija</div>
+            <div class="card-body">
+                <p><strong>Pavadinimas:</strong> {{ group.name }}</p>
+                <p><strong>Programa:</strong> {{ group.program.name if group.program else '-' }}</p>
+                <p><strong>Studentų skaičius:</strong> {{ group.students|length }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Studentų sąrašas</div>
+    <div class="card-body">
+        {% if group.students %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Vardas</th>
+                            <th>Pavardė</th>
+                            <th>El. paštas</th>
+                            <th>Veiksmai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in group.students %}
+                            <tr>
+                                <td>{{ student.name }}</td>
+                                <td>{{ student.last_name }}</td>
+                                <td>{{ student.email }}</td>
+                                <td>
+                                    <a href="{{ url_for('view_student', id=student.id) }}" class="btn btn-sm btn-info">Peržiūrėti</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted">Šioje grupėje nėra studentų.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

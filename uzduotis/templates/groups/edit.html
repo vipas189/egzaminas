@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Redaguoti grupę{% endblock %}
+
+{% block content %}
+<h2>Redaguoti grupę</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+        {% if form.name.errors %}
+            <div class="text-danger">
+                {% for error in form.name.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.program_id.label(class="form-label") }}
+        {{ form.program_id(class="form-select") }}
+        {% if form.program_id.errors %}
+            <div class="text-danger">
+                {% for error in form.program_id.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('view_group', id=group.id) }}" class="btn btn-secondary">Atšaukti</a>
+</form>
+{% endblock %}

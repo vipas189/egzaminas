@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Studento testai{% endblock %}
+
+{% block content %}
+<h2>Testai - {{ student.name }} {{ student.last_name }}</h2>
+<a href="{{ url_for('view_student', id=student.id) }}" class="btn btn-secondary mb-3">Grįžti</a>
+
+{% if available_tests %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Pavadinimas</th>
+                    <th>Modulis</th>
+                    <th>Trukmė</th>
+                    <th>Išlaikymo riba</th>
+                    <th>Statusas</th>
+                    <th>Veiksmai</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in available_tests %}
+                    <tr>
+                        <td>{{ item.test.title }}</td>
+                        <td>{{ item.module.name }}</td>
+                        <td>{{ item.test.duration }} min.</td>
+                        <td>{{ item.test.passing_score }}%</td>
+                        <td>
+                            {% if item.completed %}
+                                {% if item.passed %}
+                                    <span class="badge bg-success">Išlaikytas ({{ item.score|round(1) }}%)</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Neišlaikytas ({{ item.score|round(1) }}%)</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Neatliktas</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.completed %}
+                                <a href="{{ url_for('view_test_results', student_id=student.id, test_id=item.test.id, attempt_id=item.attempt.id) }}" class="btn btn-sm btn-info">Rezultatai</a>
+                            {% else %}
+                                <a href="{{ url_for('start_test', student_id=student.id, test_id=item.test.id) }}" class="btn btn-sm btn-primary">Pradėti testą</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">Nėra pasiekiamų testų.</div>
+{% endif %}
+{% endblock %}

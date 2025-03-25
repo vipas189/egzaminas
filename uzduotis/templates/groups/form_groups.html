@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Grupių formavimas{% endblock %}
+
+{% block content %}
+<h2>Automatinis grupių formavimas</h2>
+<div class="alert alert-warning">
+    <strong>Dėmesio!</strong> Šis veiksmas panaikins visas esamas pasirinktos programos grupes ir sukurs naujas.
+</div>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-3">
+        {{ form.program_id.label(class="form-label") }}
+        {{ form.program_id(class="form-select") }}
+        {% if form.program_id.errors %}
+            <div class="text-danger">
+                {% for error in form.program_id.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.group_count.label(class="form-label") }}
+        {{ form.group_count(class="form-control", type="number") }}
+        <small class="text-muted">Įveskite skaičių nuo 1 iki 10</small>
+        {% if form.group_count.errors %}
+            <div class="text-danger">
+                {% for error in form.group_count.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('list_groups') }}" class="btn btn-secondary">Atšaukti</a>
+</form>
+{% endblock %}
