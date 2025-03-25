@@ -2144,3 +2144,14 @@ select[multiple] option:checked {
 .card.collapsed .toggle-icon {
   transform: rotate(-90deg);
 }
+
+.sidebar .user-profile {
+  display: block;
+  text-align: center;
+}
+
+.sidebar .user-avatar {
+  margin: 0 auto 1rem;
+  width: 40px;
+  height: 40px;
+}

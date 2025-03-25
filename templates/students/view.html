@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ student.name }} {{ student.last_name }}
+{% endblock title %}
+{% block content %}
+  <h1>{{ student.name }} {{ student.last_name }}</h1>
+  <div class="mb-3">
+    <a href="{{ url_for('select_modules', id=student.id) }}"
+       class="btn btn-primary">Pasirinkti modulius</a>
+    <a href="{{ url_for('student_calendar', id=student.id) }}"
+       class="btn btn-success">Asmeninis kalendorius</a>
+    <a href="{{ url_for('list_students') }}" class="btn btn-secondary">Grįžti į sąrašą</a>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">Studento informacija</div>
+        <div class="card-body">
+          <p>
+            <strong>Vardas:</strong> {{ student.name }}
+          </p>
+          <p>
+            <strong>Pavardė:</strong> {{ student.last_name }}
+          </p>
+          <p>
+            <strong>El. paštas:</strong> {{ student.email }}
+          </p>
+          <p>
+            <strong>Programa:</strong> {{ student.program.name if student.program else 'Nepriskirta' }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">Pasirinkti moduliai</div>
+        <div class="card-body">
+          {% if student.selected_modules %}
+            <ul class="list-group">
+              {% for module in student.selected_modules %}
+                <li class="list-group-item">{{ module.name }} ({{ module.credits }} kr.)</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">Studentas dar nepasirinko modulių.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

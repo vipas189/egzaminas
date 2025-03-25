@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Dėstytojo atsiskaitymai{% endblock %}
+
+{% block content %}
+<h2>Atsiskaitymai - {{ instructor.name }} {{ instructor.last_name }}</h2>
+<div class="mb-3">
+    <a href="{{ url_for('instructor_add_assessment', id=instructor.id) }}" class="btn btn-primary">Pridėti naują atsiskaitymą</a>
+    <a href="{{ url_for('view_instructor', id=instructor.id) }}" class="btn btn-secondary">Grįžti</a>
+</div>
+
+{% if assessments %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Modulis</th>
+                    <th>Pavadinimas</th>
+                    <th>Aprašymas</th>
+                    <th>Termino data</th>
+                    <th>Svoris (%)</th>
+                    <th>Veiksmai</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assessment in assessments %}
+                    <tr>
+                        {% set module = modules|selectattr('id', 'eq', assessment.module_id)|first %}
+                        <td>{{ module.name if module else 'Nežinomas modulis' }}</td>
+                        <td>{{ assessment.title }}</td>
+                        <td>{{ assessment.description|truncate(50) if assessment.description else '-' }}</td>
+                        <td>{{ assessment.due_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ assessment.weight }}</td>
+                        <td>
+                            <a href="{{ url_for('instructor_edit_assessment', instructor_id=instructor.id, assessment_id=assessment.id) }}" class="btn btn-sm btn-warning">Redaguoti</a>
+                            <form action="{{ url_for('instructor_cancel_assessment', instructor_id=instructor.id, assessment_id=assessment.id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ar tikrai norite atšaukti šį atsiskaitymą? Jis bus pašalintas iš visų studentų kalendorių.')">Atšaukti</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">Nėra sukurtų atsiskaitymų.</div>
+{% endif %}
+
+<div class="card mt-4">
+    <div class="card-header">Moduliai, kuriems galite kurti atsiskaitymus</div>
+    <div class="card-body">
+        {% if modules %}
+            <ul class="list-group">
+                {% for module in modules %}
+                    <li class="list-group-item">
+                        <strong>{{ module.name }}</strong> ({{ module.credits }} kr.)
+                        <span class="badge bg-info text-dark">{{ module.enrolled_students|length }} studentų</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Jūs neturite priskirtų modulių.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

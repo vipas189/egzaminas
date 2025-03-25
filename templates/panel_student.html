@@ -21,15 +21,15 @@
     </div>
     <div class="user-profile">
       <div class="user-avatar">
-        <img src="{{ current_user.profile_picture }}"
+        <img src="{{ url_for('static', filename=current_user.profile_picture) }}"
              width=""
              height=""
              alt="Profile picture" />
       </div>
       <div class="user-details">
         <h3 class="user-name">{{ current_user.name }} {{ current_user.last_name }}</h3>
-        <p class="user-info">{{ current_user.study_program.name }}</p>
-        <p class="user-info">Student ID: KU20210123</p>
+        <p class="user-info">{{ current_user.program.name }}</p>
+        <p class="user-info">Studentas ID: KU20210123</p>
       </div>
     </div>
     <!-- Black and White Icon Navigation Menu -->
@@ -687,7 +687,7 @@
           <div class="card-body">
             <div class="profile-avatar-upload">
               <div class="profile-avatar">
-                <img src="{{ current_user.profile_picture }}"
+                <img src="{{ url_for('static', filename=current_user.profile_picture) }}"
                      width=""
                      height=""
                      alt="Placeholder"

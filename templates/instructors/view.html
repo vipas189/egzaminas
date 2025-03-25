@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}{{ instructor.name }} {{ instructor.last_name }}{% endblock %}
+
+{% block content %}
+<h1>{{ instructor.name }} {{ instructor.last_name }}</h1>
+<div class="mb-3">
+    <a href="{{ url_for('edit_instructor', id=instructor.id) }}" class="btn btn-warning">Redaguoti</a>
+    <a href="{{ url_for('instructor_assessments', id=instructor.id) }}" class="btn btn-primary">Atsiskaitymai</a>
+    <a href="{{ url_for('list_instructors') }}" class="btn btn-secondary">Grįžti į sąrašą</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Dėstytojo informacija</div>
+            <div class="card-body">
+                <p><strong>Vardas:</strong> {{ instructor.name }}</p>
+                <p><strong>Pavardė:</strong> {{ instructor.last_name }}</p>
+                <p><strong>El. paštas:</strong> {{ instructor.email }}</p>
+                <p><strong>Katedra:</strong> {{ instructor.department }}</p>
+                <p><strong>Pareigos:</strong> {{ instructor.position }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Dėstomi moduliai</div>
+            <div class="card-body">
+                {% if modules %}
+                    <ul class="list-group">
+                        {% for module in modules %}
+                            <li class="list-group-item">
+                                <a href="{{ url_for('view_module', id=module.id) }}">{{ module.name }}</a>
+                                <span class="badge bg-primary rounded-pill">{{ module.credits }} kreditai</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Dėstytojas nepriskirtas jokiam moduliui.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Tvarkaraščiai</div>
+    <div class="card-body">
+        {% if schedules %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Modulis</th>
+                        <th>Diena</th>
+                        <th>Laikas</th>
+                        <th>Tipas</th>
+                        <th>Vieta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in schedules %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('view_module', id=schedule.module_id) }}">
+                                    {% if schedule.module %}{{ schedule.module.name }}{% else %}Nežinomas modulis{% endif %}
+                                </a>
+                            </td>
+                            <td>{{ schedule.day_of_week }}</td>
+                            <td>{{ schedule.start_time.strftime('%H:%M') }} - {{ schedule.end_time.strftime('%H:%M') }}</td>
+                            <td>{{ schedule.lecture_type }}</td>
+                            <td>{{ schedule.location }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted">Dėstytojas neturi priskirto tvarkaraščio.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

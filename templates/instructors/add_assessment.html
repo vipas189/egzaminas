@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Pridėti atsiskaitymą{% endblock %}
+
+{% block content %}
+<h2>Pridėti naują atsiskaitymą</h2>
+<h4>Dėstytojas: {{ instructor.name }} {{ instructor.last_name }}</h4>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-3">
+        {{ form.module_id.label(class="form-label") }}
+        {{ form.module_id(class="form-select") }}
+        {% if form.module_id.errors %}
+            <div class="text-danger">
+                {% for error in form.module_id.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+        {% if form.title.errors %}
+            <div class="text-danger">
+                {% for error in form.title.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control", rows=3) }}
+        {% if form.description.errors %}
+            <div class="text-danger">
+                {% for error in form.description.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.due_date.label(class="form-label") }}
+        {{ form.due_date(class="form-control", type="datetime-local") }}
+        <small class="text-muted">Formatas: YYYY-MM-DD HH:MM</small>
+        {% if form.due_date.errors %}
+            <div class="text-danger">
+                {% for error in form.due_date.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.weight.label(class="form-label") }}
+        {{ form.weight(class="form-control", type="number", step="0.1") }}
+        {% if form.weight.errors %}
+            <div class="text-danger">
+                {% for error in form.weight.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('instructor_assessments', id=instructor.id) }}" class="btn btn-secondary">Atšaukti</a>
+</form>
+{% endblock %}

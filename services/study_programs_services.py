@@ -1,14 +1,14 @@
 from extensions import db
-from models.study_programs import StudyPrograms
+from models.program import Program
 
 
 def study_programs():
-    study_program = db.session.execute(db.select(StudyPrograms)).scalars().all()
-    return study_program
+    program = db.session.execute(db.select(Program)).scalars().all()
+    return program
 
 
-def study_program_name_to_id(study_program_name):
-    study_program = db.session.execute(
-        db.select(StudyPrograms).filter_by(name=study_program_name)
+def study_program_name_to_id(program_name):
+    program = db.session.execute(
+        db.select(Program).filter_by(name=program_name)
     ).scalar()
-    return study_program.id
+    return program.id

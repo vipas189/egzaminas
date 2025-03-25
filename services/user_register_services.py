@@ -10,7 +10,7 @@ def user_exists(email):
     return lecturer
 
 
-def student_add(name, last_name, email, password, study_program_id):
+def student_add(name, last_name, email, password, program_id):
     # check_password_hash(hashed_password, password)
     student = Users(
         name=name,
@@ -18,7 +18,7 @@ def student_add(name, last_name, email, password, study_program_id):
         email=email,
         password=password,
         role="student",
-        study_program_id=study_program_id,
+        program_id=program_id,
     )
     db.session.add(student)
     db.session.commit()

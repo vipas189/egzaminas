@@ -1,25 +1,33 @@
 from extensions import db
+from datetime import datetime
+
+# Tarpinė lentelė modulių ir dėstytojų ryšiui
+module_instructor = db.Table(
+    "module_instructor",
+    db.Column("module_id", db.Integer, db.ForeignKey("modules.id"), primary_key=True),
+    db.Column(
+        "instructor_id", db.Integer, db.ForeignKey("instructor.id"), primary_key=True
+    ),
+)
 
 
 class Modules(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    code = db.Column(db.String(20), unique=True)
     description = db.Column(db.Text)
     credits = db.Column(db.Integer, nullable=False)
-    semester = db.Column(db.Integer, nullable=False)
-    year = db.Column(db.Integer, nullable=False)  # Academic year
-    schedule = db.Column(db.Text)  # Could be JSON or structured text with schedule info
-
-    # ForeignKeys
-    study_program_id = db.Column(db.Integer, db.ForeignKey("study_programs.id"))
+    semester = db.Column(db.String(20), nullable=False)
+    prerequisites = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     # Relationships
-    study_program = db.relationship("StudyPrograms", backref="modules")
-    prerequisites = db.relationship(
-        "Modules",
-        secondary="module_prerequisites",
-        primaryjoin="Modules.id==module_prerequisites.c.module_id",
-        secondaryjoin="Modules.id==module_prerequisites.c.prerequisite_id",
-        backref="required_for",
+    schedules = db.relationship("Schedule", backref="module")
+    assessments = db.relationship("Assessment", backref="module")
+    exams = db.relationship("Exam", backref="module")
+    instructors = db.relationship(
+        "Instructor", secondary="module_instructor", backref="modules"
     )
+
+    def __repr__(self):
+        return f"<Modules {self.name}>"
