@@ -2,6 +2,7 @@ from extensions import db
 from services.program_to_id_services import program_to_id
 from werkzeug.security import generate_password_hash
 from models.users import Users
+from sqlalchemy import or_
 
 
 def create_user(name, last_name, email, password, role, program):
@@ -30,6 +31,19 @@ def create_user(name, last_name, email, password, role, program):
 
 def read_users():
     users = db.session.execute(db.select(Users)).scalars().all()
+    return users
+
+
+def read_non_admin_users():
+    users = (
+        db.session.execute(
+            db.select(Users).filter(
+                or_(Users.role == "student", Users.role == "lecturer")
+            )
+        )
+        .scalars()
+        .all()
+    )
     return users
 
 

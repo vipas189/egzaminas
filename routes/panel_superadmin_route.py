@@ -2,17 +2,30 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import logout_user
 from services.login_requirements import login_role_required
 from models.form.create_user_form import AddUserForm
-from models.form.student_register_form import StudentRegisterForm
 from services.crud_services import create_user, read_users, update_user, remove_user
 from services.user_register_services import user_exists
+from services.admin_dashboard_section_services import get_users_count, get_program_count
 
 
 def panel_superadmin_route(app):
     @app.route("/panel/superadmin")
     @login_role_required("superadmin")
     def panel_superadmin():
+        students_count = get_users_count("student")
+        lecturer_count = get_users_count("lecturer")
+        admin_count = get_users_count("admin")
+        program_count = get_program_count()
+        # group_count = get_group_count()
         form = AddUserForm()
-        return render_template("panel_superadmin.html", form=form, users=read_users())
+        return render_template(
+            "panel_superadmin.html",
+            form=form,
+            users=read_users(),
+            students_count=students_count,
+            lecturer_count=lecturer_count,
+            admin_count=admin_count,
+            program_count=program_count,
+        )
 
     @app.route("/panel/superadmin/logout", methods=["POST"])
     @login_role_required("superadmin")

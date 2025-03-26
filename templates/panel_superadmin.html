@@ -23,15 +23,15 @@
       </div>
       <div class="user-profile">
         <div class="user-avatar">
-          <img src="{{ url_for('static', filename='images/profile_stock.jpg') }}"
+          <img src="{{ url_for('static', filename=current_user.profile_picture) }}"
                width=""
                height=""
                alt="Profile picture" />
         </div>
         <div class="user-details">
-          <h3 class="user-name">John Smith</h3>
-          <p class="user-info">Computer Science • Year 2</p>
-          <p class="user-info">Student ID: KU20210123</p>
+          <h3 class="user-name">{{ current_user.name }} {{ current_user.last_name }}</h3>
+          <p class="user-info">{{ current_user.program.name }}</p>
+          <p class="user-info">{{ current_user.role }}</p>
         </div>
       </div>
       <!-- Black and White Icon Navigation Menu -->
@@ -554,8 +554,8 @@
             </div>
             <div class="table-actions">
               <button class="btn btn-primary"
-                      data-bs-target="#addModuleModal"
-                      data-bs-toggle="modal">
+                      data-bs-toggle="modal"
+                      data-bs-target="#addModuleModal">
                 <svg xmlns="http://www.w3.org/2000/svg"
                      width="16"
                      height="16"
@@ -568,7 +568,7 @@
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Nauja grupe
+                Naujas vartotojas
               </button>
             </div>
           </div>
@@ -586,195 +586,281 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Jonas Petraitis</td>
-                  <td>jonas.petraitis@stud.example.com</td>
-                  <td>
-                    <span class="role-badge student-badge">Studentas</span>
-                  </td>
-                  <td>Informatika</td>
-                  <td>IF-22</td>
-                  <td class="action-buttons">
-                    <button type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editModuleModal"
-                            class="action-btn edit-btn"
-                            title="Redaguoti">
-                      <svg xmlns="http://www.w3.org/2000/svg"
-                           width="16"
-                           height="16"
-                           viewBox="0 0 24 24"
-                           fill="none"
-                           stroke="currentColor"
-                           stroke-width="2"
-                           stroke-linecap="round"
-                           stroke-linejoin="round">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                      </svg>
-                    </button>
-                    <button class="action-btn delete-btn"
-                            data-bs-toggle="modal"
-                            data-bs-target="#removeModuleModal"
-                            title="Ištrinti">
-                      <svg xmlns="http://www.w3.org/2000/svg"
-                           width="16"
-                           height="16"
-                           viewBox="0 0 24 24"
-                           fill="none"
-                           stroke="currentColor"
-                           stroke-width="2"
-                           stroke-linecap="round"
-                           stroke-linejoin="round">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
+                {% for user in users %}
+                  <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }} {{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                      {% if user.program.name %}{{ user.program.name }}{% endif %}
+                    </td>
+                    <td>IF-22</td>
+                    <td class="action-buttons">
+                      <button type="button"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editModuleModal{{ user.id }}"
+                              class="action-btn edit-btn"
+                              title="Redaguoti">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="16"
+                             height="16"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                      </button>
+                      <button class="action-btn delete-btn"
+                              data-bs-toggle="modal"
+                              data-bs-target="#removeModuleModal{{ user.id }}"
+                              title="Ištrinti">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="16"
+                             height="16"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  {# #}{# BUTTON REDAGUOTI ADMIN STUD!#} {# #}
+                  <div class="modal fade"
+                       id="editModuleModal{{ user.id }}"
+                       tabindex="-1"
+                       aria-labelledby="editModuleModalLabel"
+                       aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="editModuleModalLabel">Redaguoti vartotoją</h5>
+                          <button type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form id="editUserForm"
+                                action="{{ url_for('panel_superadmin_update_user') }}"
+                                method="post">
+                            <div class="form-group">
+                              <label for="edit-name">Vardas</label>
+                              {{ form.name(id="edit-name", class="form-control") }}
+                              {% for
+                                message in
+                                get_flashed_messages(category_filter=['user_update_name_error' + user.id|string])
+                                %}
+                                {{ message }}
+                              {% endfor %}
+                            </div>
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <div class="form-group">
+                              <label for="edit-name">Pavarde</label>
+                              {{ form.last_name(id="edit-name", class="form-control") }}
+                              {% for
+                                message in
+                                get_flashed_messages(category_filter=['user_update_last_name_error' + user.id|string])
+                                %}
+                                {{ message }}
+                              {% endfor %}
+                            </div>
+                            <div class="form-group">
+                              <label for="edit-email">El. paštas</label>
+                              {{ form.email(id="edit-name", class="form-control") }}
+                              {% for
+                                message in
+                                get_flashed_messages(category_filter=['user_update_email_error' + user.id|string])
+                                %}
+                                {{ message }}
+                              {% endfor %}
+                              {% for message in
+                                get_flashed_messages(category_filter=['user_update_exists_error' + user.id|string]) %}
+                                {{
+                                message }}
+                              {% endfor %}
+                            </div>
+                            <div class="form-group">
+                              <label for="edit-name">Password</label>
+                              {{ form.password(id="edit-name", class="form-control") }}
+                              {% for
+                                message in
+                                get_flashed_messages(category_filter=['user_update_password_error' + user.id|string])
+                                %}
+                                {{ message }}
+                              {% endfor %}
+                            </div>
+                            <div class="form-group">
+                              <label for="edit-role">Vaidmuo</label>
+                              {{ form.role(class="form-control", id="edit-role") }}
+                              {% for
+                                message in
+                                get_flashed_messages(category_filter=['user_update_role_error' + user.id|string]) %}
+                                {{
+                                message }}
+                              {% endfor %}
+                            </div>
+                            <div class="form-group">
+                              <label for="edit-program">Studijų programa</label>
+                              <div class="select-dropdown">
+                                {{ form.program(class="form-control", id="edit-program") }}
+                                {% for message in
+                                  get_flashed_messages(category_filter=['user_update_program_error' + user.id|string]) %}
+                                  {{
+                                  message }}
+                                {% endfor %}
+                              </div>
+                            </div>
+                            {# <div class="form-group">
+<label for="edit-group">Grupė</label>
+<input type="text" id="edit-group" class="form-control" />
+</div> #}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Atšaukti</button>
+                            {{ form.submit(class="btn btn-primary") }}
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {# #} {# ISTRINTI ADMIN STUD DEST #} {# #}
+                  <div class="modal fade"
+                       id="removeModuleModal{{ user.id }}"
+                       tabindex="-1"
+                       aria-labelledby="editModuleModalLabel"
+                       aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="editModuleModalLabel">Trinti vartotoją</h5>
+                          <button type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">Ar tikrai norite istrinti vartotoja?</div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Atšaukti</button>
+                          <form action="{{ url_for('panel_superadmin_delete_user') }}" method="post">
+                            <button type="submit"
+                                    value="{{ user.id }}"
+                                    name="user_id"
+                                    class="btn btn-primary">Istrinti</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      {# #} {# PRIDETI MODULE #} {# #}
+      {# #} {# PRIDETI VARTOTOJA #} {# #}
       <div class="modal fade"
            id="addModuleModal"
            tabindex="-1"
-           aria-labelledby="editUserModalLabel"
+           aria-labelledby="editModuleModalLabel"
            aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="editUserModalLabel">Redaguoti vartotoją</h5>
+              <h5 class="modal-title" id="editModalLabel">Redaguoti vartotoją</h5>
               <button type="button"
                       class="btn-close"
                       data-bs-dismiss="modal"
                       aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <form id="editUserForm">
+            <form id="editUserForm"
+                  method="post"
+                  action='{{ url_for("panel_superadmin_create_user") }}'>
+              <div class="modal-body">
+                {{ form.hidden_tag() }}
                 <div class="form-group">
                   <label for="edit-name">Vardas</label>
-                  <input type="text" id="edit-name" class="form-control" required />
+                  {{ form.name(id="edit-name", class="form-control") }}
+                  {% for
+                    message in
+                    get_flashed_messages(category_filter=['user_name_error']) %}
+                    {{
+                    message }}
+                  {% endfor %}
+                </div>
+                <div class="form-group">
+                  <label for="edit-name">Pavardė</label>
+                  {{ form.last_name(id="edit-name", class="form-control") }}
+                  {% for
+                    message in
+                    get_flashed_messages(category_filter=['user_last_name_error'])
+                    %}
+                    {{ message }}
+                  {% endfor %}
                 </div>
                 <div class="form-group">
                   <label for="edit-email">El. paštas</label>
-                  <input type="email" id="edit-email" class="form-control" required />
+                  {{ form.email(id="edit-email", class="form-control") }}
+                  {% for
+                    message in
+                    get_flashed_messages(category_filter=['user_email_error']) %}
+                    {{
+                    message }}
+                  {% endfor %}
+                  {% for message in
+                    get_flashed_messages(category_filter=['user_exists_error']) %}
+                    {{
+                    message }}
+                  {% endfor %}
+                </div>
+                <div class="form-group">
+                  <label for="edit-email">Slaptažodis</label>
+                  {{ form.password(id="edit-email", class="form-control") }}
+                  {% for
+                    message in
+                    get_flashed_messages(category_filter=['user_password_error']) %}
+                    {{
+                    message }}
+                  {% endfor %}
                 </div>
                 <div class="form-group">
                   <label for="edit-role">Vaidmuo</label>
-                  <select id="edit-role" class="form-control">
-                    <option value="student">Studentas</option>
-                    <option value="teacher">Dėstytojas</option>
-                    <option value="admin">Administratorius</option>
-                  </select>
+                  {{ form.role(class="form-control", id="edit-role") }}
+                  {% for
+                    message in
+                    get_flashed_messages(category_filter=['user_role_error']) %}
+                    {{
+                    message }}
+                  {% endfor %}
                 </div>
                 <div class="form-group">
                   <label for="edit-program">Studijų programa</label>
-                  <div class="select-dropdown">
-                    <select id="edit-program" class="form-control" multiple>
-                      <option value="software-engineering">Programinės įrangos inžinerija</option>
-                      <option value="big-data-analytics">Didžiųjų duomenų analitika</option>
-                    </select>
-                  </div>
+                  <div class="select-dropdown">{{ form.program(class="form-control", id="edit-program") }}</div>
+                  {% for message in
+                    get_flashed_messages(category_filter=['user_program_error']) %}
+                    {{
+                    message }}
+                  {% endfor %}
                 </div>
                 <div class="form-group">
-                  <label for="edit-group">Grupė</label>
-                  <input type="text" id="edit-group" class="form-control" />
+                  {# <label for="edit-group">Grupė</label>
+              <input type="text" id="edit-group" class="form-control" /> #}
                 </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Atšaukti</button>
-              <button type="button" class="btn btn-primary">Išsaugoti</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      {# #} {# ISTRINTI MODULE #} {# #}
-      <div class="modal fade"
-           id="removeModuleModal"
-           tabindex="-1"
-           aria-labelledby="editUserModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editUserModalLabel">Trinti vartotoją</h5>
-              <button type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"></button>
-            </div>
-            <div class="modal-body">Ar tikrai norite istrinti vartotoja?</div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Atšaukti</button>
-              <button type="button" class="btn btn-primary">Istrinti</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      {# #} {# REDAGUOTI MODULE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #} {# #}
-      <div class="modal fade"
-           id="editModuleModal"
-           tabindex="-1"
-           aria-labelledby="editUserModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editUserModalLabel">Redaguoti vartotoją</h5>
-              <button type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="editUserForm">
-                <div class="form-group">
-                  <label for="edit-name">Vardas</label>
-                  <input type="text" id="edit-name" class="form-control" required />
-                </div>
-                <div class="form-group">
-                  <label for="edit-email">El. paštas</label>
-                  <input type="email" id="edit-email" class="form-control" required />
-                </div>
-                <div class="form-group">
-                  <label for="edit-role">Vaidmuo</label>
-                  <select id="edit-role" class="form-control">
-                    <option value="student">Studentas</option>
-                    <option value="teacher">Dėstytojas</option>
-                    <option value="admin">Administratorius</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="edit-program">Studijų programa</label>
-                  <div class="select-dropdown">
-                    <select id="edit-program" class="form-control" multiple>
-                      <option value="software-engineering">Programinės įrangos inžinerija</option>
-                      <option value="big-data-analytics">Didžiųjų duomenų analitika</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="edit-group">Grupė</label>
-                  <input type="text" id="edit-group" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label for="edit-status">Statusas</label>
-                  <select id="edit-status" class="form-control">
-                    <option value="active">Aktyvus</option>
-                    <option value="inactive">Neaktyvus</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Atšaukti</button>
-              <button type="button" class="btn btn-primary">Išsaugoti</button>
-            </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Atšaukti</button>
+                {{ form.submit(class="btn btn-primary") }}
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -794,7 +880,7 @@
             <div class="card-body">
               <div class="profile-avatar-upload">
                 <div class="profile-avatar">
-                  <img src="{{ url_for('static', filename='images/profile_stock.jpg') }}"
+                  <img src="{{ url_for('static', filename=current_user.profile_picture) }}"
                        width=""
                        height=""
                        alt="Placeholder"
@@ -807,7 +893,19 @@
                     <span>Upload New Photo</span>
                   </label>
                   <div class="profile-avatar-help">JPG, GIF or PNG. Max size 2MB</div>
-                  <input type="file" id="profile-picture" class="file-input" accept="image/*" />
+                  <form action="{{ url_for('upload_file') }}"
+                        method="post"
+                        enctype="multipart/form-data">
+                    <input type="file"
+                           id="profile-picture"
+                           class="file-input"
+                           name="file"
+                           accept="image/*"
+                           onchange="this.form.submit()" />
+                    <span>
+                      {% for message in get_flashed_messages(category_filter=['picture_error']) %}{{ message }}{% endfor %}
+                    </span>
+                  </form>
                 </div>
               </div>
               <form id="profile-form">
@@ -860,7 +958,9 @@
       <!-- Dashboard Section -->
       <div class="dashboard-section" id="dashboard-section">
         <div class="dashboard-content">
-          <h1 class="page-title">Dashboard</h1>
+          <h1 class="page-title">Skydelis</h1>
+          <h3>Sveiki atvykę į administravimo skydelį. Štai jūsų švietimo sistemos apžvalga.</h3>
+          <br>
           <!-- Dashboard Stats Grid -->
           <div class="dashboard-stats-grid">
             <!-- Students Card -->
@@ -880,11 +980,11 @@
                 </svg>
               </div>
               <div class="stats-card-content">
-                <div class="stats-card-value">14</div>
-                <div class="stats-card-label">Students</div>
+                <div class="stats-card-value">{{ students_count }}</div>
+                <div class="stats-card-label">Studentai</div>
               </div>
             </div>
-            <!-- Teachers Card -->
+            <!-- Lecturer Card -->
             <div class="stats-card">
               <div class="stats-card-icon">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -903,8 +1003,31 @@
                 </svg>
               </div>
               <div class="stats-card-content">
-                <div class="stats-card-value">9</div>
-                <div class="stats-card-label">Teachers</div>
+                <div class="stats-card-value">{{ lecturer_count }}</div>
+                <div class="stats-card-label">Dėstytojai</div>
+              </div>
+            </div>
+            <!-- Admin Card -->
+            <div class="stats-card">
+              <div class="stats-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="stats-card-content">
+                <div class="stats-card-value">{{ admin_count }}</div>
+                <div class="stats-card-label">Administratoriai</div>
               </div>
             </div>
             <!-- Available Classes Card -->
@@ -926,56 +1049,25 @@
                 </svg>
               </div>
               <div class="stats-card-content">
-                <div class="stats-card-value">4</div>
-                <div class="stats-card-label">Available Classes</div>
+                <div class="stats-card-value">{{ program_count }}</div>
+                <div class="stats-card-label">Studijų programos</div>
               </div>
             </div>
-            <!-- Parents Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">12</div>
-                <div class="stats-card-label">Parents</div>
-              </div>
+            <!-- Today's Attendance Card
+          <div class="stats-card">
+            <div class="stats-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
             </div>
-            <!-- Today's Attendance Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">0</div>
-                <div class="stats-card-label">Today's Attendance</div>
-              </div>
+            <div class="stats-card-content">
+              <div class="stats-card-value">0</div>
+              <div class="stats-card-label">Today's Attendance</div>
             </div>
+          </div> -->
             <!-- Today's Lectures Card -->
             <div class="stats-card">
               <div class="stats-card-icon">
@@ -993,55 +1085,26 @@
                 </svg>
               </div>
               <div class="stats-card-content">
-                <div class="stats-card-value">3</div>
-                <div class="stats-card-label">Today's Lectures</div>
+                <div class="stats-card-value">KURIAMA</div>
+                <div class="stats-card-label">Grupių skaičius</div>
               </div>
             </div>
             <!-- Pending Assignments Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">5</div>
-                <div class="stats-card-label">Pending Assignments</div>
-              </div>
+            <!-- <div class="stats-card">
+            <div class="stats-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
             </div>
-            <!-- Current GPA Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">3.7</div>
-                <div class="stats-card-label">Current GPA</div>
-              </div>
+            <div class="stats-card-content">
+              <div class="stats-card-value">5</div>
+              <div class="stats-card-label">Pending Assignments</div>
             </div>
+</div> -->
             <!-- Attendance Rate Card -->
             <div class="stats-card">
               <div class="stats-card-icon">
@@ -1058,97 +1121,25 @@
                 </svg>
               </div>
               <div class="stats-card-content">
-                <div class="stats-card-value">92%</div>
-                <div class="stats-card-label">Attendance Rate</div>
-              </div>
-            </div>
-            <!-- Fees Collected Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <line x1="12" y1="1" x2="12" y2="23"></line>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">3600</div>
-                <div class="stats-card-label">Fees Collected</div>
-              </div>
-            </div>
-            <!-- Unpaid Fees Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">2</div>
-                <div class="stats-card-label">Unpaid Fees</div>
+                <div class="stats-card-value">69%</div>
+                <div class="stats-card-label">Lankomumas</div>
               </div>
             </div>
             <!-- Inbox Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">1</div>
-                <div class="stats-card-label">Inbox</div>
-              </div>
+            <!-- <div class="stats-card">
+            <div class="stats-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
             </div>
-            <!-- Notice Card -->
-            <div class="stats-card">
-              <div class="stats-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-              </div>
-              <div class="stats-card-content">
-                <div class="stats-card-value">1</div>
-                <div class="stats-card-label">Notice</div>
-              </div>
+            <div class="stats-card-content">
+              <div class="stats-card-value">1</div>
+              <div class="stats-card-label">Inbox</div>
             </div>
           </div>
-          <!-- Recent Activity and Upcoming Events -->
-          <div class="dashboard-secondary-grid">
+        <br> -->
+            <!-- Recent Activity and Upcoming Events -->
             <!-- Recent Activity Card -->
             <div class="card">
               <div class="card-header">
@@ -1220,10 +1211,7 @@
                     </div>
                     <div class="activity-content">
                       <div class="activity-title">Grade Posted</div>
-                      <div class="activity-description">
-                        You received a grade of A- in "Software Engineering
-                        Principles"
-                      </div>
+                      <div class="activity-description">You received a grade of A- in "Software Engineering Principles"</div>
                       <div class="activity-time">March 18, 2025</div>
                     </div>
                   </div>

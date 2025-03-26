@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Studento bandymo peržiūra{% endblock %}
+
+{% block content %}
+<h2>Studento bandymo peržiūra</h2>
+<h4>{{ test.title }}</h4>
+
+<div class="alert {% if attempt.passed %}alert-success{% else %}alert-danger{% endif %}">
+    <h5>Rezultatas: {{ attempt.score|round(1) }}% {% if attempt.passed %}(Išlaikyta){% else %}(Neišlaikyta){% endif %}</h5>
+    <p><strong>Studentas:</strong> {{ student.name }} {{ student.last_name }}</p>
+    <p><strong>Pradžia:</strong> {{ attempt.start_time.strftime('%Y-%m-%d %H:%M') }} | <strong>Pabaiga:</strong> {{ attempt.end_time.strftime('%Y-%m-%d %H:%M') if attempt.end_time else 'Nebaigta' }}</p>
+    {% if attempt.end_time %}
+        <p><strong>Trukmė:</strong> {{ ((attempt.end_time - attempt.start_time).total_seconds() / 60)|round(0) }} min.</p>
+    {% endif %}
+</div>
+
+<form method="POST">
+    {% for result in results %}
+        <div class="card mb-3">
+            <div class="card-header">Klausimas {{ loop.index }}</div>
+            <div class="card-body">
+                <p class="h5 mb-3">{{ result.question.question_text }}</p>
+                
+                {% if result.question.question_type in ['multiple_choice', 'true_false'] %}
+                    <p><strong>Studento atsakymas:</strong> {% if result.selected_option %}{{ result.selected_option.option_text }}{% else %}Neatsakyta{% endif %}</p>
+                    
+                    <div class="mt-3">
+                        <p><strong>Teisingi atsakymai:</strong></p>
+                        <ul class="list-group">
+                            {% for option in result.correct_options %}
+                                <li class="list-group-item list-group-item-success">
+                                    {{ option.option_text }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    {% if result.answer %}
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="checkbox" 
+                                   id="correct_{{ result.answer.id }}" 
+                                   disabled 
+                                   {% if result.answer.is_correct %}checked{% endif %}>
+                            <label class="form-check-label" for="correct_{{ result.answer.id }}">
+                                Atsakymas teisingas
+                            </label>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <p><strong>Taškai:</strong> {{ result.answer.points_earned|default(0) }} iš {{ result.question.points }}</p>
+                        </div>
+                    {% endif %}
+                {% elif result.question.question_type == 'text' %}
+                    <p><strong>Studento atsakymas:</strong></p>
+                    <div class="alert alert-secondary">
+                        {% if result.text_answer %}
+                            {{ result.text_answer }}
+                        {% else %}
+                            <em>Neatsakyta</em>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mt-3">
+                        <label class="form-label"><strong>Įvertinimas (taškai):</strong></label>
+                        <input type="number" name="grade_{{ result.answer.id }}" 
+                               class="form-control" 
+                               value="{{ result.answer.points_earned if result.answer and result.answer.points_earned is not none else 0 }}" 
+                               min="0" 
+                               max="{{ result.question.points }}" 
+                               step="0.5">
+                        <small class="text-muted">Įveskite taškų skaičių nuo 0 iki {{ result.question.points }}.</small>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    
+    <div class="mt-3 d-flex justify-content-between">
+        <a href="{{ url_for('review_test_attempts', instructor_id=instructor.id, test_id=test.id) }}" class="btn btn-secondary">Grįžti</a>
+        <button type="submit" class="btn btn-primary">Išsaugoti vertinimą</button>
+    </div>
+</form>
+{% endblock %}

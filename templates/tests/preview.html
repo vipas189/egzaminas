@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Testo peržiūra{% endblock %}
+
+{% block content %}
+<h2>Testo peržiūra</h2>
+<h4>{{ test.title }}</h4>
+
+<div class="card mb-3">
+    <div class="card-header">Testo informacija</div>
+    <div class="card-body">
+        <p><strong>Aprašymas:</strong> {{ test.description }}</p>
+        <p><strong>Trukmė:</strong> {{ test.duration }} minutės</p>
+        <p><strong>Išlaikymo riba:</strong> {{ test.passing_score }}%</p>
+        <p><strong>Svoris vertinime:</strong> {{ test.weight }}%</p>
+        <p><strong>Statusas:</strong> 
+            {% if test.is_active %}
+                <span class="badge bg-success">Aktyvus</span>
+            {% else %}
+                <span class="badge bg-secondary">Neaktyvus</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">Klausimai</div>
+    <div class="card-body">
+        {% if questions %}
+            <ol>
+                {% for question in questions %}
+                    <li class="mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <p><strong>{{ question.question_text }}</strong></p>
+                                <p><small>Tipas: 
+                                    {% if question.question_type == 'multiple_choice' %}
+                                        Keli pasirinkimai
+                                    {% elif question.question_type == 'true_false' %}
+                                        Tiesa/Netiesa
+                                    {% else %}
+                                        Tekstinis atsakymas
+                                    {% endif %}
+                                </small></p>
+                                <p><small>Taškai: {{ question.points }}</small></p>
+                                
+                                {% if question.question_type != 'text' %}
+                                    <ul class="list-group">
+                                        {% for option in question.options %}
+                                            <li class="list-group-item {% if option.is_correct %}list-group-item-success{% endif %}">
+                                                {{ option.option_text }}
+                                                {% if option.is_correct %}<span class="badge bg-success">Teisingai</span>{% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <div class="alert alert-info">Tekstinis atsakymas (vertina dėstytojas)</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <div class="alert alert-warning">Šis testas neturi klausimų.</div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-3">
+    {% if test.instructor_id %}
+        <a href="{{ url_for('instructor_tests', instructor_id=test.instructor_id) }}" class="btn btn-secondary">Grįžti</a>
+    {% else %}
+        <a href="{{ url_for('list_tests') }}" class="btn btn-secondary">Grįžti</a>
+    {% endif %}
+</div>
+{% endblock %}

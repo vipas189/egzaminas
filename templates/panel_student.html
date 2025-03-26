@@ -29,7 +29,7 @@
       <div class="user-details">
         <h3 class="user-name">{{ current_user.name }} {{ current_user.last_name }}</h3>
         <p class="user-info">{{ current_user.program.name }}</p>
-        <p class="user-info">Studentas ID: KU20210123</p>
+        <p class="user-info">Studentas</p>
       </div>
     </div>
     <!-- Black and White Icon Navigation Menu -->
@@ -104,7 +104,9 @@
     </ul>
     <li class="nav-title"></li>
     <div class="nav-item">
-      <a href="{{ url_for('panel_student_logout') }}" class="nav-link">
+      <a href="#"
+         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+         class="nav-link">
         <span class="nav-link-icon">
           <svg xmlns="http://www.w3.org/2000/svg"
                width="20"
@@ -122,6 +124,11 @@
         </span>
         <span>Logout</span>
       </a>
+      <form id="logout-form"
+            action="{{ url_for('panel_student_logout') }}"
+            method="post"
+            class="none">
+      </form>
     </div>
   </div>
   <!-- Main Content -->
@@ -709,6 +716,9 @@
                          name="file"
                          accept="image/*"
                          onchange="this.form.submit()" />
+                  <span>
+                    {% for message in get_flashed_messages(category_filter=['picture_error']) %}{{ message }}{% endfor %}
+                  </span>
                 </form>
               </div>
             </div>

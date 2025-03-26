@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block title %}Testo klausimai{% endblock %}
+
+{% block content %}
+<h2>Testo klausimų redagavimas</h2>
+<h4>Testas: {{ test.title }}</h4>
+
+<div id="questions-editor" class="mb-3">
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <span>Klausimai</span>
+            <button type="button" class="btn btn-primary btn-sm" id="add-question">Pridėti klausimą</button>
+        </div>
+        <div class="card-body">
+            <div id="questions-container">
+                <!-- Esami klausimai bus pridėti čia -->
+                {% for question in questions %}
+                <div class="card mb-3 question-card" data-id="{{ question.id }}">
+                    <div class="card-header d-flex justify-content-between">
+                        <span>Klausimas #{{ loop.index }}</span>
+                        <button type="button" class="btn btn-danger btn-sm remove-question">Pašalinti</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Klausimo tekstas</label>
+                            <textarea class="form-control question-text" rows="2">{{ question.question_text }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Klausimo tipas</label>
+                            <select class="form-select question-type">
+                                <option value="multiple_choice" {% if question.question_type == 'multiple_choice' %}selected{% endif %}>Keli pasirinkimai</option>
+                                <option value="true_false" {% if question.question_type == 'true_false' %}selected{% endif %}>Tiesa/Netiesa</option>
+                                <option value="text" {% if question.question_type == 'text' %}selected{% endif %}>Tekstinis atsakymas</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Taškai</label>
+                            <input type="number" class="form-control question-points" value="{{ question.points }}" min="1">
+                        </div>
+                        
+                        <div class="options-container">
+                            <label class="form-label">Atsakymo variantai</label>
+                            {% for option in question.options %}
+                            <div class="input-group mb-2 option-group">
+                                <div class="input-group-text">
+                                    <input type="checkbox" class="option-correct" {% if option.is_correct %}checked{% endif %}>
+                                </div>
+                                <input type="text" class="form-control option-text" value="{{ option.option_text }}">
+                                <button type="button" class="btn btn-outline-danger remove-option">-</button>
+                            </div>
+                            {% endfor %}
+                            
+                            <button type="button" class="btn btn-outline-secondary btn-sm add-option">Pridėti variantą</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="mt-3">
+                <button type="button" id="save-questions" class="btn btn-success">Išsaugoti klausimus</button>
+                <a href="{{ url_for('instructor_tests', instructor_id=test.instructor_id) }}" class="btn btn-secondary">Grįžti</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Šablonas naujam klausimui -->
+<template id="question-template">
+    <div class="card mb-3 question-card">
+        <div class="card-header d-flex justify-content-between">
+            <span>Naujas klausimas</span>
+            <button type="button" class="btn btn-danger btn-sm remove-question">Pašalinti</button>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Klausimo tekstas</label>
+                <textarea class="form-control question-text" rows="2"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Klausimo tipas</label>
+                <select class="form-select question-type">
+                    <option value="multiple_choice">Keli pasirinkimai</option>
+                    <option value="true_false">Tiesa/Netiesa</option>
+                    <option value="text">Tekstinis atsakymas</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Taškai</label>
+                <input type="number" class="form-control question-points" value="1" min="1">
+            </div>
+            
+            <div class="options-container">
+                <label class="form-label">Atsakymo variantai</label>
+                <div class="input-group mb-2 option-group">
+                    <div class="input-group-text">
+                        <input type="checkbox" class="option-correct">
+                    </div>
+                    <input type="text" class="form-control option-text" placeholder="Atsakymo variantas">
+                    <button type="button" class="btn btn-outline-danger remove-option">-</button>
+                </div>
+                <div class="input-group mb-2 option-group">
+                    <div class="input-group-text">
+                        <input type="checkbox" class="option-correct">
+                    </div>
+                    <input type="text" class="form-control option-text" placeholder="Atsakymo variantas">
+                    <button type="button" class="btn btn-outline-danger remove-option">-</button>
+                </div>
+                
+                <button type="button" class="btn btn-outline-secondary btn-sm add-option">Pridėti variantą</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Šablonas naujo varianto įvesties grupei -->
+<template id="option-template">
+    <div class="input-group mb-2 option-group">
+        <div class="input-group-text">
+            <input type="checkbox" class="option-correct">
+        </div>
+        <input type="text" class="form-control option-text" placeholder="Atsakymo variantas">
+        <button type="button" class="btn btn-outline-danger remove-option">-</button>
+    </div>
+</template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const questionsContainer = document.getElementById('questions-container');
+    const addQuestionBtn = document.getElementById('add-question');
+    const saveQuestionsBtn = document.getElementById('save-questions');
+    
+    // Klausimo pridėjimas
+    addQuestionBtn.addEventListener('click', function() {
+        const template = document.getElementById('question-template');
+        const clone = document.importNode(template.content, true);
+        
+        // Nustatyti klausimo numerį
+        const questionCount = document.querySelectorAll('.question-card').length + 1;
+        clone.querySelector('.card-header span').textContent = `Klausimas #${questionCount}`;
+        
+        // Pridėti įvykių klausytojus naujam klausimui
+        setupQuestionListeners(clone);
+        
+        questionsContainer.appendChild(clone);
+    });
+    
+    // Klausimų išsaugojimas
+    saveQuestionsBtn.addEventListener('click', function() {
+        const questions = [];
+        
+        document.querySelectorAll('.question-card').forEach(function(card) {
+            const questionText = card.querySelector('.question-text').value;
+            const questionType = card.querySelector('.question-type').value;
+            const points = parseInt(card.querySelector('.question-points').value) || 1;
+            
+            if (!questionText) {
+                alert('Visi klausimai turi turėti tekstą');
+                return;
+            }
+            
+            const options = [];
+            
+            if (questionType !== 'text') {
+                card.querySelectorAll('.option-group').forEach(function(optionGroup) {
+                    const optionText = optionGroup.querySelector('.option-text').value;
+                    const isCorrect = optionGroup.querySelector('.option-correct').checked;
+                    
+                    if (optionText) {
+                        options.push({
+                            text: optionText,
+                            is_correct: isCorrect
+                        });
+                    }
+                });
+                
+                if (options.length < 2) {
+                    alert('Klausimai turi turėti bent 2 atsakymo variantus');
+                    return;
+                }
+                
+                if (questionType === 'multiple_choice' && !options.some(o => o.is_correct)) {
+                    alert('Bent vienas atsakymo variantas turi būti pažymėtas kaip teisingas');
+                    return;
+                }
+            }
+            
+            questions.push({
+                id: card.dataset.id, // Gali būti undefined naujiems klausimams
+                text: questionText,
+                type: questionType,
+                points: points,
+                options: options
+            });
+        });
+        
+        if (questions.length === 0) {
+            alert('Pridėkite bent vieną klausimą');
+            return;
+        }
+        
+        // Siųsti klausimus į serverį
+        fetch(`/tests/{{ test.id }}/questions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ questions: questions }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Klausimai išsaugoti sėkmingai!');
+                window.location.reload();
+            } else {
+                alert('Klaida išsaugant klausimus: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Įvyko klaida: ' + error);
+        });
+    });
+    
+    // Pridėti įvykių klausytojus esamiems klausimams
+    document.querySelectorAll('.question-card').forEach(function(card) {
+        setupQuestionListeners(card);
+    });
+    
+    function setupQuestionListeners(element) {
+        // Klausimo šalinimas
+        element.querySelector('.remove-question').addEventListener('click', function() {
+            if (confirm('Ar tikrai norite pašalinti šį klausimą?')) {
+                this.closest('.question-card').remove();
+                
+                // Atnaujinti klausimų numeraciją
+                document.querySelectorAll('.question-card').forEach(function(card, index) {
+                    card.querySelector('.card-header span').textContent = `Klausimas #${index + 1}`;
+                });
+            }
+        });
+        
+        // Varianto pridėjimas
+        element.querySelector('.add-option').addEventListener('click', function() {
+            const optionsContainer = this.closest('.options-container');
+            const template = document.getElementById('option-template');
+            const clone = document.importNode(template.content, true);
+            
+            // Pridėti įvykių klausytojus naujam variantui
+            setupOptionListeners(clone);
+            
+            optionsContainer.insertBefore(clone, this);
+        });
+        
+        // Klausimo tipo pasikeitimas
+        const questionTypeSelect = element.querySelector('.question-type');
+        questionTypeSelect.addEventListener('change', function() {
+            const optionsContainer = this.closest('.card-body').querySelector('.options-container');
+            
+            if (this.value === 'text') {
+                optionsContainer.style.display = 'none';
+            } else if (this.value === 'true_false') {
+                optionsContainer.style.display = 'block';
+                
+                // Išvalyti esamus variantus
+                const addOptionBtn = optionsContainer.querySelector('.add-option');
+                while (optionsContainer.querySelector('.option-group')) {
+                    optionsContainer.querySelector('.option-group').remove();
+                }
+                
+                // Pridėti Tiesa/Netiesa variantus
+                const template = document.getElementById('option-template');
+                
+                // Tiesa
+                const trueOption = document.importNode(template.content, true);
+                trueOption.querySelector('.option-text').value = 'Tiesa';
+                setupOptionListeners(trueOption);
+                optionsContainer.insertBefore(trueOption, addOptionBtn);
+                
+                // Netiesa
+                const falseOption = document.importNode(template.content, true);
+                falseOption.querySelector('.option-text').value = 'Netiesa';
+                setupOptionListeners(falseOption);
+                optionsContainer.insertBefore(falseOption, addOptionBtn);
+                
+                // Paslėpti pridėjimo mygtuką
+                addOptionBtn.style.display = 'none';
+            } else {
+                optionsContainer.style.display = 'block';
+                optionsContainer.querySelector('.add-option').style.display = 'block';
+                
+                // Jei nėra variantų, pridėti 2 tuščius
+                if (!optionsContainer.querySelector('.option-group')) {
+                    const template = document.getElementById('option-template');
+                    
+                    for (let i = 0; i < 2; i++) {
+                        const option = document.importNode(template.content, true);
+                        setupOptionListeners(option);
+                        optionsContainer.insertBefore(option, optionsContainer.querySelector('.add-option'));
+                    }
+                }
+            }
+        });
+        
+        // Pridėti įvykių klausytojus esamiems variantams
+        element.querySelectorAll('.option-group').forEach(function(optionGroup) {
+            setupOptionListeners(optionGroup);
+        });
+    }
+    
+    function setupOptionListeners(element) {
+        // Varianto šalinimas
+        element.querySelector('.remove-option').addEventListener('click', function() {
+            const optionsContainer = this.closest('.options-container');
+            const optionGroups = optionsContainer.querySelectorAll('.option-group');
+            
+            // Neleisti pašalinti varianto, jei tai būtų paskutinis likęs
+            if (optionGroups.length <= 2 && optionsContainer.closest('.card-body').querySelector('.question-type').value !== 'text') {
+                alert('Klausimas turi turėti bent 2 variantus');
+                return;
+            }
+            
+            this.closest('.option-group').remove();
+        });
+    }
+});
+</script>
+{% endblock %}

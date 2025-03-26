@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Testo rezultatai{% endblock %}
+
+{% block content %}
+<h2>Testo rezultatai</h2>
+<h4>{{ test.title }}</h4>
+
+<div class="alert {% if attempt.passed %}alert-success{% else %}alert-danger{% endif %}">
+    <h5>Rezultatas: {{ attempt.score|round(1) }}% {% if attempt.passed %}(Išlaikyta){% else %}(Neišlaikyta){% endif %}</h5>
+    <p><strong>Studentas:</strong> {{ student.name }} {{ student.last_name }}</p>
+    <p><strong>Pradžia:</strong> {{ attempt.start_time.strftime('%Y-%m-%d %H:%M') }} | <strong>Pabaiga:</strong> {{ attempt.end_time.strftime('%Y-%m-%d %H:%M') }}</p>
+    <p><strong>Trukmė:</strong> {{ ((attempt.end_time - attempt.start_time).total_seconds() / 60)|round(0) }} min.</p>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">Klausimų rezultatai</div>
+    <div class="card-body">
+        {% for result in results %}
+            <div class="card mb-3 {% if result.is_correct %}border-success{% elif result.is_correct is defined and not result.is_correct %}border-danger{% else %}border-warning{% endif %}">
+                <div class="card-header d-flex justify-content-between">
+                    <span>Klausimas {{ loop.index }}</span>
+                    <span>{{ result.points_earned|default(0) }} / {{ result.max_points }} taškų</span>
+                </div>
+                <div class="card-body">
+                    <p class="h5 mb-3">{{ result.question.question_text }}</p>
+                    
+                    {% if result.question.question_type in ['multiple_choice', 'true_false'] %}
+                        <p><strong>Jūsų atsakymas:</strong> {% if result.selected_option %}{{ result.selected_option.option_text }}{% else %}Neatsakyta{% endif %}</p>
+                        
+                        <div class="mt-3">
+                            <p><strong>Visi galimi variantai:</strong></p>
+                            <ul class="list-group">
+                                {% for option in result.question.options %}
+                                    <li class="list-group-item 
+                                        {% if option.is_correct %}list-group-item-success{% endif %}
+                                        {% if result.selected_option and result.selected_option.id == option.id and not option.is_correct %}list-group-item-danger{% endif %}">
+                                        {{ option.option_text }}
+                                        {% if option.is_correct %}<span class="badge bg-success">Teisinga</span>{% endif %}
+                                        {% if result.selected_option and result.selected_option.id == option.id %}
+                                            <span class="badge bg-primary">Jūsų pasirinkimas</span>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% elif result.question.question_type == 'text' %}
+                        <p><strong>Jūsų atsakymas:</strong></p>
+                        <div class="alert alert-secondary">
+                            {% if result.text_answer %}
+                                {{ result.text_answer }}
+                            {% else %}
+                                <em>Neatsakyta</em>
+                            {% endif %}
+                        </div>
+                        
+                        {% if result.points_earned is not none %}
+                            <div class="alert alert-info">
+                                <p><strong>Vertinimas:</strong> {{ result.points_earned }} iš {{ result.max_points }} taškų</p>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                <p>Šis atsakymas dar neįvertintas dėstytojo.</p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mt-3">
+    <a href="{{ url_for('student_tests', student_id=student.id) }}" class="btn btn-secondary">Grįžti į testų sąrašą</a>
+</div>
+{% endblock %}

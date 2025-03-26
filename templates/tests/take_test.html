@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Testo sprendimas{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{ test.title }}</h2>
+    <div id="timer" class="badge bg-primary fs-5 p-2"></div>
+</div>
+
+<div class="alert alert-info">
+    <p><strong>Studentas:</strong> {{ student.name }} {{ student.last_name }}</p>
+    <p><strong>Modulis:</strong> {{ test.module.name }}</p>
+    <p><strong>Trukmė:</strong> {{ test.duration }} min. | <strong>Išlaikymo riba:</strong> {{ test.passing_score }}%</p>
+</div>
+
+<form method="POST" id="test-form">
+    <div class="progress mb-3">
+        <div class="progress-bar" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+    </div>
+
+    {% for question in questions %}
+        <div class="card mb-3">
+            <div class="card-header">Klausimas {{ loop.index }} iš {{ questions|length }}</div>
+            <div class="card-body">
+                <p class="h5 mb-3">{{ question.question_text }}</p>
+                
+                {% if question.question_type == 'multiple_choice' %}
+                    {% for option in question.options %}
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="question_{{ question.id }}" 
+                                   id="option_{{ option.id }}" value="{{ option.id }}"
+                                   {% if user_answers and user_answers[question.id] == option.id %}checked{% endif %}>
+                            <label class="form-check-label" for="option_{{ option.id }}">
+                                {{ option.option_text }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                {% elif question.question_type == 'true_false' %}
+                    {% for option in question.options %}
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="question_{{ question.id }}" 
+                                   id="option_{{ option.id }}" value="{{ option.id }}"
+                                   {% if user_answers and user_answers[question.id] == option.id %}checked{% endif %}>
+                            <label class="form-check-label" for="option_{{ option.id }}">
+                                {{ option.option_text }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                {% elif question.question_type == 'text' %}
+                    <div class="mb-3">
+                        <textarea class="form-control" name="question_{{ question.id }}" rows="3">{% if user_answers and question.id in user_answers %}{{ user_answers[question.id] }}{% endif %}</textarea>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    
+    <div class="d-flex justify-content-between mb-3">
+        <button type="submit" name="save_answers" class="btn btn-primary">Išsaugoti atsakymus</button>
+        <button type="submit" name="finish_test" class="btn btn-success" onclick="return confirm('Ar tikrai norite baigti testą? Po patvirtinimo negalėsite grįžti prie atsakymų.')">Baigti testą</button>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Testas baigsis po {{ time_remaining }} sekundžių
+    let timeRemaining = {{ time_remaining }};
+    const timerElement = document.getElementById('timer');
+    const progressBar = document.getElementById('progress-bar');
+    const totalQuestions = {{ questions|length }};
+    
+    // Funkcija atnaujinti laikmačiui
+    function updateTimer() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        
+        timerElement.textContent = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+        
+        if (timeRemaining <= 300) { // 5 minutės
+            timerElement.classList.remove('bg-primary');
+            timerElement.classList.add('bg-danger');
+        }
+        
+        timeRemaining--;
+        
+        if (timeRemaining < 0) {
+            // Laikas baigėsi, automatiškai siųsti formą
+            document.getElementById('test-form').submit();
+        } else {
+            setTimeout(updateTimer, 1000);
+        }
+    }
+    
+    // Funkcija atnaujinti progreso juostai
+    function updateProgressBar() {
+        const answeredCount = document.querySelectorAll('input[type="radio"]:checked, textarea:not(:placeholder-shown)').length;
+        const progress = Math.round((answeredCount / totalQuestions) * 100);
+        
+        progressBar.style.width = progress + "%";
+        progressBar.textContent = progress + "%";
+        progressBar.setAttribute('aria-valuenow', progress);
+    }
+    
+    // Pradėti laikmatį
+    updateTimer();
+    
+    // Atnaujinti progreso juostą
+    updateProgressBar();
+    
+    // Stebėti atsakymų pasikeitimus
+    document.querySelectorAll('input[type="radio"], textarea').forEach(function(element) {
+        element.addEventListener('change', updateProgressBar);
+    });
+    
+    // Taip pat stebėti tekstinių atsakymų įvestis
+    document.querySelectorAll('textarea').forEach(function(element) {
+        element.addEventListener('input', updateProgressBar);
+    });
+});
+</script>
+{% endblock %}

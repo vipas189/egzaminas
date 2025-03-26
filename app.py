@@ -2,8 +2,6 @@ from flask import Flask, redirect, url_for
 from config import Config
 from extensions import db, migrate, login_manager
 from routes.__init__ import routes
-from liveserver import LiveServer
-from livereload import Server
 from models.assessments_model import Assessment
 from models.exam_mode import Exam
 from models.groups import Groups
@@ -16,8 +14,6 @@ from models.student_grade import StudentGrade
 from models.users import Users
 
 app = Flask(__name__)
-_ = LiveServer(app)
-server = Server(app)
 app.config.from_object(Config)
 db.init_app(app)
 migrate.init_app(app, db)
@@ -40,6 +36,7 @@ def load_user(user_id):
             email=Config.ADMIN_EMAIL,
             password=Config.ADMIN_PASSWORD_HASH,
             role=Config.ADMIN_ROLE,
+            profile_picture=Config.ADMIN_PROFILE_PICTURE,
         )
     return db.session.get(Users, int(user_id))
 
@@ -48,4 +45,4 @@ routes(app)
 
 
 if __name__ == "__main__":
-    server.serve(debug=True)
+    app.run(debug=True)

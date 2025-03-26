@@ -9,7 +9,7 @@ def panel_student_route(app):
     def panel_student():
         return render_template("panel_student.html")
 
-    @app.route("/panel/student/logout")
+    @app.route("/panel/student/logout", methods=["POST"])
     @login_role_required("student")
     def panel_student_logout():
         logout_user()
