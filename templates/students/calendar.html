@@ -1,168 +1,164 @@
 {% extends "base.html" %}
-{% block title %}
-  Asmeninis kalendorius
-{% endblock title %}
+
+{% block title %}Asmeninis kalendorius{% endblock %}
+
 {% block content %}
-  <h2>Asmeninis kalendorius - {{ student.name }} {{ student.last_name }}</h2>
-  <a href="{{ url_for('view_student', id=student.id) }}"
-     class="btn btn-secondary mb-3">Grįžti</a>
-  <a href="{{ url_for('select_modules', id=student.id) }}"
-     class="btn btn-primary mb-3">Keisti modulius</a>
-  <div class="row">
+<h2>Asmeninis kalendorius - {{ student.name }} {{ student.last_name }}</h2>
+<a href="{{ url_for('view_student', id=student.id) }}" class="btn btn-secondary mb-3">Grįžti</a>
+<a href="{{ url_for('select_modules', id=student.id) }}" class="btn btn-primary mb-3">Keisti modulius</a>
+
+<div class="row">
     <div class="col-md-4">
-      <div class="card mb-3">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-          <span>Užsiėmimai</span>
-          <span class="badge bg-light text-dark">{{ schedules|length }}</span>
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <span>Užsiėmimai</span>
+                <span class="badge bg-light text-dark">{{ schedules|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if schedules %}
+                    <ul class="list-group">
+                        {% for schedule in schedules %}
+                            <li class="list-group-item">
+                                <strong>{{ schedule.title }}</strong><br>
+                                {{ schedule.module }}<br>
+                                {{ schedule.day }} {{ schedule.start_time.strftime('%H:%M') }}-{{ schedule.end_time.strftime('%H:%M') }}
+                                {% if schedule.location %}
+                                    <br><i class="bi bi-geo-alt"></i> {{ schedule.location }}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nėra užsiėmimų.</p>
+                {% endif %}
+            </div>
         </div>
-        <div class="card-body">
-          {% if schedules %}
-            <ul class="list-group">
-              {% for schedule in schedules %}
-                <li class="list-group-item">
-                  <strong>{{ schedule.title }}</strong>
-                  <br>
-                  {{ schedule.module }}
-                  <br>
-                  {{ schedule.day }} {{ schedule.start_time.strftime("%H:%M") }}-{{ schedule.end_time.strftime("%H:%M") }}
-                  {% if schedule.location %}
-                    <br>
-                    <i class="bi bi-geo-alt"></i> {{ schedule.location }}
-                  {% endif %}
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p class="text-muted">Nėra užsiėmimų.</p>
-          {% endif %}
-        </div>
-      </div>
     </div>
+    
     <div class="col-md-4">
-      <div class="card mb-3">
-        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-          <span>Atsiskaitymai</span>
-          <span class="badge bg-light text-dark">{{ assessments|length }}</span>
+        <div class="card mb-3">
+            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                <span>Atsiskaitymai</span>
+                <span class="badge bg-light text-dark">{{ assessments|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if assessments %}
+                    <ul class="list-group">
+                        {% for assessment in assessments|sort(attribute='date') %}
+                            <li class="list-group-item {% if assessment.date and assessment.date < today %}text-decoration-line-through{% endif %}">
+                                <strong>{{ assessment.title }}</strong><br>
+                                {{ assessment.module }}<br>
+                                {% if assessment.date %}
+                                    <span {% if assessment.date < today %}class="text-muted"{% elif assessment.date < tomorrow %}class="text-danger"{% endif %}>
+                                        {{ assessment.date.strftime('%Y-%m-%d') }}
+                                        {% if assessment.start_time %}
+                                            {{ assessment.start_time.strftime('%H:%M') }}
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nėra atsiskaitymų.</p>
+                {% endif %}
+            </div>
         </div>
-        <div class="card-body">
-          {% if assessments %}
-            <ul class="list-group">
-              {% for assessment in assessments|sort(attribute='date') %}
-                <li class="list-group-item {% if assessment.date and assessment.date < today %}text-decoration-line-through{% endif %}">
-                  <strong>{{ assessment.title }}</strong>
-                  <br>
-                  {{ assessment.module }}
-                  <br>
-                  {% if assessment.date %}
-                    <span {% if assessment.date < today %}class="text-muted"{% elif assessment.date < tomorrow %}class="text-danger"{% endif %}>
-                      {{ assessment.date.strftime("%Y-%m-%d") }}
-                      {% if assessment.start_time %}
-                        {{ assessment.start_time.strftime("%H:%M") }}
-                      {% endif %}
-                    </span>
-                  {% endif %}
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p class="text-muted">Nėra atsiskaitymų.</p>
-          {% endif %}
-        </div>
-      </div>
     </div>
+    
     <div class="col-md-4">
-      <div class="card mb-3">
-        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-          <span>Egzaminai</span>
-          <span class="badge bg-light text-dark">{{ exams|length }}</span>
+        <div class="card mb-3">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <span>Egzaminai</span>
+                <span class="badge bg-light text-dark">{{ exams|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if exams %}
+                    <ul class="list-group">
+                        {% for exam in exams|sort(attribute='date') %}
+                            <li class="list-group-item {% if exam.date and exam.date < today %}text-decoration-line-through{% endif %}">
+                                <strong>{{ exam.title }}</strong><br>
+                                {{ exam.module }}<br>
+                                {% if exam.date %}
+                                    <span {% if exam.date < today %}class="text-muted"{% elif exam.date < week_from_now %}class="text-danger"{% endif %}>
+                                        {{ exam.date.strftime('%Y-%m-%d') }}
+                                        {% if exam.start_time %}
+                                            {{ exam.start_time.strftime('%H:%M') }}
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                                {% if exam.location %}
+                                    <br><i class="bi bi-geo-alt"></i> {{ exam.location }}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nėra egzaminų.</p>
+                {% endif %}
+            </div>
         </div>
-        <div class="card-body">
-          {% if exams %}
-            <ul class="list-group">
-              {% for exam in exams|sort(attribute='date') %}
-                <li class="list-group-item {% if exam.date and exam.date < today %}text-decoration-line-through{% endif %}">
-                  <strong>{{ exam.title }}</strong>
-                  <br>
-                  {{ exam.module }}
-                  <br>
-                  {% if exam.date %}
-                    <span {% if exam.date < today %}class="text-muted"{% elif exam.date < week_from_now %}class="text-danger"{% endif %}>
-                      {{ exam.date.strftime("%Y-%m-%d") }}
-                      {% if exam.start_time %}
-                        {{ exam.start_time.strftime("%H:%M") }}
-                      {% endif %}
-                    </span>
-                  {% endif %}
-                  {% if exam.location %}
-                    <br>
-                    <i class="bi bi-geo-alt"></i> {{ exam.location }}
-                  {% endif %}
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p class="text-muted">Nėra egzaminų.</p>
-          {% endif %}
-        </div>
-      </div>
     </div>
-  </div>
-  <div class="card mt-3">
+</div>
+
+<div class="card mt-3">
     <div class="card-header">Kalendoriaus atsiskaitymų chronologija</div>
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Modulis</th>
-              <th>Tipas</th>
-              <th>Pavadinimas</th>
-              <th>Aprašymas</th>
-              <th>Vieta</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% set all_events = [] %}
-            {% for assessment in assessments %}
-              {% set _ = all_events.append({
-                              'date': assessment.date,
-                              'module': assessment.module,
-                              'type': 'Atsiskaitymas',
-                              'title': assessment.title,
-                              'description': assessment.description,
-                              'location': ''
-                            }) %}
-            {% endfor %}
-            {% for exam in exams %}
-              {% set _ = all_events.append({
-                              'date': exam.date,
-                              'module': exam.module,
-                              'type': 'Egzaminas',
-                              'title': exam.title,
-                              'description': exam.description,
-                              'location': exam.location
-                            }) %}
-            {% endfor %}
-            {% for event in all_events|sort(attribute='date') %}
-              <tr class="{% if event.date and event.date < today %}text-muted{% elif event.date and event.date < tomorrow %}table-danger{% elif event.type == 'Egzaminas' %}table-warning{% endif %}">
-                <td>{{ event.date.strftime("%Y-%m-%d") if event.date else '' }}</td>
-                <td>{{ event.module }}</td>
-                <td>
-                  {% if event.type == 'Atsiskaitymas' %}
-                    <span class="badge bg-warning text-dark">{{ event.type }}</span>
-                  {% elif event.type == 'Egzaminas' %}
-                    <span class="badge bg-danger">{{ event.type }}</span>
-                  {% endif %}
-                </td>
-                <td>{{ event.title }}</td>
-                <td>{{ event.description|truncate(50) if event.description else '-' }}</td>
-                <td>{{ event.location if event.location else '-' }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Modulis</th>
+                        <th>Tipas</th>
+                        <th>Pavadinimas</th>
+                        <th>Aprašymas</th>
+                        <th>Vieta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set all_events = [] %}
+                    {% for assessment in assessments %}
+                        {% set _ = all_events.append({
+                            'date': assessment.date,
+                            'module': assessment.module,
+                            'type': 'Atsiskaitymas',
+                            'title': assessment.title,
+                            'description': assessment.description,
+                            'location': ''
+                        }) %}
+                    {% endfor %}
+                    
+                    {% for exam in exams %}
+                        {% set _ = all_events.append({
+                            'date': exam.date,
+                            'module': exam.module,
+                            'type': 'Egzaminas',
+                            'title': exam.title,
+                            'description': exam.description,
+                            'location': exam.location
+                        }) %}
+                    {% endfor %}
+                    
+                    {% for event in all_events|sort(attribute='date') %}
+                        <tr class="{% if event.date and event.date < today %}text-muted{% elif event.date and event.date < tomorrow %}table-danger{% elif event.type == 'Egzaminas' %}table-warning{% endif %}">
+                            <td>{{ event.date.strftime('%Y-%m-%d') if event.date else '' }}</td>
+                            <td>{{ event.module }}</td>
+                            <td>
+                                {% if event.type == 'Atsiskaitymas' %}
+                                    <span class="badge bg-warning text-dark">{{ event.type }}</span>
+                                {% elif event.type == 'Egzaminas' %}
+                                    <span class="badge bg-danger">{{ event.type }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ event.title }}</td>
+                            <td>{{ event.description|truncate(50) if event.description else '-' }}</td>
+                            <td>{{ event.location if event.location else '-' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-{% endblock content %}
+</div>
+{% endblock %}

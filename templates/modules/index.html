@@ -1,44 +1,39 @@
 {% extends "base.html" %}
-{% block title %}
-  Modulių sąrašas
-{% endblock title %}
+
+{% block title %}Modulių sąrašas{% endblock %}
+
 {% block content %}
-  <h1>Modulių sąrašas</h1>
-  <a href="{{ url_for('create_module') }}" class="btn btn-primary mb-3">Naujas modulis</a>
-  {% if modules %}
+<h1>Modulių sąrašas</h1>
+<a href="{{ url_for('create_module') }}" class="btn btn-primary mb-3">Naujas modulis</a>
+
+{% if modules %}
     <table class="table">
-      <thead>
-        <tr>
-          <th>Pavadinimas</th>
-          <th>Kreditai</th>
-          <th>Semestras</th>
-          <th>Veiksmai</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for module in modules %}
-          <tr>
-            <td>{{ module.name }}</td>
-            <td>{{ module.credits }}</td>
-            <td>{{ module.semester }}</td>
-            <td>
-              <a href="{{ url_for('view_module', id=module.id) }}"
-                 class="btn btn-sm btn-info">Peržiūrėti</a>
-              <a href="{{ url_for('edit_module', id=module.id) }}"
-                 class="btn btn-sm btn-warning">Redaguoti</a>
-              <form action="{{ url_for('delete_module', id=module.id) }}"
-                    method="post"
-                    class="d-inline">
-                <button type="submit"
-                        class="btn btn-sm btn-danger"
-                        onclick="return confirm('Ar tikrai norite ištrinti?')">Trinti</button>
-              </form>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
+        <thead>
+            <tr>
+                <th>Pavadinimas</th>
+                <th>Kreditai</th>
+                <th>Semestras</th>
+                <th>Veiksmai</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for module in modules %}
+                <tr>
+                    <td>{{ module.name }}</td>
+                    <td>{{ module.credits }}</td>
+                    <td>{{ module.semester }}</td>
+                    <td>
+                        <a href="{{ url_for('view_module', id=module.id) }}" class="btn btn-sm btn-info">Peržiūrėti</a>
+                        <a href="{{ url_for('edit_module', id=module.id) }}" class="btn btn-sm btn-warning">Redaguoti</a>
+                        <form action="{{ url_for('delete_module', id=module.id) }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ar tikrai norite ištrinti?')">Trinti</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
-  {% else %}
+{% else %}
     <div class="alert alert-info">Modulių sąrašas tuščias.</div>
-  {% endif %}
-{% endblock content %}
+{% endif %}
+{% endblock %}

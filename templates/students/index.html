@@ -1,41 +1,39 @@
 {% extends "base.html" %}
-{% block title %}
-  Studentų sąrašas
-{% endblock title %}
+
+{% block title %}Studentų sąrašas{% endblock %}
+
 {% block content %}
-  <h1>Studentai</h1>
-  <a href="{{ url_for('create_student') }}" class="btn btn-primary mb-3">Naujas studentas</a>
-  {% if students %}
+<h1>Studentai</h1>
+<a href="{{ url_for('create_student') }}" class="btn btn-primary mb-3">Naujas studentas</a>
+
+{% if students %}
     <table class="table">
-      <thead>
-        <tr>
-          <th>Vardas</th>
-          <th>Pavardė</th>
-          <th>El. paštas</th>
-          <th>Programa</th>
-          <th>Veiksmai</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for student in students %}
-          <tr>
-            <td>{{ student.name }}</td>
-            <td>{{ student.last_name }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.program.name if student.program else '-' }}</td>
-            <td>
-              <a href="{{ url_for('view_student', id=student.id) }}"
-                 class="btn btn-sm btn-info">Peržiūrėti</a>
-              <a href="{{ url_for('select_modules', id=student.id) }}"
-                 class="btn btn-sm btn-primary">Moduliai</a>
-              <a href="{{ url_for('student_calendar', id=student.id) }}"
-                 class="btn btn-sm btn-success">Kalendorius</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
+        <thead>
+            <tr>
+                <th>Vardas</th>
+                <th>Pavardė</th>
+                <th>El. paštas</th>
+                <th>Programa</th>
+                <th>Veiksmai</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.program.name if student.program else '-' }}</td>
+                    <td>
+                        <a href="{{ url_for('view_student', id=student.id) }}" class="btn btn-sm btn-info">Peržiūrėti</a>
+                        <a href="{{ url_for('select_modules', id=student.id) }}" class="btn btn-sm btn-primary">Moduliai</a>
+                        <a href="{{ url_for('student_calendar', id=student.id) }}" class="btn btn-sm btn-success">Kalendorius</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
-  {% else %}
+{% else %}
     <div class="alert alert-info">Studentų sąrašas tuščias.</div>
-  {% endif %}
-{% endblock content %}
+{% endif %}
+{% endblock %}

@@ -1,17 +1,23 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from models.users import Users
 from models.program import Program
 from models.modules import Modules
+from models.schedule_model import Schedule
+from models.form.student_form import StudentForm, ModuleSelectionForm
 from extensions import db
 from models.form.program_form import ProgramForm
+from flask_login import login_required
 
 
 def program_routes(app):
     @app.route("/programs")
+    @login_required
     def list_programs():
         programs = Program.query.all()
         return render_template("programs/index.html", programs=programs)
 
     @app.route("/programs/create", methods=["GET", "POST"])
+    @login_required
     def create_program():
         form = ProgramForm()
         if form.validate_on_submit():
@@ -23,11 +29,13 @@ def program_routes(app):
         return render_template("programs/create.html", form=form)
 
     @app.route("/programs/<int:id>")
+    @login_required
     def view_program(id):
         program = Program.query.get_or_404(id)
         return render_template("programs/view.html", program=program)
 
     @app.route("/programs/<int:id>/modules", methods=["GET", "POST"])
+    @login_required
     def program_modules(id):
         program = Program.query.get_or_404(id)
         if request.method == "POST":

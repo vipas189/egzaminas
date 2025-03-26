@@ -1,15 +1,6 @@
 from extensions import db
 from datetime import datetime
 
-# Tarpinė lentelė modulių ir dėstytojų ryšiui
-module_instructor = db.Table(
-    "module_instructor",
-    db.Column("module_id", db.Integer, db.ForeignKey("modules.id"), primary_key=True),
-    db.Column(
-        "instructor_id", db.Integer, db.ForeignKey("instructor.id"), primary_key=True
-    ),
-)
-
 
 class Modules(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,3 +22,13 @@ class Modules(db.Model):
 
     def __repr__(self):
         return f"<Modules {self.name}>"
+
+
+# Tarpinė lentelė modulių ir dėstytojų ryšiui
+module_instructor = db.Table(
+    "module_instructor",
+    db.Column("module_id", db.Integer, db.ForeignKey("modules.id"), primary_key=True),
+    db.Column(
+        "instructor_id", db.Integer, db.ForeignKey("instructor.id"), primary_key=True
+    ),
+)

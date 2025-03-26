@@ -7,6 +7,7 @@
 <div class="mb-3">
     <a href="{{ url_for('edit_instructor', id=instructor.id) }}" class="btn btn-warning">Redaguoti</a>
     <a href="{{ url_for('instructor_assessments', id=instructor.id) }}" class="btn btn-primary">Atsiskaitymai</a>
+    <a href="{{ url_for('instructor_tests', instructor_id=instructor.id) }}" class="btn btn-success">Testai</a>
     <a href="{{ url_for('list_instructors') }}" class="btn btn-secondary">Grįžti į sąrašą</a>
 </div>
 

@@ -1,38 +1,46 @@
 {% extends "base.html" %}
-{% block title %}
-  Naujas modulis
-{% endblock title %}
+
+{% block title %}Naujas modulis{% endblock %}
+
 {% block content %}
-  <h2>Sukurti naują modulį</h2>
-  <form method="post">
+<h2>Sukurti naują modulį</h2>
+<form method="POST">
     {{ form.hidden_tag() }}
+    
     <div class="mb-3">
-      {{ form.name.label(class="form-label") }}
-      {{ form.name(class="form-control") }}
-      {% if form.name.errors %}
-        <div class="text-danger">
-          {% for error in form.name.errors %}<span>{{ error }}</span>{% endfor %}
-        </div>
-      {% endif %}
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+        {% if form.name.errors %}
+            <div class="text-danger">
+                {% for error in form.name.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
+    
     <div class="mb-3">
-      {{ form.description.label(class="form-label") }}
-      {{ form.description(class="form-control", rows=4) }}
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control", rows=4) }}
     </div>
+    
     <div class="mb-3">
-      {{ form.credits.label(class="form-label") }}
-      {{ form.credits(class="form-control") }}
+        {{ form.credits.label(class="form-label") }}
+        {{ form.credits(class="form-control") }}
     </div>
+    
     <div class="mb-3">
-      {{ form.semester.label(class="form-label") }}
-      {{ form.semester(class="form-select") }}
+        {{ form.semester.label(class="form-label") }}
+        {{ form.semester(class="form-select") }}
     </div>
+    
     <div class="mb-3">
-      {{ form.prerequisites.label(class="form-label") }}
-      {{ form.prerequisites(class="form-control") }}
-      <small class="text-muted">Įveskite modulių pavadinimus, atskirtus kableliais.</small>
+        {{ form.prerequisites.label(class="form-label") }}
+        {{ form.prerequisites(class="form-control") }}
+        <small class="text-muted">Įveskite modulių pavadinimus, atskirtus kableliais.</small>
     </div>
+    
     {{ form.submit(class="btn btn-primary") }}
     <a href="{{ url_for('list_modules') }}" class="btn btn-secondary">Atšaukti</a>
-  </form>
-{% endblock content %}
+</form>
+{% endblock %}

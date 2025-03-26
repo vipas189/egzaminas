@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Studentų grupės{% endblock %}
+
+{% block content %}
+<h1>Studentų grupės</h1>
+<div class="mb-3">
+    <a href="{{ url_for('create_group') }}" class="btn btn-primary">Nauja grupė</a>
+    <a href="{{ url_for('form_groups') }}" class="btn btn-success">Formuoti grupes</a>
+</div>
+
+{% if groups %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pavadinimas</th>
+                <th>Programa</th>
+                <th>Studentų skaičius</th>
+                <th>Veiksmai</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in groups %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>{{ group.program.name if group.program else '-' }}</td>
+                    <td>{{ group.students|length }}</td>
+                    <td>
+                        <a href="{{ url_for('view_group', id=group.id) }}" class="btn btn-sm btn-info">Peržiūrėti</a>
+                        <a href="{{ url_for('edit_group', id=group.id) }}" class="btn btn-sm btn-warning">Redaguoti</a>
+                        <a href="{{ url_for('manage_group_students', id=group.id) }}" class="btn btn-sm btn-primary">Studentai</a>
+                        <form action="{{ url_for('delete_group', id=group.id) }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ar tikrai norite ištrinti šią grupę?')">Trinti</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-info">Grupių sąrašas tuščias.</div>
+{% endif %}
+{% endblock %}

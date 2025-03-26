@@ -1,8 +1,8 @@
-"""naujas
+"""empty message
 
-Revision ID: 7accfa243d28
+Revision ID: 7c1e01f9ce7f
 Revises: 
-Create Date: 2025-03-25 10:58:31.179181
+Create Date: 2025-03-26 06:20:25.284262
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7accfa243d28'
+revision = '7c1e01f9ce7f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -75,13 +75,12 @@ def upgrade():
     sa.ForeignKeyConstraint(['module_id'], ['modules.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('groups',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=20), nullable=False),
-    sa.Column('year', sa.Integer(), nullable=False),
-    sa.Column('study_program_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['study_program_id'], ['program.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    op.create_table('module_instructor',
+    sa.Column('module_id', sa.Integer(), nullable=False),
+    sa.Column('instructor_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['instructor_id'], ['instructor.id'], ),
+    sa.ForeignKeyConstraint(['module_id'], ['modules.id'], ),
+    sa.PrimaryKeyConstraint('module_id', 'instructor_id')
     )
     op.create_table('program_module',
     sa.Column('program_id', sa.Integer(), nullable=False),
@@ -105,14 +104,27 @@ def upgrade():
     sa.ForeignKeyConstraint(['module_id'], ['modules.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('tests',
+    op.create_table('student_group',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('title', sa.String(length=100), nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('program_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['program_id'], ['program.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(length=200), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('time_limit', sa.Integer(), nullable=True),
-    sa.Column('passing_score', sa.Float(), nullable=True),
-    sa.Column('is_exam', sa.Boolean(), nullable=True),
     sa.Column('module_id', sa.Integer(), nullable=False),
+    sa.Column('instructor_id', sa.Integer(), nullable=False),
+    sa.Column('duration', sa.Integer(), nullable=False),
+    sa.Column('passing_score', sa.Float(), nullable=False),
+    sa.Column('weight', sa.Float(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['instructor_id'], ['instructor.id'], ),
     sa.ForeignKeyConstraint(['module_id'], ['modules.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -130,8 +142,6 @@ def upgrade():
     sa.Column('last_failed_login', sa.DateTime(), nullable=True),
     sa.Column('suspended_until', sa.DateTime(), nullable=True),
     sa.Column('program_id', sa.Integer(), nullable=True),
-    sa.Column('group_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
     sa.ForeignKeyConstraint(['program_id'], ['program.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
@@ -159,6 +169,7 @@ def upgrade():
     sa.Column('module_id', sa.Integer(), nullable=False),
     sa.Column('assessment_id', sa.Integer(), nullable=True),
     sa.Column('exam_id', sa.Integer(), nullable=True),
+    sa.Column('test_id', sa.Integer(), nullable=True),
     sa.Column('grade', sa.Float(), nullable=False),
     sa.Column('feedback', sa.Text(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
@@ -167,7 +178,15 @@ def upgrade():
     sa.ForeignKeyConstraint(['exam_id'], ['exam.id'], ),
     sa.ForeignKeyConstraint(['module_id'], ['modules.id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['test_id'], ['test.id'], ),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('student_group_membership',
+    sa.Column('student_id', sa.Integer(), nullable=False),
+    sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['group_id'], ['student_group.id'], ),
+    sa.ForeignKeyConstraint(['student_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('student_id', 'group_id')
     )
     op.create_table('student_module',
     sa.Column('student_id', sa.Integer(), nullable=False),
@@ -176,19 +195,67 @@ def upgrade():
     sa.ForeignKeyConstraint(['student_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('student_id', 'module_id')
     )
+    op.create_table('test_attempt',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('test_id', sa.Integer(), nullable=False),
+    sa.Column('student_id', sa.Integer(), nullable=False),
+    sa.Column('start_time', sa.DateTime(), nullable=False),
+    sa.Column('end_time', sa.DateTime(), nullable=True),
+    sa.Column('score', sa.Float(), nullable=True),
+    sa.Column('passed', sa.Boolean(), nullable=True),
+    sa.ForeignKeyConstraint(['student_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['test_id'], ['test.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test_question',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('test_id', sa.Integer(), nullable=False),
+    sa.Column('question_text', sa.Text(), nullable=False),
+    sa.Column('question_type', sa.String(length=20), nullable=False),
+    sa.Column('points', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['test_id'], ['test.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test_question_option',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('question_id', sa.Integer(), nullable=False),
+    sa.Column('option_text', sa.Text(), nullable=False),
+    sa.Column('is_correct', sa.Boolean(), nullable=True),
+    sa.ForeignKeyConstraint(['question_id'], ['test_question.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test_answer',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('attempt_id', sa.Integer(), nullable=False),
+    sa.Column('question_id', sa.Integer(), nullable=False),
+    sa.Column('selected_option_id', sa.Integer(), nullable=True),
+    sa.Column('text_answer', sa.Text(), nullable=True),
+    sa.Column('is_correct', sa.Boolean(), nullable=True),
+    sa.Column('points_earned', sa.Float(), nullable=True),
+    sa.ForeignKeyConstraint(['attempt_id'], ['test_attempt.id'], ),
+    sa.ForeignKeyConstraint(['question_id'], ['test_question.id'], ),
+    sa.ForeignKeyConstraint(['selected_option_id'], ['test_question_option.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_table('test_answer')
+    op.drop_table('test_question_option')
+    op.drop_table('test_question')
+    op.drop_table('test_attempt')
     op.drop_table('student_module')
+    op.drop_table('student_group_membership')
     op.drop_table('student_grade')
     op.drop_table('student_calendar')
     op.drop_table('users')
-    op.drop_table('tests')
+    op.drop_table('test')
+    op.drop_table('student_group')
     op.drop_table('schedule')
     op.drop_table('program_module')
-    op.drop_table('groups')
+    op.drop_table('module_instructor')
     op.drop_table('exam')
     op.drop_table('assessment')
     op.drop_table('program')

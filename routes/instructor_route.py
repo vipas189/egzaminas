@@ -1,22 +1,30 @@
-from flask import render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from models.instructor_model import Instructor
 from models.modules import Modules
 from models.assessments_model import Assessment
+from models.exam_mode import Exam
 from models.schedule_model import Schedule
-from models.student_module import student_module
+from models.users import Users
 from models.student_calendar import StudentCalendar
 from models.form.instructor_form import InstructorForm
 from models.form.assessment_form import AssessmentForm
+from models.form.exam_form import ExamForm
 from extensions import db
+from datetime import datetime
+from wtforms import SelectField
+from wtforms.validators import DataRequired
+from flask_login import login_required
 
 
 def instructor_routes(app):
+    @login_required
     @app.route("/instructors")
     def list_instructors():
         instructors = Instructor.query.all()
         return render_template("instructors/index.html", instructors=instructors)
 
     @app.route("/instructors/create", methods=["GET", "POST"])
+    @login_required
     def create_instructor():
         form = InstructorForm()
 
@@ -36,6 +44,7 @@ def instructor_routes(app):
         return render_template("instructors/create.html", form=form)
 
     @app.route("/instructors/<int:id>")
+    @login_required
     def view_instructor(id):
         instructor = Instructor.query.get_or_404(id)
 
@@ -53,6 +62,7 @@ def instructor_routes(app):
         )
 
     @app.route("/instructors/<int:id>/edit", methods=["GET", "POST"])
+    @login_required
     def edit_instructor(id):
         instructor = Instructor.query.get_or_404(id)
         form = InstructorForm(obj=instructor)
@@ -68,6 +78,7 @@ def instructor_routes(app):
         )
 
     @app.route("/instructors/<int:id>/delete", methods=["POST"])
+    @login_required
     def delete_instructor(id):
         instructor = Instructor.query.get_or_404(id)
         db.session.delete(instructor)
@@ -77,6 +88,7 @@ def instructor_routes(app):
 
     # Maršrutai atsiskaitymų valdymui dėstytojams
     @app.route("/instructors/<int:id>/assessments")
+    @login_required
     def instructor_assessments(id):
         instructor = Instructor.query.get_or_404(id)
 
@@ -97,6 +109,7 @@ def instructor_routes(app):
         )
 
     @app.route("/instructors/<int:id>/assessments/add", methods=["GET", "POST"])
+    @login_required
     def instructor_add_assessment(id):
         instructor = Instructor.query.get_or_404(id)
 
@@ -143,6 +156,7 @@ def instructor_routes(app):
         "/instructors/<int:instructor_id>/assessments/<int:assessment_id>/edit",
         methods=["GET", "POST"],
     )
+    @login_required
     def instructor_edit_assessment(instructor_id, assessment_id):
         instructor = Instructor.query.get_or_404(instructor_id)
         assessment = Assessment.query.get_or_404(assessment_id)
@@ -187,6 +201,7 @@ def instructor_routes(app):
         "/instructors/<int:instructor_id>/assessments/<int:assessment_id>/cancel",
         methods=["POST"],
     )
+    @login_required
     def instructor_cancel_assessment(instructor_id, assessment_id):
         instructor = Instructor.query.get_or_404(instructor_id)
         assessment = Assessment.query.get_or_404(assessment_id)

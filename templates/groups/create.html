@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Nauja grupė{% endblock %}
+
+{% block content %}
+<h2>Sukurti naują grupę</h2>
+<div class="alert alert-info">
+    <p><strong>Pastaba:</strong> Grupės pavadinimas bus sugeneruotas automatiškai pagal pasirinktą programą.</p>
+    <p>Pavadinimo formatas: [Pirmo žodžio 2 raidės][Antro žodžio 2 raidės][Metų paskutiniai 2 skaičiai]</p>
+    <p>Pavyzdžiui: Informatikos technologijos → INTE25</p>
+</div>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-3">
+        {{ form.program_id.label(class="form-label") }}
+        {{ form.program_id(class="form-select") }}
+        {% if form.program_id.errors %}
+            <div class="text-danger">
+                {% for error in form.program_id.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('list_groups') }}" class="btn btn-secondary">Atšaukti</a>
+</form>
+{% endblock %}

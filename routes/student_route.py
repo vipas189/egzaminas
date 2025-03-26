@@ -1,18 +1,22 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from models.users import Users
+from models.users import Users, StudentGrade
+from models.program import Program
 from models.modules import Modules
 from models.schedule_model import Schedule
 from models.assessments_model import Assessment
 from models.exam_mode import Exam
 from models.student_calendar import StudentCalendar
-from models.form.student_form import ModuleSelectionForm
+from models.form.student_form import StudentForm, ModuleSelectionForm
+from models.form.program_form import ProgramForm
 from extensions import db
 from datetime import datetime, timedelta
+from flask_login import login_required
 
 
 def student_routes(app):
     # Studentų maršrutai
     @app.route("/students")
+    @login_required
     def list_students():
         students = (
             db.session.execute(db.select(Users).filter_by(role="student"))
@@ -21,12 +25,34 @@ def student_routes(app):
         )
         return render_template("students/index.html", students=students)
 
+    @app.route("/students/create", methods=["GET", "POST"])
+    @login_required
+    def create_student():
+        form = StudentForm()
+        # Užpildyti programų pasirinkimą
+        form.program_id.choices = [(p.id, p.name) for p in Program.query.all()]
+
+        if form.validate_on_submit():
+            student = Users(
+                name=form.name.data,
+                last_name=form.last_name.data,
+                email=form.email.data,
+                program_id=form.program_id.data,
+            )
+            db.session.add(student)
+            db.session.commit()
+            flash("Studentas sukurtas sėkmingai!", "success")
+            return redirect(url_for("list_students"))
+        return render_template("students/create.html", form=form)
+
     @app.route("/students/<int:id>")
+    @login_required
     def view_student(id):
         student = Users.query.get_or_404(id)
         return render_template("students/view.html", student=student)
 
     @app.route("/students/<int:id>/select_modules", methods=["GET", "POST"])
+    @login_required
     def select_modules(id):
         student = Users.query.get_or_404(id)
         form = ModuleSelectionForm()
@@ -85,6 +111,7 @@ def student_routes(app):
         )
 
     @app.route("/students/<int:id>/calendar")
+    @login_required
     def student_calendar(id):
         student = Users.query.get_or_404(id)
         calendar_items = get_student_calendar_items(student)
