@@ -3,61 +3,53 @@ from datetime import datetime
 
 class Test(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
     module_id = db.Column(db.Integer, db.ForeignKey('modules.id'), nullable=False)
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'), nullable=False)
-    duration = db.Column(db.Integer, nullable=False)  # minutėmis
-    passing_score = db.Column(db.Float, nullable=False)  # procentais
-    weight = db.Column(db.Float)  # svoris modulio vertinime
-    is_active = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    
-    # Ryšiai
-    questions = db.relationship("TestQuestion", backref="test", cascade="all, delete-orphan")
-    student_attempts = db.relationship("TestAttempt", backref="test")
-    
-    def __repr__(self):
-        return f'<Test {self.title}>'
+    duration = db.Column(db.Integer, nullable=False)  # minutes
+    passing_score = db.Column(db.Float, nullable=False)
+    weight = db.Column(db.Float)
+    is_active = db.Column(db.Boolean, default=True)  # Nustatyta kaip True pagal nutylėjimą
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships
+    module = db.relationship('Modules', backref='tests')
+    instructor = db.relationship('Instructor', backref='tests')
+    questions = db.relationship('TestQuestion', backref='test', cascade='all, delete-orphan')
+    attempts = db.relationship('TestAttempt', backref='test', cascade='all, delete-orphan')
+
 
 class TestQuestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
     question_text = db.Column(db.Text, nullable=False)
     question_type = db.Column(db.String(20), nullable=False)  # 'multiple_choice', 'true_false', 'text'
-    points = db.Column(db.Integer, nullable=False, default=1)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    points = db.Column(db.Integer, default=1)
     
-    # Ryšiai
-    options = db.relationship("TestQuestionOption", backref="question", cascade="all, delete-orphan")
-    
-    def __repr__(self):
-        return f'<TestQuestion {self.id}>'
+    # Relationships
+    options = db.relationship('TestQuestionOption', backref='question', cascade='all, delete-orphan')
+
 
 class TestQuestionOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('test_question.id'), nullable=False)
     option_text = db.Column(db.Text, nullable=False)
     is_correct = db.Column(db.Boolean, default=False)
-    
-    def __repr__(self):
-        return f'<TestQuestionOption {self.id}>'
+
 
 class TestAttempt(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
-    start_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    start_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     end_time = db.Column(db.DateTime)
     score = db.Column(db.Float)
     passed = db.Column(db.Boolean)
     
-    # Ryšiai
-    answers = db.relationship("TestAnswer", backref="attempt", cascade="all, delete-orphan")
-    
-    def __repr__(self):
-        return f'<TestAttempt {self.id}>'
+    # Relationships
+    answers = db.relationship('TestAnswer', backref='attempt', cascade='all, delete-orphan')
+
 
 class TestAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,5 +60,6 @@ class TestAnswer(db.Model):
     is_correct = db.Column(db.Boolean)
     points_earned = db.Column(db.Float)
     
-    def __repr__(self):
-        return f'<TestAnswer {self.id}>'
+    # Relationships
+    question = db.relationship('TestQuestion')
+    selected_option = db.relationship('TestQuestionOption')

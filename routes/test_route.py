@@ -11,13 +11,22 @@ def test_routes(app):
     @app.route('/tests')
     def list_tests():
         tests = Test.query.all()
-        return render_template('tests/index.html', tests=tests)
+        # Importuoti Instructor modelį tiesiogiai
+        from models.instructor_model import Instructor
+        return render_template('tests/index.html', tests=tests, instructor_model=Instructor)
 
     @app.route('/instructors/<int:instructor_id>/tests')
     def instructor_tests(instructor_id):
         instructor = Instructor.query.get_or_404(instructor_id)
         tests = Test.query.filter_by(instructor_id=instructor_id).all()
-        return render_template('tests/instructor_tests.html', instructor=instructor, tests=tests)
+        
+        # Pridėti modulius
+        from models.modules import Modules  # Jeigu dar neimportuota failo pradžioje
+        
+        return render_template('tests/instructor_tests.html', 
+                            instructor=instructor, 
+                            tests=tests,
+                            modules=Modules)  # Perduoti Modules modelį į šabloną
 
     @app.route('/instructors/<int:instructor_id>/tests/create', methods=['GET', 'POST'])
     def create_test(instructor_id):

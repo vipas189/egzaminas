@@ -11,6 +11,7 @@ from models.forms.exam_form import ExamForm
 from models.forms.instructor_form import InstructorAssignmentForm
 from models.student_calendar import StudentCalendar
 from extensions import db
+from datetime import datetime 
 
 
 def home_route(app):
@@ -207,28 +208,41 @@ def home_route(app):
         module = Modules.query.get_or_404(id)
         form = AssessmentForm()
         
-        # Čia yra reikalingas nustatymas - ši eilutė trūko
-        form.module_id.choices = [(id, module.name)] 
+        # Nustatyti modulio ID parinktį
+        form.module_id.choices = [(id, module.name)]
+        form.module_id.data = id
         
         if form.validate_on_submit():
-            assessment = Assessment(
-                module_id=id,
-                title=form.title.data,
-                description=form.description.data,
-                due_date=form.due_date.data,
-                weight=form.weight.data,
-            )
-            db.session.add(assessment)
+            try:
+                print(f"Form data: {form.data}")
+                assessment = Assessment(
+                    module_id=id,
+                    title=form.title.data,
+                    description=form.description.data,
+                    due_date=form.due_date.data,
+                    weight=form.weight.data,
+                )
+                db.session.add(assessment)
 
-            # Atnaujinti studentų kalendorius
-            update_student_calendars_for_assessment(assessment)
+                # Atnaujinti studentų kalendorius
+                update_student_calendars_for_assessment(assessment)
 
-            db.session.commit()
-            flash(
-                "Assessment added successfully and student calendars updated!",
-                "success",
-            )
-            return redirect(url_for("view_module", id=id))
+                db.session.commit()
+                flash(
+                    "Atsiskaitymas sėkmingai pridėtas ir studentų kalendoriai atnaujinti!",
+                    "success",
+                )
+                return redirect(url_for("view_module", id=id))
+            except Exception as e:
+                db.session.rollback()
+                flash(f"Klaida išsaugant atsiskaitymą: {str(e)}", "danger")
+                print(f"Error saving assessment: {str(e)}")
+        else:
+            # Rodyti validacijos klaidas
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Klaida lauke {field}: {error}", "danger")
+                    print(f"Validation error in {field}: {error}")
 
         return render_template("modules/add_assessment.html", form=form, module=module)
 
@@ -300,21 +314,32 @@ def home_route(app):
 
     # Exam management
 
+
     @app.route("/modules/<int:id>/exams/add", methods=["GET", "POST"])
     def add_exam(id):
         module = Modules.query.get_or_404(id)
         form = ExamForm()
         
         if form.validate_on_submit():
-            # Tikrinti, ar visi laukai turi tinkamas reikšmes
-            print(f"Validating form: {form.data}")
-            
             try:
+                # Konvertuoti datą iš string į datetime objektą
+                date_str = form.date.data
+                try:
+                    # Bandome konvertuoti iš DD/MM/YYYY HH:MM formato
+                    exam_date = datetime.strptime(date_str, '%d/%m/%Y %H:%M')
+                except ValueError:
+                    # Jei nepavyksta, bandome alternatyvius formatus
+                    try:
+                        exam_date = datetime.strptime(date_str, '%Y-%m-%d %H:%M')
+                    except ValueError:
+                        flash("Neteisingas datos formatas. Naudokite DD/MM/YYYY HH:MM", "danger")
+                        return render_template("modules/add_exam.html", form=form, module=module)
+                
                 exam = Exam(
                     module_id=id,
                     title=form.title.data,
                     description=form.description.data,
-                    date=form.date.data,
+                    date=exam_date,
                     duration=form.duration.data,
                     location=form.location.data,
                     weight=form.weight.data,

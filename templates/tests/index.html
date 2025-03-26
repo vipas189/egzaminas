@@ -20,7 +20,7 @@
         <tbody>
             {% for test in tests %}
                 {% set module = test.module %}
-                {% set instructor = instructor_model.Instructor.query.get(test.instructor_id) %}
+                {% set instructor = test.instructor %}
                 <tr>
                     <td>{{ test.title }}</td>
                     <td>{{ module.name if module else 'Nežinomas modulis' }}</td>

@@ -25,14 +25,12 @@
             </thead>
             <tbody>
                 {% for test in tests %}
-                    {% set module = modules.Modules.query.get(test.module_id) %}
-                    {% set question_count = test_model.TestQuestion.query.filter_by(test_id=test.id).count() %}
                     <tr>
                         <td>{{ test.title }}</td>
-                        <td>{{ module.name if module else 'Nežinomas modulis' }}</td>
+                        <td>{{ test.module.name if test.module else 'Nežinomas modulis' }}</td>
                         <td>{{ test.duration }} min.</td>
                         <td>{{ test.passing_score }}%</td>
-                        <td>{{ question_count }}</td>
+                        <td>{{ test.questions|length }}</td>
                         <td>
                             {% if test.is_active %}
                                 <span class="badge bg-success">Aktyvus</span>
