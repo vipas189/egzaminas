@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studentų Užduočių Sprendimo Puslapis | Codeacademy</title>
+  <link rel="stylesheet" href="studentai.css">
+  <style>
+    /* General Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 700px;
+      margin: 30px auto;
+      backdrop-filter: blur(10px);
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .form-container input,
+    .form-container textarea,
+    .form-container select {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      margin-bottom: 25px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .form-container input::placeholder,
+    .form-container textarea::placeholder {
+      font-style: italic;
+      color: #888;
+    }
+
+    .form-button {
+      background-color: #0078D7;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 16px;
+    }
+
+    .form-button:hover {
+      background-color: #0056A1;
+    }
+
+    .button-row {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .menu-button {
+      margin: 5px;
+      padding: 10px 20px;
+      text-decoration: none;
+      background-color: #0078D7;
+      color: white;
+      border-radius: 5px;
+      display: inline-block;
+    }
+
+    .menu-button:hover {
+      background-color: #0056A1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Title Section -->
+  <div class="title-section">
+    <h1>Studentų Užduočių Sprendimo Puslapis</h1>
+  </div>
+
+  <!-- Button Row Wrapper -->
+  <div class="button-wrapper">
+    <div class="button-row">
+      <a href="home.html" class="menu-button">Titulinis</a>
+      <a href="info.html" class="menu-button">Info.about</a>
+      <a href="studentai.html" class="menu-button">Studentai</a>
+      <a href="studentaiuzduociusprendimas.html" class="menu-button">Užduotys</a>
+      <a href="studentaiuzsiemimai.html" class="menu-button">Užsiėmimai</a>
+    </div>
+  </div>
+
+  <!-- Admin Form Section -->
+  <div class="form-container">
+    <h2>Studentų Užduočių Sprendimo Interface</h2>
+    <form id="admin-form" method="POST" action="/admin/update-užduotis">
+      <label for="užduotis-id">Užduotis ID:</label>
+      <input type="text" id="užduotis-id" name="user_id" placeholder="Enter užduotis ID" required>
+
+      <label for="užduotis-picture">Užduotis Picture:</label>
+      <input type="file" id="užduotis-picture" name="užduotis_picture" accept="image/*">
+
+      <label for="užduotis-name"> Name:</label>
+      <input type="text" id="užduotis-name" name="užduotis_name" placeholder="Enter užduotis name" required>
+
+      <label for=" užduotis_aprašymas">Užduotis Aprašymas:</label>
+      <input type="text" id="užduotis_aprašymas" name="užduotis_aprašymas" placeholder="Enter užduotis_aprašymas" required>
+
+      
+        
+      <label for=" užduotis_pradžia">Užduotis Pradžia:</label>
+      <input type="text" id="užduotis_pradžia" name="užduotis_pradžia" placeholder="Enter užduotis_pradžia" required>
+
+      <label for=" užduotis_atsiskaitymas">Užduotis Atsiskaitymas:</label>
+      <input type="text" id="užduotis_atsiskaitymas" name="užduotis_atsiskaitymas" placeholder="Enter užduotis_atsiskaitymas" required>
+
+      
+      
+      
+      
+      <label for="užduotis-paskirta">User Role:</label>
+      <select id="user-role" name="user_role" required>
+        <option value="" disabled selected>Select role</option>
+        <option value="Student">Student</option>
+        <option value="Group">Group</option>
+        <option value="Module">Module</option>
+      </select>
+
+      <label for="account-status">Account Status:</label>
+      <select id="account-status" name="account_status" required>
+        <option value="" disabled selected>Select status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option value="Comleted">Completed</option>
+      </select>
+
+      <label for="Užduotis">Užduotis:</label>
+      <input type="text" id="užduotis" name="užduotis" placeholder="Enter užduotis" required>
+
+      <div>
+        <button type="submit" class="form-button">Update Užduotis</button>
+        <button type="reset" class="form-button" style="background-color: #ccc;">Cancel</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

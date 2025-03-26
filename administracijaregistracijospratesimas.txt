@@ -1,0 +1,122 @@
+Techninė Administracinės Registracijos Sistemos Analizė
+Sistemos Architektūra
+Frontend Technologijos
+
+HTML5: Standartinė struktūra su skyriais (title, forms, table)
+
+CSS3:
+
+Modernūs efektai (backdrop-filter: blur, rgba permatomumas)
+
+Responsive dizainas (max-width, flexbox)
+
+Interaktyvūs elementai (transition mygtukams)
+
+JavaScript: Minimalus (formų valdymas be AJAX)
+
+Numanomas Backend
+
+Duomenų siuntimas į formas (/password-form, /program-form)
+
+Vartotojų sąrašo generavimas (lentelė)
+
+Pagrindinės Funkcijos
+Vartotojo Registracija
+
+Slaptažodžio nustatymas su validacija
+
+Studijų programos pasirinkimas (dropdown)
+
+Administravimo Elementai
+
+Vartotojų lentelė (ID, vardas, pavardė, el. paštas)
+
+Navigacijos meniu (5 mygtukai)
+
+Informacijos Atvaizdavimas
+
+Vartotojo duomenų peržiūra (vardas, el. paštas)
+
+Stipriosios Pusės
+ 1. Modernus Dizainas
+
+Šiuolaikiški UI efektai (stiklo morfizmas, šešėliai)
+
+Nuoseklus stilių taikymas (mygtukai, formos, lentelė)
+
+ 2. Funkcionalūs Formų Elementai
+
+Privalomi laukai (required atributas)
+
+Slaptažodžio stiprumo indikatorius (#strength-meter)
+
+Dinaminiai dropdown (program → module)
+
+ 3. Lanksti Struktūra
+
+Tinka tiek registracijai, tiek duomenų redagavimui
+
+Galimybė papildyti JavaScript funkcionalumą
+
+Tobulinimo Galimybės
+JavaScript
+
+Realaus laiko slaptažodžio validacija
+
+Dinaminis modulių užpildymas pagal programą
+
+AJAX formų siuntimas (be puslapio perkrovimo)
+
+Backend Integracija
+
+Duomenų patvirtinimas prieš išsaugojimą
+
+Vartotojų lentelės duomenų gavimas iš API
+
+Saugumas
+
+CSRF apsauga formoms
+
+Slaptažodžio šifravimas prieš siuntimą
+
+Papildomos Funkcijos
+
+Paieška lentoje
+
+Rūšiavimas pagal stulpelius
+
+Technologiniai Sprendimai
+1. Universalios Formos
+
+Vienoda struktūra registracijai ir redagavimui
+
+Aiškus vartotojo duomenų atvaizdavimas
+
+2. Dizaino Detalės
+
+Mygtukų hover efektai su sklandžiu perėjimu
+
+Italic placeholder'iai neužpildytiems laukams
+
+3. Lentelės Implementacija
+
+Responsive dizainas su flexbox
+
+Stilizuoti stulpeliai (background-color, border-bottom)
+
+Išvada:
+Sistema turi tvirtą frontend pagrindą su moderniu dizainu, tačiau reikalauja:
+
+JavaScript funkcionalumo išplėtimo (+50 eilučių kodo)
+
+Backend integracijos (API endpoint'ai)
+
+Saugumo patobulinimų
+
+Reikėtų:
+
+Pridėti fetch() užklausas
+
+Implementuoti formų validaciją
+
+Sukurti modulių dropdown logiką

@@ -1,0 +1,94 @@
+
+Techninė Puslapio Analizė (Administracijos Registracijos Sistema)
+Struktūra & Technologijos
+HTML5 semantinė struktūra su responsive meta tag'u
+
+CSS3 su moderniomis savybėmis:
+
+backdrop-filter: blur(9px) - transliucijo efektas
+
+Flexbox layout'as centravimui
+
+Media queries (nors CSS faile, bet logiška, kad būtų)
+
+Vanilla JavaScript (be framework'ų) su:
+
+Formos validacija
+
+Dinaminis DOM manipuliavimas (lentelės atnaujinimas)
+
+Pagrindinės Funkcijos
+Vartotojų registracijos sistema:
+
+Formos validacija (required fields)
+
+Duomenų saugojimas atmintyje (laikinas users masyvas)
+
+Iššokantys pranešimai (alert())
+
+Dinaminė vartotojų lentelė:
+
+Automatinis atnaujinimas po registracijos
+
+Unikalūs ID generuojami pagal masyvo ilgį
+
+Navigacija:
+
+Meniu su nuorodomis į kitus puslapius
+
+"Atšaukti" mygtukas su onclick handler'iu
+
+Stipriosios Pusės
+1, Paprasta ir efektyvi architektūra - nereikalingi sudėtingi framework'ai paprastam funkcionalumui
+
+2, Modernus dizainas:
+
+Translucentiniai elementai (background: rgba(255, 255, 255, 0.1))
+
+Hover efektai mygtukams
+
+Responsive layout'as (centruojasi tinklelyje)
+
+3, Aiški navigacija:
+
+Nuoseklus meniu
+
+"Atšaukti" ir "Toliau" mygtukai
+
+4, Greitas prototipavimas:
+
+Viskas viename faile (HTML+CSS+JS)
+
+Nereikalauja serverio (veikia statiniu būdu)
+
+Tobulinimo Galimybės
+Backend integracija:
+
+Fetch API arba Axios užklausos į serverį
+
+Tikras duomenų saugojimas (ne localStorage)
+
+Pažangesnė validacija:
+
+Slaptažodžio stiprumo tikrinimas
+
+Email formatas
+
+Animacijos:
+
+Formos užpildymo patvirtinimas
+
+Smooth transitions
+
+Security:
+
+CSRF token'ai
+
+Slaptažodžių šifravimas
+
+Pastabos
+Šiuo metu duomenys saugomi tik naršyklės atmintyje (perkrovus puslapį - dingsta)
+
+Nėra serverio pusės validacijos
+
+CSS klasių pavadinimai lietuvių kalba (galimas konfliktas su kai kuriais framework'ais)

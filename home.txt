@@ -1,0 +1,106 @@
+Techninė Puslapio Analizė (Code Academy University Sąsaja)
+Pagrindinės charakteristikos
+Tipas: Universali turinio valdymo sąsaja
+
+Auditorija: Studentai, mokytojai ar sistemos administratoriai
+
+Technologijos: HTML5, CSS, JavaScript (vanilla)
+
+Struktūriniai Elementai
+Viršutinė juosta:
+
+Universiteto pavadinimas ("Code Academy University")
+
+Navigacijos meniu su 5 pagrindiniais nuorodomis
+
+Turinio blokas:
+
+Paveikslėlių įkėlimo zona (drag-and-drop)
+
+Teksto redagavimo laukas
+
+Du veiksmų mygtukai (Submit ir Embed)
+
+Papildoma navigacija:
+
+"Home" nuoroda dešiniajame kampe
+
+Funkcinės Galimybės
+Funkcionalumas	Įgyvendinimas	Pastabos
+Paveikslėlių įkėlimas	Drag-and-drop, tikrina failo tipą (jpg/png)	Galima išplėsti kitiems tipams
+Teksto apdorojimas	Dinamiškai augantis textarea laukas	Labai patogu naudoti
+Duomenų siuntimas	Simuliuojamas per alert(), paruoštas FormData objektas	Laukia backend integracijos
+Navigacija	Nuoseklus meniu su pagrindiniais puslapiais	"Home" nuoroda dublikuojasi
+Stipriosios Pusės
+Naudotojo patirtis:
+
+Intuityvus drag-and-drop funkcionalumas
+
+Automatiškai adaptuojantis teksto laukas
+
+Aiškus naudotojo grįžtamasis ryšys (alert'ai)
+
+Techniniai sprendimai:
+
+Paruoštas FormData objektas backend integracijai
+
+Tvarkinga įvykių apdorojimo logika
+
+Kodo struktūra lengvai plėtojama
+
+Dizainas:
+
+Minimalistiškas ir funkciškai orientuotas
+
+Aiški elementų hierarchija
+
+Tobulinimo Rekomendacijos
+Prioritetiniai pakeitimai:
+
+Pašalinti dublikuojančią "Home" nuorodą
+
+Pridėti tikrą duomenų siuntimą į serverį (fetch API)
+
+Įdiegti paveikslėlių validaciją (dydis, rezoliucija)
+
+Papildomi patobulinimai:
+
+Pridėti įkėlimo progreso indikatorių
+
+Įdiegti sesijų valdymą (jei reikia prisijungimo)
+
+Sukurti atsisiuntimo galimybę įkeltiems failams
+
+Saugumo aspektai:
+
+Pridėti CSRF apsaugą
+
+Įdiegti failų vardų sanitizavimą
+
+Sisteminiai Trūkumai
+Nebaigtumas:
+
+Nėra realaus duomenų saugojimo
+
+Apsaugos mechanizmai neįdiegti
+
+Naudotojo sąsaja:
+
+Paveikslėlio peržiūros zona per maža
+
+Nėra galimybės atšaukti įkėlimo
+
+Kodo struktūra:
+
+CSS stiliai išoriniame faile (nematomi analizei)
+
+
+
+Išvados
+Puslapis sėkmingai įgyvendina pagrindinį turinio valdymo funkcionalumą, tačiau reikalauja:
+
+Backend integracijos - realaus duomenų apdorojimo
+
+Naudotojo sąsajos patobulinimų - patogesniam darbui
+
+Saugumo mechanizmų - apsaugai nuo potencialių grėsmių

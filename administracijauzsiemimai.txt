@@ -1,0 +1,123 @@
+Techninė Administratoriaus Informacinio Puslapio Analizė
+Sistemos Architektūra
+Frontend Technologijos
+HTML5 semantinė struktūra su aiškiai atskirtomis sekcijomis
+
+CSS stiliai iš išorinio failo (administracijadash.css)
+
+JavaScript funkcionalumas:
+
+Drag-and-drop paveikslėlių įkėlimas
+
+Dinaminis teksto lauko dydžio keitimas
+
+Duomenų siuntimo ir įterpimo logika
+
+Duomenų Atvaizdavimas
+Šablonų sintaksė ({{ }}) rodo potencialią integraciją su:
+
+Backend šablonų varikliu (pvz., Handlebars, EJS)
+
+Arba frontend framework'u (React, Vue)
+
+Pagrindinės Funkcijos
+Administratoriaus Informacijos Skydas:
+
+Sistemos statistika (vartotojai, moduliai, programos)
+
+Asmeniniai užduočių ir terminų rodikliai
+
+Modulių Informacijos Skydas:
+
+Detali modulio informacija
+
+Tvarkaraščio ir egzaminų duomenys
+
+Duomenų Įvedimo Funkcionalumas:
+
+Teksto įvedimas per textarea
+
+Paveikslėlių įkėlimas drag-and-drop būdu
+
+Duomenų pateikimo ir įterpimo mygtukai
+
+Stipriosios Pusės
+1, Lankstus Duomenų Įvedimas:
+
+Palaiko ir tekstą, ir paveikslėlius
+
+Intuityvus drag-and-drop interfeisas
+
+Dinamiškai auganti teksto įvesties sritis
+
+2, Aiški Informacijos Struktūra:
+
+Skirtos sekcijos administratoriaus ir modulio duomenims
+
+Sąrašinis duomenų atvaizdavimas
+
+3, Interaktyvumas:
+
+Realaus lauko veiksmai (drop, drag)
+
+Dinamiški pranešimai (alert)
+
+Formos elementų būsenos valdymas
+
+4, Responsive Dizainas:
+
+Flexbox pagrindu sukurtas layout'as
+
+Tinkamas elementų išdėstymas
+
+Tobulinimo Galimybės
+Backend Integracija:
+
+Realus duomenų siuntimas į serverį
+
+Šablonų kintamųjų užpildymas tikrais duomenimis
+
+JavaScript Patobulinimai:
+
+Drag-and-drop patobulinimai (failų validacija)
+
+Duomenų validacija prieš siuntimą
+
+Užkrovimo indikatoriai
+
+Dizaino Elementai:
+
+Patobulinti alert pranešimus
+
+Pridėti error būsenas formos laukams
+
+Paveikslėlių peržiūros galimybė
+
+Papildomos Funkcijos:
+
+Duomenų eksportas
+
+Statistikos diagramos
+
+Paieškos funkcionalumas
+
+Įdomūs Sprendimai
+1, Universali Įvesties Sritis:
+
+Viename elemente suderinti tekstą ir paveikslėlius
+
+Aiškus vartotojo instrukcijas
+
+2, Dinaminis Teksto Laukas:
+
+Automatinis aukščio reguliavimas pagal turinį
+
+Švarus vartotojo sąsajos patirtis
+
+2 Duomenų Siuntimo Logika:
+
+Atskirtas submit ir embed funkcionalumas
+
+FormData objekto panaudojimas binary duomenims
+
+Ši sistema yra puikus pagrindas administratoriaus informacinei skydalui, reikalaujantis tik backend integracijos ir kai kurių vartotojo sąsajos patobulinimų, kad taptų pilnaverčiu sprendimu.

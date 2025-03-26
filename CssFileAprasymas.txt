@@ -1,0 +1,11 @@
+CSS failo aprašymas
+Šis CSS failas skirtas studentų registracijos ir prisijungimo puslapio stilizavimui. Pagrindinis tikslas – sukurti modernią, estetišką ir patogią vartotojo sąsają. Naudojami minimalistiniai dizaino principai, atsakingas dizainas bei interaktyvūs elementai.
+Failas apibrėžia globalius stilius, optimizuojant elementus, naudojant standartizuotas margin, padding, ir box-sizing reikšmes, bei „Open Sans“ šriftų šeimą, kuri užtikrina modernų ir aiškų tekstų pateikimą.
+Kūno (body) stilius pasižymi pilno ekrano paveikslėlio fonu (studentai.jpg), kuris yra proporcingai pritaikytas ir centruotas. Puslapio išdėstymui naudojama Flexbox technologija, suteikianti elementams lankstumo bei galimybę prisitaikyti prie įvairių ekrano dydžių.
+Antraštės sekcija („Title Section“) stiliaus klasėje tekstas išdėstomas centre, su subalansuotais tarpiniais tarpais virš ir po antrašte. Antraštės spalva juoda, kuri pabrėžia pagrindinę informaciją.
+Mygtukų grupė („Button Wrapper“) sukurta naudojant „glassy effect“ dizainą, pasiekiamą naudojant backdrop-filter savybę. Mygtukai yra interaktyvūs: „hover“ metu keičiasi jų spalva, fonas ir kraštinių stilius, suteikiant vartotojui vizualinį atsiliepimą.
+Prisijungimo forma („Wrapper“) turi centravimo funkcionalumą ir stiklišką dizainą su lengvu skaidrumu (rgba(255, 255, 255, 0.1)) bei suapvalintais kampais. Formos interaktyvumas užtikrina sklandžią naudotojo patirtį.
+Įvesties laukeliai („Input Field“) suteikia animuotą „label“ funkcionalumą. Kai vartotojas įveda duomenis arba pasirenka laukelį (focus), etiketė keičia poziciją bei dydį.
+Kampinis mygtukas („Corner Wrapper“) yra pozicionuotas viršutiniame puslapio kairiajame kampe. Jis turi švelnų perėjimo efektą, kuris keičia fono ir teksto spalvas „hover“ būsenoje.
+Teksto ir paveikslėlių peržiūros elementai sukurti taip, kad jų dydžiai būtų optimaliai reguliuojami, išlaikant proporcijas ir kokybę. Juose taip pat naudojamas stikliškas fonas su švelniais kraštų apvalinimais.
+Visas failo dizainas sukurtas laikantis atsakingo dizaino principų, užtikrinant sklandų veikimą tiek mažų, tiek didelių ekranų įrenginiuose. Interaktyvūs mygtukų ir formų efektai papildo vartotojo sąsajos estetiką.

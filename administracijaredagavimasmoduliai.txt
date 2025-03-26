@@ -1,0 +1,113 @@
+Techninė Modulių Redagavimo Sistemos Analizė
+Architektūra ir Technologijos
+Kliento Pusė:
+
+HTML5 semantinė struktūra
+
+CSS3 su moderniomis savybėmis:
+
+Flexbox layout'as (display: flex)
+
+Responsive dizainas (width: 100% + @media queries)
+
+Šešėliai (box-shadow) ir užlenkti kampai (border-radius)
+
+Vanilla JavaScript (formos valdymas)
+
+Serverio Pusė (numanoma iš formos atributų):
+
+POST metodas (action="/save-module")
+
+Duomenų siuntimas JSON formatu (numanoma)
+
+Pagrindinės Sistemos Funkcijos
+Modulių Valdymas:
+
+Naujų modulių kūrimas
+
+Esamų modulių redagavimas (per ID lauką)
+
+Išsamūs modulių laukai (kreditai, semestras, egzamino data)
+
+Duomenų Rodymas:
+
+Modulio informacijos atvaizdavimas (placeholder'iai su {{ }} sintakse)
+
+Lentelinis duomenų formatavimas
+
+Administravimo Funkcijos:
+
+Mokytojų priskyrimas moduliams
+
+Tvarkaraščio valdymas
+
+Priešreikalavimų nustatymas
+
+Stipriosios Pusės
+1, Intuityvus Administravimo Interfeisas:
+
+Aiški forma su visais būtinais laukais
+
+Semaforinė spalvų sistema (mėlyni mygtukai, neutralūs fono atspalviai)
+
+2, Lankstus Duomenų Modelis:
+
+Galimybė nurodyti įvairius modulio parametrus
+
+Teksto laukai (textarea) ilgesniam turiniui
+
+3, Responsive Dizainas:
+
+Adaptyvus tinklelis (flex-container)
+
+Tinkamas rodymas įvairiuose įrenginiuose
+
+4, Saugumo Elementai:
+
+Privalomi laukai (required atributas)
+
+Skirtingi įvedimo tipai (data, skaičiai, tekstas)
+
+Tobulinimo Galimybės
+Backend Integracija:
+
+Realus duomenų saugojimas (šiuo metu tik frontend)
+
+Validacija serverio pusėje
+
+Papildomos Funkcijos:
+
+Modulių paieškos sistema
+
+Mokytojų sąrašo iššokantis pasirinkimas
+
+Duomenų eksportas/importas
+
+Patobulintas Vartotojo Sąsajos:
+
+Dinaminiai įspėjimai (success/error pranešimai)
+
+Užkrovimo indikatoriai
+
+Duomenų atnaujinimas be puslapio perkrovimo
+
+Technologijų Atnaujinimas:
+
+React/Vue.js integracija sudėtingesniam valdymui
+
+WebSocket realaus laiko atnaujinimams
+
+Įdomūs Sprendimai
+ 1.Dviguba Formos Logika:
+
+Vienas formos elementas tiek naujų įrašų kūrimui, tiek redagavimui (priklausomai nuo ID lauko)
+
+2, Dinaminis Informacijos Rodymas:
+
+{{ }} sintaksė rodo potencialią integraciją su šablonų varikliu (pvz., Handlebars)
+
+3, Universali CSS Struktūra:
+
+Perpanaudojami stiliai (.form-container, .form-button) užtikrina vientisumą
+
+Ši sistema yra geras pagrindas modulių valdymo sistemai, reikalingas tik backend integracijos ir kai kurių vartotojo sąsajos patobulinimų, kad taptų pilnaverčiu produkcijos sprendimu.
