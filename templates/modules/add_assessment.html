@@ -9,6 +9,9 @@
 <form method="POST">
     {{ form.hidden_tag() }}
     
+    <!-- Paslėptas laukas su modulio ID -->
+    {{ form.module_id(style="display: none;") }}
+    
     <div class="mb-3">
         {{ form.title.label(class="form-label") }}
         {{ form.title(class="form-control") }}

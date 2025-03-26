@@ -6,6 +6,8 @@ from routes.module_route import home_route
 from routes.program_route import program_routes  # Pakeista iš student_routes į program_routes
 from routes.student_route import student_routes
 from routes.instructor_route import instructor_routes
+from routes.test_route import test_routes
+from routes.group_route import group_routes
 
 def routes(app):
     home_route(app)  
@@ -16,3 +18,5 @@ def routes(app):
     program_routes(app)  
     student_routes(app)
     instructor_routes(app)
+    test_routes(app)
+    group_routes(app)  

@@ -19,6 +19,9 @@ class Student(db.Model):
     # Ryšys su studento pažymiais
     grades = db.relationship('StudentGrade', backref='student', cascade="all, delete-orphan")
     
+    # Ryšys su testo bandymais
+    test_attempts = db.relationship('TestAttempt', backref='student', cascade="all, delete-orphan")
+    
     def __repr__(self):
         return f'<Student {self.name} {self.last_name}>'
 
@@ -34,6 +37,7 @@ class StudentGrade(db.Model):
     module_id = db.Column(db.Integer, db.ForeignKey('modules.id'), nullable=False)
     assessment_id = db.Column(db.Integer, db.ForeignKey('assessment.id'))
     exam_id = db.Column(db.Integer, db.ForeignKey('exam.id'))
+    test_id = db.Column(db.Integer, db.ForeignKey('test.id'))
     grade = db.Column(db.Float, nullable=False)
     feedback = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -43,6 +47,7 @@ class StudentGrade(db.Model):
     module = db.relationship('Modules')
     assessment = db.relationship('Assessment', foreign_keys=[assessment_id])
     exam = db.relationship('Exam', foreign_keys=[exam_id])
+    test = db.relationship('Test', foreign_keys=[test_id])
     
     def __repr__(self):
         return f'<StudentGrade {self.student_id}-{self.module_id}: {self.grade}>'

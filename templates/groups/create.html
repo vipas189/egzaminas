@@ -4,20 +4,13 @@
 
 {% block content %}
 <h2>Sukurti naują grupę</h2>
+<div class="alert alert-info">
+    <p><strong>Pastaba:</strong> Grupės pavadinimas bus sugeneruotas automatiškai pagal pasirinktą programą.</p>
+    <p>Pavadinimo formatas: [Pirmo žodžio 2 raidės][Antro žodžio 2 raidės][Metų paskutiniai 2 skaičiai]</p>
+    <p>Pavyzdžiui: Informatikos technologijos → INTE25</p>
+</div>
 <form method="POST">
     {{ form.hidden_tag() }}
-    
-    <div class="mb-3">
-        {{ form.name.label(class="form-label") }}
-        {{ form.name(class="form-control") }}
-        {% if form.name.errors %}
-            <div class="text-danger">
-                {% for error in form.name.errors %}
-                    <span>{{ error }}</span>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
     
     <div class="mb-3">
         {{ form.program_id.label(class="form-label") }}

@@ -271,7 +271,7 @@ def test_routes(app):
                     module_id=test.module_id,
                     test_id=test.id,
                     grade=attempt.score,
-                    feedback=f"Testas „{test.title}" išlaikytas su {attempt.score:.2f}% rezultatu."
+                    feedback=f'Testas „{test.title}" išlaikytas su {attempt.score:.2f}% rezultatu.'
                 )
                 db.session.add(grade)
         

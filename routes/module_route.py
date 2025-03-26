@@ -206,7 +206,10 @@ def home_route(app):
     def add_assessment(id):
         module = Modules.query.get_or_404(id)
         form = AssessmentForm()
-
+        
+        # Čia yra reikalingas nustatymas - ši eilutė trūko
+        form.module_id.choices = [(id, module.name)] 
+        
         if form.validate_on_submit():
             assessment = Assessment(
                 module_id=id,
@@ -296,29 +299,44 @@ def home_route(app):
         return redirect(url_for("view_module", id=module_id))
 
     # Exam management
+
     @app.route("/modules/<int:id>/exams/add", methods=["GET", "POST"])
     def add_exam(id):
         module = Modules.query.get_or_404(id)
         form = ExamForm()
-
+        
         if form.validate_on_submit():
-            exam = Exam(
-                module_id=id,
-                title=form.title.data,
-                description=form.description.data,
-                date=form.date.data,
-                duration=form.duration.data,
-                location=form.location.data,
-                weight=form.weight.data,
-            )
-            db.session.add(exam)
+            # Tikrinti, ar visi laukai turi tinkamas reikšmes
+            print(f"Validating form: {form.data}")
+            
+            try:
+                exam = Exam(
+                    module_id=id,
+                    title=form.title.data,
+                    description=form.description.data,
+                    date=form.date.data,
+                    duration=form.duration.data,
+                    location=form.location.data,
+                    weight=form.weight.data,
+                )
+                db.session.add(exam)
 
-            # Atnaujinti studentų kalendorius
-            update_student_calendars_for_exam(exam)
+                # Atnaujinti studentų kalendorius
+                update_student_calendars_for_exam(exam)
 
-            db.session.commit()
-            flash("Exam added successfully and student calendars updated!", "success")
-            return redirect(url_for("view_module", id=id))
+                db.session.commit()
+                flash("Egzaminas pridėtas sėkmingai ir studentų kalendoriai atnaujinti!", "success")
+                return redirect(url_for("view_module", id=id))
+            except Exception as e:
+                db.session.rollback()
+                flash(f"Klaida išsaugant egzaminą: {str(e)}", "danger")
+                print(f"Error saving exam: {str(e)}")
+        else:
+            # Rodyti validacijos klaidas
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Klaida lauke {field}: {error}", "danger")
+                    print(f"Validation error in {field}: {error}")
 
         return render_template("modules/add_exam.html", form=form, module=module)
 

@@ -1,3 +1,5 @@
+Failo pavadinimas: templates/base.html
+
 <!DOCTYPE html>
 <html lang="lt">
 <head>
@@ -26,6 +28,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('list_instructors') }}">Dėstytojai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('list_groups') }}">Grupės</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('list_tests') }}">Testai</a>
                     </li>
                 </ul>
             </div>

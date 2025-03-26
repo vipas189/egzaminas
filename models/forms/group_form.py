@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, SubmitField
+from wtforms import SelectField, IntegerField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 
 class GroupFormationForm(FlaskForm):
@@ -8,6 +8,6 @@ class GroupFormationForm(FlaskForm):
     submit = SubmitField('Formuoti grupes')
 
 class GroupForm(FlaskForm):
-    name = StringField('Grupės pavadinimas', validators=[DataRequired()])
+    # Pašalintas name laukas, nes dabar grupės pavadinimas generuojamas automatiškai
     program_id = SelectField('Programa', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Išsaugoti grupę')

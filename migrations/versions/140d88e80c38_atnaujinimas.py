@@ -1,8 +1,8 @@
-"""antra uzduotis
+"""atnaujinimas
 
-Revision ID: 068961664717
+Revision ID: 140d88e80c38
 Revises: 
-Create Date: 2025-03-23 19:05:30.699113
+Create Date: 2025-03-26 00:44:08.855427
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '068961664717'
+revision = '140d88e80c38'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -116,6 +116,31 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
+    op.create_table('student_group',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('program_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['program_id'], ['program.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(length=100), nullable=False),
+    sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('module_id', sa.Integer(), nullable=False),
+    sa.Column('instructor_id', sa.Integer(), nullable=False),
+    sa.Column('duration', sa.Integer(), nullable=False),
+    sa.Column('passing_score', sa.Float(), nullable=False),
+    sa.Column('weight', sa.Float(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['instructor_id'], ['instructor.id'], ),
+    sa.ForeignKeyConstraint(['module_id'], ['modules.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('student_calendar',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('student_id', sa.Integer(), nullable=False),
@@ -139,6 +164,7 @@ def upgrade():
     sa.Column('module_id', sa.Integer(), nullable=False),
     sa.Column('assessment_id', sa.Integer(), nullable=True),
     sa.Column('exam_id', sa.Integer(), nullable=True),
+    sa.Column('test_id', sa.Integer(), nullable=True),
     sa.Column('grade', sa.Float(), nullable=False),
     sa.Column('feedback', sa.Text(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
@@ -147,7 +173,15 @@ def upgrade():
     sa.ForeignKeyConstraint(['exam_id'], ['exam.id'], ),
     sa.ForeignKeyConstraint(['module_id'], ['modules.id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['student.id'], ),
+    sa.ForeignKeyConstraint(['test_id'], ['test.id'], ),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('student_group_membership',
+    sa.Column('student_id', sa.Integer(), nullable=False),
+    sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['group_id'], ['student_group.id'], ),
+    sa.ForeignKeyConstraint(['student_id'], ['student.id'], ),
+    sa.PrimaryKeyConstraint('student_id', 'group_id')
     )
     op.create_table('student_module',
     sa.Column('student_id', sa.Integer(), nullable=False),
@@ -156,14 +190,64 @@ def upgrade():
     sa.ForeignKeyConstraint(['student_id'], ['student.id'], ),
     sa.PrimaryKeyConstraint('student_id', 'module_id')
     )
+    op.create_table('test_attempt',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('test_id', sa.Integer(), nullable=False),
+    sa.Column('student_id', sa.Integer(), nullable=False),
+    sa.Column('start_time', sa.DateTime(), nullable=False),
+    sa.Column('end_time', sa.DateTime(), nullable=True),
+    sa.Column('score', sa.Float(), nullable=True),
+    sa.Column('passed', sa.Boolean(), nullable=True),
+    sa.ForeignKeyConstraint(['student_id'], ['student.id'], ),
+    sa.ForeignKeyConstraint(['test_id'], ['test.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test_question',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('test_id', sa.Integer(), nullable=False),
+    sa.Column('question_text', sa.Text(), nullable=False),
+    sa.Column('question_type', sa.String(length=20), nullable=False),
+    sa.Column('points', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['test_id'], ['test.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test_question_option',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('question_id', sa.Integer(), nullable=False),
+    sa.Column('option_text', sa.Text(), nullable=False),
+    sa.Column('is_correct', sa.Boolean(), nullable=True),
+    sa.ForeignKeyConstraint(['question_id'], ['test_question.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('test_answer',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('attempt_id', sa.Integer(), nullable=False),
+    sa.Column('question_id', sa.Integer(), nullable=False),
+    sa.Column('selected_option_id', sa.Integer(), nullable=True),
+    sa.Column('text_answer', sa.Text(), nullable=True),
+    sa.Column('is_correct', sa.Boolean(), nullable=True),
+    sa.Column('points_earned', sa.Float(), nullable=True),
+    sa.ForeignKeyConstraint(['attempt_id'], ['test_attempt.id'], ),
+    sa.ForeignKeyConstraint(['question_id'], ['test_question.id'], ),
+    sa.ForeignKeyConstraint(['selected_option_id'], ['test_question_option.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_table('test_answer')
+    op.drop_table('test_question_option')
+    op.drop_table('test_question')
+    op.drop_table('test_attempt')
     op.drop_table('student_module')
+    op.drop_table('student_group_membership')
     op.drop_table('student_grade')
     op.drop_table('student_calendar')
+    op.drop_table('test')
+    op.drop_table('student_group')
     op.drop_table('student')
     op.drop_table('schedule')
     op.drop_table('program_module')

@@ -9,9 +9,11 @@ from models.exam_mode import Exam
 from models.schedule_model import Schedule
 from models.assessments_model import Assessment
 from models.program import Program
-from models.students import Student
+from models.students import Student, StudentGrade
 from models.instructor_model import Instructor
 from models.student_calendar import StudentCalendar
+from models.test_model import Test, TestAnswer, TestAttempt, TestQuestion, TestQuestionOption
+from models.student_group import StudentGroup
 
 # import tables cia kad jos veiktu!!!!
 
